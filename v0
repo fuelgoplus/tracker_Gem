@@ -1,0 +1,300 @@
+import React, { useState, useEffect } from 'react';
+import { 
+  Send, 
+  RefreshCw, 
+  CheckCircle2, 
+  AlertCircle, 
+  Clock, 
+  FileText, 
+  Layers, 
+  Target,
+  Copy,
+  Download
+} from 'lucide-react';
+
+const App = () => {
+  // --- State Management ---
+  const [step, setStep] = useState('input'); // 'input' or 'preview'
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [formData, setFormData] = useState({
+    projectName: '',
+    cluster: 'IT / Operations',
+    counterpart: '',
+    description: '',
+    progress: '',
+    highlights: '',
+    deviation: 0,
+    status: 'Processing'
+  });
+
+  const [refinedOutput, setRefinedOutput] = useState(null);
+
+  // --- Mock Database / Logic ---
+  // In a real scenario, this would match against BSD_Project Tracker_2026
+  const processLogic = () => {
+    setIsProcessing(true);
+    
+    setTimeout(() => {
+      // 1. Logic: Deviation check
+      const needsCatchUp = formData.deviation < 0;
+      
+      // 2. Logic: Resource Allocation (Total max 8h)
+      const allocatedHours = formData.status === 'Processing' ? 6 : 4;
+      const adminHours = 8 - allocatedHours;
+
+      // 3. Logic: Refinement of text (Simulation of PM Expert tone)
+      const refinedData = {
+        metadata: {
+          title: formData.projectName || "未命名專案",
+          cluster: formData.cluster,
+          counterpart: formData.counterpart || "待確認"
+        },
+        progress: formData.progress.split('\n').filter(t => t.trim()).map(line => {
+          const dateStr = new Date().toISOString().split('T')[0].replace(/-/g, '/');
+          return `# ${dateStr}: [優化] ${line.trim()}`;
+        }),
+        highlights: {
+          content: formData.highlights || "本週進度符合預期，關鍵路徑無異常。",
+          alert: needsCatchUp ? "時程落後：建議啟動時程追趕計畫（Catch-up Plan），優先處理瓶頸任務。" : null
+        },
+        deliverables: [
+          "Updated Project Documentation",
+          "Weekly Sync Minutes",
+          "Resource Allocation Matrix"
+        ],
+        allocation: [
+          { task: "核心開發/執行", hours: allocatedHours, color: "#2B2B6E" },
+          { task: "行政管理/會議", hours: adminHours, color: "#918A9E" }
+        ],
+        deviation: formData.deviation
+      };
+
+      setRefinedOutput(refinedData);
+      setStep('preview');
+      setIsProcessing(false);
+    }, 1200);
+  };
+
+  const resetForm = () => {
+    setStep('input');
+    setRefinedOutput(null);
+  };
+
+  // --- UI Components ---
+
+  const Header = () => (
+    <div className="bg-[#102a43] text-white p-6 rounded-t-xl flex justify-between items-center shadow-lg">
+      <div>
+        <h1 className="text-2xl font-bold tracking-tight font-['Microsoft_Jhenghei_UI']">MockingBird_PJM</h1>
+        <p className="text-sm opacity-80">BSD 專案助手 | 十年經驗 PJM 專家系統</p>
+      </div>
+      <Layers className="w-10 h-10 text-[#2cb1bc]" />
+    </div>
+  );
+
+  return (
+    <div className="min-h-screen bg-[#F0EEE9] p-4 md:p-8 font-['Microsoft_Jhenghei_UI'] text-[#1A1A1A]">
+      <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-2xl overflow-hidden border border-[#AEB4C1]">
+        <Header />
+
+        {step === 'input' ? (
+          <div className="p-8 space-y-6">
+            <div className="bg-[#E7EAEE] p-4 rounded-lg border-l-4 border-[#2B2B6E]">
+              <p className="text-[#2B2B6E] font-semibold">
+                「你好！我是 BSD 專案助手。請輸入你本週的零散工作紀錄，或直接告訴我你想更新 BSD_Project Tracker_2026 中的哪項專案？我將為你生成專業週報。」
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-bold text-[#7D8090] mb-2">專案名稱 (Project Name)</label>
+                <input 
+                  className="w-full p-3 border border-[#AEB4C1] rounded focus:ring-2 focus:ring-[#2B2B6E] outline-none"
+                  placeholder="例如: ERP System Upgrade"
+                  value={formData.projectName}
+                  onChange={(e) => setFormData({...formData, projectName: e.target.value})}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-bold text-[#7D8090] mb-2">負責 Cluster / 對象</label>
+                <input 
+                  className="w-full p-3 border border-[#AEB4C1] rounded focus:ring-2 focus:ring-[#2B2B6E] outline-none"
+                  placeholder="例如: Sales Team / Jane Doe"
+                  value={formData.counterpart}
+                  onChange={(e) => setFormData({...formData, counterpart: e.target.value})}
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-bold text-[#7D8090] mb-2">進度偏離天數 (Deviation Days)</label>
+                <input 
+                  type="number"
+                  className={`w-full p-3 border rounded outline-none ${formData.deviation < 0 ? 'border-[#C03939] text-[#C03939]' : 'border-[#AEB4C1]'}`}
+                  placeholder="0"
+                  value={formData.deviation}
+                  onChange={(e) => setFormData({...formData, deviation: parseInt(e.target.value) || 0})}
+                />
+                <p className="text-xs mt-1 text-gray-500">正值代表提前，負值代表落後</p>
+              </div>
+              <div>
+                <label className="block text-sm font-bold text-[#7D8090] mb-2">當前狀態 (Current Status)</label>
+                <select 
+                  className="w-full p-3 border border-[#AEB4C1] rounded outline-none"
+                  value={formData.status}
+                  onChange={(e) => setFormData({...formData, status: e.target.value})}
+                >
+                  <option value="Processing">Processing (進行中)</option>
+                  <option value="Completed">Completed (已完成)</option>
+                  <option value="Pending">Pending (待定)</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-bold text-[#7D8090] mb-2">本週工作紀錄 (Progress Raw Notes)</label>
+              <textarea 
+                className="w-full p-3 border border-[#AEB4C1] rounded h-32 focus:ring-2 focus:ring-[#2B2B6E] outline-none"
+                placeholder="請輸入散亂的進度，例如：開了會、寫了文件、修正了Bug..."
+                value={formData.progress}
+                onChange={(e) => setFormData({...formData, progress: e.target.value})}
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-bold text-[#7D8090] mb-2">亮點與交付物 (Highlights/Deliverables)</label>
+              <textarea 
+                className="w-full p-3 border border-[#AEB4C1] rounded h-24 focus:ring-2 focus:ring-[#2B2B6E] outline-none"
+                placeholder="關鍵成就或預定產出..."
+                value={formData.highlights}
+                onChange={(e) => setFormData({...formData, highlights: e.target.value})}
+              />
+            </div>
+
+            <button 
+              onClick={processLogic}
+              disabled={isProcessing}
+              className="w-full bg-[#2B2B6E] hover:bg-[#102a43] text-white font-bold py-4 rounded-lg transition-all flex justify-center items-center gap-2 shadow-md"
+            >
+              {isProcessing ? <RefreshCw className="animate-spin" /> : <Send size={20} />}
+              開始精煉專案內容 (Regenerate Lean Content)
+            </button>
+          </div>
+        ) : (
+          <div className="p-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <div className="flex justify-between items-center mb-8">
+              <h2 className="text-xl font-bold flex items-center gap-2">
+                <CheckCircle2 className="text-[#2E8F5A]" /> 精煉週報產出
+              </h2>
+              <button 
+                onClick={resetForm}
+                className="text-sm text-[#2B2B6E] hover:underline flex items-center gap-1"
+              >
+                <RefreshCw size={14} /> 重新調整
+              </button>
+            </div>
+
+            <div className="space-y-8">
+              {/* 1. Metadata */}
+              <section className="bg-[#f8fafc] p-6 rounded-lg border border-[#AEB4C1]">
+                <div className="flex justify-between items-start mb-4 border-b pb-4 border-[#AEB4C1]">
+                  <div>
+                    <span className="text-xs font-bold text-[#7D8090] uppercase tracking-widest">Metadata</span>
+                    <h3 className="text-2xl font-bold text-[#2B2B6E]">{refinedOutput.metadata.title}</h3>
+                    <p className="text-sm text-[#444444] mt-1">Cluster: {refinedOutput.metadata.cluster} | Counterpart: {refinedOutput.metadata.counterpart}</p>
+                  </div>
+                  <div className={`px-4 py-2 rounded-full font-bold text-sm ${refinedOutput.deviation < 0 ? 'bg-red-100 text-[#C03939]' : 'bg-green-100 text-[#2E8F5A]'}`}>
+                    {refinedOutput.deviation < 0 ? `落後 ${Math.abs(refinedOutput.deviation)} 天` : `超前 ${refinedOutput.deviation} 天`}
+                  </div>
+                </div>
+
+                {/* 2. Progress */}
+                <div className="mb-6">
+                  <h4 className="text-sm font-bold text-[#7D8090] mb-3 flex items-center gap-2">
+                    <Clock size={16} /> 本週進度摘要 (Progress)
+                  </h4>
+                  <ul className="space-y-2">
+                    {refinedOutput.progress.map((item, idx) => (
+                      <li key={idx} className="bg-white p-3 rounded border border-gray-100 font-mono text-sm shadow-sm">
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* 3. Highlights & Deliverables */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className={`p-4 rounded-lg border-l-4 ${refinedOutput.highlights.alert ? 'bg-red-50 border-[#C03939]' : 'bg-green-50 border-[#2E8F5A]'}`}>
+                    <h4 className="text-sm font-bold mb-2 flex items-center gap-2">
+                      <Target size={16} /> Highlights
+                    </h4>
+                    <p className="text-sm leading-relaxed">{refinedOutput.highlights.content}</p>
+                    {refinedOutput.highlights.alert && (
+                      <div className="mt-3 flex items-start gap-2 text-[#C03939] font-bold text-sm bg-white p-2 rounded border border-red-200">
+                        <AlertCircle size={16} className="shrink-0 mt-0.5" />
+                        <span>{refinedOutput.highlights.alert}</span>
+                      </div>
+                    )}
+                  </div>
+                  <div className="bg-[#E7EAEE] p-4 rounded-lg border-l-4 border-[#2B2B6E]">
+                    <h4 className="text-sm font-bold mb-2 flex items-center gap-2">
+                      <FileText size={16} /> Deliverables
+                    </h4>
+                    <ul className="list-disc list-inside text-sm space-y-1">
+                      {refinedOutput.deliverables.map((d, i) => <li key={i}>{d}</li>)}
+                    </ul>
+                  </div>
+                </div>
+              </section>
+
+              {/* 4. Resource Allocation */}
+              <section>
+                <h4 className="text-sm font-bold text-[#7D8090] mb-4">智能工時分配 (Resource Allocation / 8h daily)</h4>
+                <div className="flex w-full h-12 rounded-full overflow-hidden shadow-inner border border-gray-200 mb-4">
+                  {refinedOutput.allocation.map((item, idx) => (
+                    <div 
+                      key={idx}
+                      style={{ width: `${(item.hours / 8) * 100}%`, backgroundColor: item.color }}
+                      className="flex items-center justify-center text-white text-[10px] font-bold group relative cursor-help"
+                    >
+                      {item.hours}h
+                      <div className="absolute bottom-full mb-2 hidden group-hover:block bg-black text-white px-2 py-1 rounded text-xs whitespace-nowrap">
+                        {item.task}: {item.hours} 小時
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="flex gap-4 justify-center">
+                  {refinedOutput.allocation.map((item, idx) => (
+                    <div key={idx} className="flex items-center gap-1.5 text-xs font-medium text-[#444444]">
+                      <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: item.color }}></div>
+                      {item.task}
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+              <div className="flex gap-4 pt-4">
+                <button className="flex-1 border border-[#2B2B6E] text-[#2B2B6E] font-bold py-3 rounded-lg flex justify-center items-center gap-2 hover:bg-[#E7EAEE]">
+                  <Copy size={18} /> 複製 Markdown (For Tracker)
+                </button>
+                <button className="flex-1 bg-[#2B2B6E] text-white font-bold py-3 rounded-lg flex justify-center items-center gap-2 hover:bg-[#102a43]">
+                  <Download size={18} /> 下載週報 PDF
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div className="bg-[#F5F4F2] p-4 text-center border-t border-[#AEB4C1]">
+          <p className="text-[10px] text-[#7D8090] uppercase tracking-widest font-bold">
+            Generated by MockingBird_PJM System | Confidential BSD Document
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default App;
