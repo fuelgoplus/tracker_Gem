@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Annual Assessment Dashboard V8.46</title>
+  <title>Annual Assessment Dashboard V8.48</title>
 
   <!-- Google Fonts: Quicksand -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -395,7 +395,7 @@
           <i class="fa-solid fa-chart-pie text-xl"></i>
         </div>
         <div>
-          <h1 id="lblTitle" class="text-2xl font-bold" style="color: var(--text-main);">Project Dashboard V8.46</h1>
+          <h1 id="lblTitle" class="text-2xl font-bold" style="color: var(--text-main);">Project Dashboard V8.48</h1>
           <p id="lblSubtitle" class="text-xs" style="color: var(--text-sub);">Annual Assessment System</p>
         </div>
       </div>
@@ -503,8 +503,7 @@
     </div>
 
     <!-- WIZ SUMMARY & WORKLOAD -->
-    <!-- V8.45 FIX: Removed transition-all duration-500 from wizBlock to prevent CSS/GSAP animation deadlock -->
-    <div id="wizBlock" class="dashboard-card hidden border-l-4" style="border-left-color: var(--brand-accent);">
+    <div id="wizBlock" class="dashboard-card hidden border-l-4 transition-all duration-500" style="border-left-color: var(--brand-accent);">
         <div class="flex justify-between items-start mb-4">
             <div class="flex items-center gap-3">
                 <div class="w-8 h-8 rounded-full flex items-center justify-center text-white shadow-sm" style="background-color: var(--brand-accent);">
@@ -656,9 +655,10 @@
 
 <script>
 /**
- * DASHBOARD V8.46
- * - UX ENHANCEMENT: Enabled top-aligned legend for the Resource Allocation (Stacked Bar) chart to ensure clear identification of stacked projects.
- * - INCLUDES V8.45 FIXES: Opacity Deadlock fixed, Strict timeline clipping, TODAY label padding fix, and auto-refresh Wiz summary.
+ * DASHBOARD V8.48
+ * - NEW FEATURE: View Toggle (Cluster vs Project) added directly to the Resource Allocation Chart header.
+ * - UX OPTIMIZATION: In 'Cluster' mode, a concise legend is shown at the bottom. In 'Project' mode, the legend is auto-hidden to prevent UI bloat from too many individual tasks.
+ * - SEAMLESS TRANSITION: Toggling chart views intercepts and re-renders the Chart.js instance instantly without page jumps or flashing opacity.
  */
 
 const THEMES = {
@@ -685,14 +685,12 @@ const THEMES = {
 };
 
 const CUSTOM_CATEGORY_COLORS = {
-    // Examples:
-    // 'NPI': '#E63946',
-    // 'Sustaining': '#3B82F6',
+    // Users can define specific colors for specific Clusters here to maintain permanent mappings across sessions
 };
 
 const TEXT = {
   en: {
-    title: "Project Dashboard V8.46", subtitle: "Annual Assessment System",
+    title: "Project Dashboard V8.48", subtitle: "Annual Assessment System",
     dataSource: "Data Source", import: "Load Excel / CSV",
     owner: "Owner", status: "Status", category: "Category", cluster: "Cluster", month: "Period (Month)",
     total: "Total Items", totalDesc: "All Projects Loaded",
@@ -708,6 +706,7 @@ const TEXT = {
     wizAvgLoad: "Average Daily Load", wizProjects: "Active Projects", wizOwners: "Owners Involved", wizDeliv: "Project & Key Deliverables",
     wizWorkload: "Resource Allocation (Daily MH/d)", wizMaxCap: "Max Capacity: 5.0 MH/d",
     wizViewProj: "By Project", wizViewCat: "Category-Cluster", wizViewWeekly: "Weekly Highlight",
+    lblViewCluster: "By Cluster", lblViewProject: "By Project", // New V8.48
     wizAvgTooltipFormula: "💡 Formula: Total MH ÷ Active Days",
     wizAvgTooltipDesc: "Calculates the macro-level daily bandwidth required across the actual timespan of all 'Processing' projects.",
     wizAvgTooltipExTitle: "Example:",
@@ -734,7 +733,7 @@ const TEXT = {
     lblBtnCancel: "Cancel", lblBtnApply: "Apply & Refresh", lblBtnExportMd: "Export Markdown"
   },
   zh: {
-    title: "專案儀表板 V8.46", subtitle: "年度考核系統",
+    title: "專案儀表板 V8.48", subtitle: "年度考核系統",
     dataSource: "資料來源", import: "匯入 Excel / CSV",
     owner: "負責人", status: "狀態", category: "類別", cluster: "群組", month: "期間 (月份)",
     total: "總項目數", totalDesc: "已載入所有專案",
@@ -750,6 +749,7 @@ const TEXT = {
     wizAvgLoad: "平均每日負載", wizProjects: "活躍專案", wizOwners: "參與負責人", wizDeliv: "專案描述與關鍵交付物",
     wizWorkload: "資源負載分佈 (每日工時)", wizMaxCap: "最大法定產能: 5.0 MH/d",
     wizViewProj: "依專案", wizViewCat: "類別-群組", wizViewWeekly: "本週亮點",
+    lblViewCluster: "依群組", lblViewProject: "依專案", // New V8.48
     wizAvgTooltipFormula: "💡 公式：總投入工時 ÷ 總活躍天數",
     wizAvgTooltipDesc: "計算篩選區間內，所有「執行中 (Processing)」專案在實際時間跨度下的宏觀每日資源消耗率。",
     wizAvgTooltipExTitle: "範例：",
@@ -791,6 +791,9 @@ let globalWorkbook = null;
 let currentYear = '2026'; 
 let wizRenderTimeout = null;
 
+// V8.48: New Global State for Wiz Workload Chart Aggregation Metric
+let wizChartMode = 'cluster'; 
+
 const $ = (id) => document.getElementById(id);
 Chart.register(ChartDataLabels);
 
@@ -811,12 +814,6 @@ function toggleLang() {
   applyLanguage();
   updateTable();
   updateCharts(); 
-}
-
-function updateWizIfVisible() {
-    if (!$('wizBlock').classList.contains('hidden')) {
-        generateWizSummary(false); 
-    }
 }
 
 function applyLanguage() {
@@ -1628,7 +1625,7 @@ function updateGanttOnly() {
         $('ganttEmpty').style.display = 'block';
         $('ganttEmpty').innerHTML = `<i class="fa-solid fa-calendar-xmark mb-2 text-2xl"></i><br>No timeline data available for ${ganttFilters.startMonth} ~ ${ganttFilters.endMonth}.`;
         
-        updateWizIfVisible();
+        generateWizSummary(false);
         return;
     }
 
@@ -1640,7 +1637,7 @@ function updateGanttOnly() {
         $('ganttEmpty').style.display = 'block';
         $('ganttEmpty').innerHTML = `<i class="fa-solid fa-triangle-exclamation mb-2 text-2xl" style="color:var(--brand-accent);"></i><br>Selected projects do not have valid Due or Revision dates.`;
         
-        updateWizIfVisible();
+        generateWizSummary(false);
         return;
     }
     
@@ -1707,7 +1704,7 @@ function updateGanttOnly() {
       }
     });
 
-    updateWizIfVisible();
+    generateWizSummary(false);
   }
 }
 
@@ -1830,6 +1827,12 @@ const externalTooltipHandler = (context) => {
     tooltipEl.style.transform = `translate(${transformX}, ${transformY})`;
 };
 
+// V8.48 NEW GLOBAL STATE: Workload Chart Aggregation Metric
+window.setWizChartMetric = function(mode) {
+    wizChartMode = mode;
+    generateWizSummary(false); // Seamlessly update only
+};
+
 // --- WIZ RESOURCE WORKLOAD CHART RENDERER ---
 function renderWizWorkloadChart(data) {
     const canvas = $('cWizWorkload');
@@ -1876,11 +1879,11 @@ function renderWizWorkloadChart(data) {
 
     if (ganttFilters.startMonth !== 'All') {
         const [sy, sm] = ganttFilters.startMonth.split('-');
-        chartStartT = new Date(sy, sm - 1, 1).getTime(); 
+        chartStartT = new Date(parseInt(sy, 10), parseInt(sm, 10) - 1, 1).getTime(); 
     }
     if (ganttFilters.endMonth !== 'All') {
         const [ey, em] = ganttFilters.endMonth.split('-');
-        chartEndT = new Date(ey, em, 0, 23, 59, 59).getTime(); 
+        chartEndT = new Date(parseInt(ey, 10), parseInt(em, 10), 0, 23, 59, 59).getTime(); 
     }
 
     if (chartStartT > chartEndT) {
@@ -1938,27 +1941,59 @@ function renderWizWorkloadChart(data) {
         datalabels: { display: false } 
     });
 
-    const palette = getGenericPalette(validProjects.length);
-    validProjects.forEach((p, i) => {
-        const dailyData = labelTimes.map(t => {
-            if(t >= p.startT && t <= p.endT) return p.dailyMH || 0;
-            return 0;
-        });
-        
-        if(dailyData.some(v => v > 0)) {
-            datasets.push({
-                type: 'bar',
-                label: p.desc, 
-                data: dailyData,
-                backgroundColor: palette[i % palette.length],
-                stack: 'Stack 0',
-                order: 1,
-                hoverBorderWidth: 2,
-                hoverBorderColor: '#8036c9', 
-                datalabels: { display: false } 
+    // V8.48 FIX: Dynamic Chart Branching based on user toggle
+    if (wizChartMode === 'cluster') {
+        const clusters = [...new Set(validProjects.map(p => p.cluster || 'Uncategorized'))].sort();
+
+        clusters.forEach((clusterName) => {
+            const clusterProjects = validProjects.filter(p => (p.cluster || 'Uncategorized') === clusterName);
+            
+            const dailyData = labelTimes.map(t => {
+                let sumMH = 0;
+                clusterProjects.forEach(p => {
+                    if(t >= p.startT && t <= p.endT) sumMH += (p.dailyMH || 0);
+                });
+                return sumMH;
             });
-        }
-    });
+            
+            if(dailyData.some(v => v > 0)) {
+                datasets.push({
+                    type: 'bar',
+                    label: clusterName, 
+                    data: dailyData,
+                    backgroundColor: getCustomColor(clusterName), 
+                    stack: 'Stack 0',
+                    order: 1,
+                    hoverBorderWidth: 2,
+                    hoverBorderColor: '#8036c9', 
+                    datalabels: { display: false } 
+                });
+            }
+        });
+    } else {
+        // Fallback to Project Level aggregation (from V8.46)
+        const palette = getGenericPalette(validProjects.length);
+        validProjects.forEach((p, i) => {
+            const dailyData = labelTimes.map(t => {
+                if(t >= p.startT && t <= p.endT) return p.dailyMH || 0;
+                return 0;
+            });
+            
+            if(dailyData.some(v => v > 0)) {
+                datasets.push({
+                    type: 'bar',
+                    label: p.desc, 
+                    data: dailyData,
+                    backgroundColor: palette[i % palette.length],
+                    stack: 'Stack 0',
+                    order: 1,
+                    hoverBorderWidth: 2,
+                    hoverBorderColor: '#8036c9', 
+                    datalabels: { display: false } 
+                });
+            }
+        });
+    }
 
     const todayHighlightPlugin = {
         id: 'todayHighlight',
@@ -2002,7 +2037,7 @@ function renderWizWorkloadChart(data) {
                 ctx.font = 'bold 11px Quicksand, sans-serif';
                 const tWidth = ctx.measureText(text).width;
                 const bHeight = 18;
-                const yOffset = yAxis.top - 25; 
+                const yOffset = yAxis.top - 18; 
                 
                 ctx.shadowColor = 'rgba(0,0,0,0.3)';
                 ctx.shadowBlur = 4;
@@ -2046,17 +2081,17 @@ function renderWizWorkloadChart(data) {
                 }
             },
             plugins: {
-                // V8.46 FIX: Enabled Top-Aligned Legend
+                // V8.48 FIX: Legend is only enabled in 'Cluster' mode to prevent UI bloat when viewing by 'Project'
                 legend: { 
-                    display: true,
-                    position: 'top',
+                    display: wizChartMode === 'cluster',
+                    position: 'bottom', 
                     align: 'start',
                     labels: {
                         color: PALETTE.text,
                         usePointStyle: true,
                         boxWidth: 8,
-                        padding: 10,
-                        font: { size: 10, family: "'Microsoft JhengHei UI', 'Quicksand', sans-serif", weight: 'bold' }
+                        padding: 15,
+                        font: { size: 11, family: "'Microsoft JhengHei UI', 'Quicksand', sans-serif", weight: 'bold' }
                     }
                 }, 
                 tooltip: {
@@ -2082,6 +2117,7 @@ function renderWizWorkloadChart(data) {
     });
 }
 
+// Global View State for Wiz Summary
 let currentWizView = 'project';
 
 window.switchWizView = function(mode) {
@@ -2370,7 +2406,14 @@ function generateWizSummary(autoScroll = false) {
             
             <div class="md:col-span-12 mt-2 border-t pt-4 p-2 rounded-lg glow-card-hover transition-all duration-300 w-full" style="border-color:var(--border-color);">
                 <h4 class="font-bold mb-2 uppercase text-xs flex justify-between items-center" style="color:var(--brand-main);">
-                    <span><i class="fa-solid fa-chart-area mr-1"></i> ${t.wizWorkload}</span>
+                    <!-- V8.48 FIX: Dynamic Chart View Toggle -->
+                    <div class="flex items-center gap-3">
+                        <span><i class="fa-solid fa-chart-area mr-1"></i> ${t.wizWorkload}</span>
+                        <div class="flex p-0.5 rounded shadow-sm" style="background-color: var(--bg-color); border: 1px solid var(--border-color);">
+                            <button onclick="setWizChartMetric('cluster')" class="px-2 py-0.5 text-[10px] font-bold rounded transition-all" style="${wizChartMode === 'cluster' ? 'background-color:var(--brand-main); color:#FFF; box-shadow:0 1px 2px rgba(0,0,0,0.1);' : 'color:var(--text-sub); hover:opacity-80;'}">${t.lblViewCluster}</button>
+                            <button onclick="setWizChartMetric('project')" class="px-2 py-0.5 text-[10px] font-bold rounded transition-all" style="${wizChartMode === 'project' ? 'background-color:var(--brand-main); color:#FFF; box-shadow:0 1px 2px rgba(0,0,0,0.1);' : 'color:var(--text-sub); hover:opacity-80;'}">${t.lblViewProject}</button>
+                        </div>
+                    </div>
                     
                     <div class="group relative flex items-center cursor-help">
                         <span class="text-[10px] font-bold px-2 py-0.5 rounded flex items-center gap-1 transition-all hover:bg-[#FECACA]" style="background-color:#FEE2E2; color:#B91C1C; border: 1px solid #FECACA;">
