@@ -37,13 +37,13 @@
       --text-sub: #444444;
       --border-color: #B5B5B5;
       
-      --brand-main: #245B61;
-      --brand-sub: #32938B;
-      --brand-positive: #26764A;
-      --brand-negative: #AA2E2E;
+      --brand-main: #086768;
+      --brand-sub: #3D9BB3;
+      --brand-positive: #36A668;
+      --brand-negative: #D03939;
       --brand-accent: #D9A940;
       
-      --text-blue: #0277BD; 
+      --text-blue: #4F7BB5; 
     }
 
     /* --- FONTS --- */
@@ -668,7 +668,7 @@ const THEMES = {
   },
   slightGray: { 
     bg: '#E0DED8', card: '#F5F4F2', textMain: '#1A1A1A', textSub: '#444444', border: '#B5B5B5', 
-    main: '#245B61', sub: '#32938B', positive: '#26764A', negative: '#AA2E2E', accent: '#D9A940', blue: '#245B61' 
+    main: '#086768', sub: '#3D9BB3', positive: '#36A668', negative: '#D03939', accent: '#D9A940', blue: '#4F7BB5' 
   },
   dark: { 
     bg: '#DEE6E1', card: '#FCFCFC', textMain: '#262216', textSub: '#668177', border: '#BFC6B2', 
@@ -1657,6 +1657,55 @@ function updateGanttOnly() {
 
     destroyChart('cGantt');
     
+    const ganttTodayPlugin = {
+        id: 'ganttTodayHighlight',
+        afterDraw: (chart) => {
+            const todayNode = new Date();
+            const todayT = todayNode.getTime();
+            const xAxis = chart.scales.x;
+            const yAxis = chart.scales.y;
+            
+            if (todayT >= xAxis.min && todayT <= xAxis.max) {
+                const ctx = chart.ctx;
+                const x = xAxis.getPixelForValue(todayT);
+                const accentColor = PALETTE.accent;
+                
+                ctx.save();
+                
+                ctx.beginPath();
+                ctx.moveTo(x, yAxis.top);
+                ctx.lineTo(x, yAxis.bottom);
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = accentColor;
+                ctx.setLineDash([6, 4]);
+                ctx.stroke();
+                
+                const text = 'TODAY';
+                ctx.font = 'bold 10px "Microsoft JhengHei UI", Quicksand, sans-serif';
+                const tWidth = ctx.measureText(text).width;
+                const bHeight = 16;
+                const yOffset = yAxis.top - bHeight - 2; 
+                
+                ctx.shadowColor = 'rgba(0,0,0,0.3)';
+                ctx.shadowBlur = 4;
+                ctx.shadowOffsetY = 2;
+                
+                ctx.fillStyle = accentColor;
+                ctx.fillRect(x - tWidth/2 - 6, yOffset, tWidth + 12, bHeight);
+                
+                ctx.shadowBlur = 0;
+                ctx.shadowOffsetY = 0;
+                
+                ctx.fillStyle = '#FFFFFF';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(text, x, yOffset + bHeight/2);
+                
+                ctx.restore();
+            }
+        }
+    };
+
     chartRefs.cGantt = new Chart($('cGantt'), {
       type: 'bar',
       data: {
@@ -1672,6 +1721,7 @@ function updateGanttOnly() {
         }]
       },
       options: {
+        layout: { padding: { top: 25 } },
         responsive: true,
         maintainAspectRatio: false,
         indexAxis: 'y',
@@ -1701,7 +1751,8 @@ function updateGanttOnly() {
                 }
             }
         }
-      }
+      },
+      plugins: [ganttTodayPlugin]
     });
 
     generateWizSummary(false);
