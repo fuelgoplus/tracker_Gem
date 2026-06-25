@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Annual Assessment Dashboard V8.48</title>
+  <title>Annual Assessment Dashboard V8.58</title>
 
   <!-- Google Fonts: Quicksand -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -37,36 +37,48 @@
       --text-sub: #444444;
       --border-color: #B5B5B5;
       
-      --brand-main: #086768;
-      --brand-sub: #3D9BB3;
-      --brand-positive: #36A668;
-      --brand-negative: #D03939;
-      --brand-accent: #D9A940;
+      --brand-main: #1495CC;
+      --brand-text: #0D76A1; 
+      --brand-sub: #A9A30A;
+      --brand-positive: #41C37C;
+      --brand-negative: #C01B84;
+      --brand-accent: #E6AC5B;
       
       --text-blue: #4F7BB5; 
     }
 
-    /* --- FONTS --- */
+    /* --- FONTS & ANTIALIASING (V8.51+ Legibility Polish) --- */
+    html {
+      font-size: 112.5%; /* Extreme legibility scaling */
+    }
+
     body {
       background-color: var(--bg-color);
       color: var(--text-main);
-      font-family: 'Microsoft JhengHei UI', '微軟正黑體', 'Quicksand', 'PingFang TC', sans-serif;
+      font-family: 'Microsoft JhengHei UI', '微軟正黑體', 'Quicksand', 'PingFang TC', -apple-system, sans-serif;
       margin: 0;
       padding: 0;
       transition: background-color 0.3s ease, color 0.3s ease;
+      -webkit-font-smoothing: antialiased; 
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility; 
+      letter-spacing: 0.015em; 
     }
 
-    /* --- COMPONENTS --- */
+    p { line-height: 1.6; }
+    h1, h2, h3, h4, h5, h6 { letter-spacing: -0.015em; line-height: 1.25; }
+
+    /* --- COMPONENTS & DEPTH --- */
     .dashboard-card {
       background-color: var(--card-bg);
       border: 1px solid var(--border-color);
       border-radius: 12px;
       padding: 20px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.03);
-      transition: background-color 0.3s ease, border-color 0.3s ease;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+      transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
     }
     .dashboard-card:hover {
-      box-shadow: 0 8px 15px rgba(0,0,0,0.08);
+      box-shadow: 0 10px 20px -2px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
       border-color: var(--brand-main);
     }
 
@@ -80,7 +92,7 @@
       color: var(--text-main);
       border-radius: 6px;
       padding: 8px 12px;
-      font-size: 14px;
+      font-size: 14.5px;
       width: 100%;
       outline: none;
       transition: all 0.3s ease;
@@ -91,205 +103,101 @@
       box-shadow: 0 0 0 2px rgba(0,0,0, 0.1); 
     }
 
-    .chart-wrapper {
-      position: relative;
-      height: 300px;
-      width: 100%;
-      background: transparent; 
-    }
-    
-    .gantt-wrapper {
-      position: relative;
-      height: 400px;
-      width: 100%;
-      background: transparent;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+    .chart-wrapper { position: relative; height: 300px; width: 100%; background: transparent; }
+    .gantt-wrapper { position: relative; width: 100%; background: transparent; display: flex; align-items: center; justify-content: center; }
 
     .icon-btn {
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      color: var(--text-sub);
-      border: 1px solid var(--border-color);
-      transition: all 0.2s;
-      position: relative; 
+      width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--text-sub); border: 1px solid var(--border-color); transition: all 0.2s; position: relative; 
     }
-    .icon-btn:hover, .icon-btn.active {
-      background-color: var(--brand-main);
-      color: #FFFFFF;
-      border-color: var(--brand-main);
-    }
-
+    .icon-btn:hover, .icon-btn.active { background-color: var(--brand-main); color: #FFFFFF; border-color: var(--brand-main); }
     .icon-btn:hover::after {
-      content: attr(title); 
-      position: absolute;
-      top: 100%; 
-      left: 50%;
-      transform: translateX(-50%);
-      margin-top: 8px;
-      background-color: #333333;
-      color: #FFFFFF;
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-size: 10px;
-      white-space: nowrap;
-      z-index: 100;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-      pointer-events: none;
-      opacity: 0;
-      animation: fadeIn 0.2s forwards;
+      content: attr(title); position: absolute; top: 100%; left: 50%; transform: translateX(-50%); margin-top: 8px;
+      background-color: #333333; color: #FFFFFF; padding: 4px 8px; border-radius: 4px; font-size: 11px; white-space: nowrap;
+      z-index: 100; box-shadow: 0 2px 5px rgba(0,0,0,0.2); pointer-events: none; opacity: 0; animation: fadeIn 0.2s forwards;
     }
     .icon-btn:hover::before {
-      content: '';
-      position: absolute;
-      top: 100%;
-      left: 50%;
-      transform: translateX(-50%);
-      margin-top: 3px;
-      border-width: 5px;
-      border-style: solid;
-      border-color: transparent transparent #333333 transparent;
-      z-index: 100;
-      opacity: 0;
-      animation: fadeIn 0.2s forwards;
+      content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); margin-top: 3px;
+      border-width: 5px; border-style: solid; border-color: transparent transparent #333333 transparent; z-index: 100; opacity: 0; animation: fadeIn 0.2s forwards;
     }
 
-    @keyframes fadeIn {
-      to { opacity: 1; }
-    }
+    @keyframes fadeIn { to { opacity: 1; } }
 
     .lang-switch {
-      cursor: pointer;
-      font-weight: 700;
-      font-size: 12px;
-      padding: 4px 8px;
-      border-radius: 6px;
-      color: var(--text-sub);
-      border: 1px solid var(--border-color);
-      background: var(--card-bg);
-      transition: all 0.2s;
+      cursor: pointer; font-weight: 700; font-size: 13px; padding: 4px 8px; border-radius: 6px;
+      color: var(--text-sub); border: 1px solid var(--border-color); background: var(--card-bg); transition: all 0.2s;
     }
-    .lang-switch:hover {
-      border-color: var(--brand-main);
-      color: var(--brand-main);
-    }
+    .lang-switch:hover { border-color: var(--brand-main); color: var(--brand-main); }
 
-    /* Table */
     .data-table th {
-      background-color: rgba(0,0,0,0.05);
-      color: var(--brand-main);
-      font-weight: 700;
-      text-transform: uppercase;
-      font-size: 11px;
-      padding: 10px;
-      border-bottom: 2px solid var(--border-color);
-      white-space: nowrap;
+      background-color: rgba(0,0,0,0.05); color: var(--brand-text); font-weight: 700; text-transform: uppercase; font-size: 13px; 
+      padding: 12px 10px; border-bottom: 2px solid var(--border-color); white-space: nowrap; letter-spacing: 0.03em;
     }
-    .data-table td {
-      border-bottom: 1px solid var(--border-color);
-      padding: 10px;
-      font-size: 12px;
-      color: var(--text-main);
-      vertical-align: top;
-    }
-    .data-table tr:hover {
-      background-color: rgba(128,128,128,0.05);
-    }
+    .data-table td { border-bottom: 1px solid var(--border-color); padding: 12px 10px; font-size: 14.5px; color: var(--text-main); vertical-align: top; line-height: 1.5; }
+    .data-table tr:hover { background-color: rgba(128,128,128,0.05); }
     
-    .hl-list {
-      margin: 0;
-      padding-left: 1.2em;
-      list-style-type: disc;
-    }
-    .hl-list li {
-      margin-bottom: 4px;
-    }
+    .hl-list { margin: 0; padding-left: 1.2em; list-style-type: disc; }
+    .hl-list li { margin-bottom: 6px; line-height: 1.5; }
 
-    /* Modal */
-    .modal-overlay {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5); z-index: 50;
-      display: none; align-items: center; justify-content: center;
-    }
-    .modal-box {
-      background: var(--card-bg); padding: 24px; border-radius: 12px;
-      max-width: 400px; width: 90%; box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-      border: 1px solid var(--border-color);
-    }
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999; display: none; align-items: center; justify-content: center; }
+    .modal-box { background: var(--card-bg); padding: 24px; border-radius: 12px; max-width: 400px; width: 90%; box-shadow: 0 10px 25px rgba(0,0,0,0.2); border: 1px solid var(--border-color); }
     .modal-box-lg { max-width: 650px; }
 
-    /* Gantt Empty State */
-    .gantt-empty {
-      text-align: center;
-      color: var(--text-sub);
-      padding: 20px;
-      border: 2px dashed var(--border-color);
-      border-radius: 8px;
-      background-color: rgba(0,0,0,0.02);
-      width: 80%;
-    }
+    .gantt-empty { text-align: center; color: var(--text-sub); padding: 20px; border: 2px dashed var(--border-color); border-radius: 8px; background-color: rgba(0,0,0,0.02); width: 80%; }
 
-    /* Custom Scrollbar */
     .custom-scrollbar::-webkit-scrollbar { width: 6px; }
     .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
     .custom-scrollbar::-webkit-scrollbar-thumb { background-color: var(--border-color); border-radius: 3px; }
     .custom-scrollbar::-webkit-scrollbar-thumb:hover { background-color: var(--brand-sub); }
     
-    /* Color Input Styling */
     .color-input-group { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; }
     .color-input-group .input-labels { flex: 1; display: flex; flex-direction: column; justify-content: center; }
-    .color-input-group label { font-size: 13px; font-weight: 700; color: var(--text-main); }
-    .color-input-group p { font-size: 11px; color: var(--text-sub); margin: 2px 0 0 0; line-height: 1.3; opacity: 0.85; }
+    .color-input-group label { font-size: 13.5px; font-weight: 700; color: var(--text-main); }
+    .color-input-group p { font-size: 11.5px; color: var(--text-sub); margin: 2px 0 0 0; line-height: 1.3; opacity: 0.85; }
     .color-preview { width: 32px; height: 32px; border: 1px solid var(--border-color); border-radius: 6px; cursor: pointer; padding: 0; background: none; flex-shrink: 0; }
-    .color-hex { width: 85px; font-family: monospace; font-size: 12px; font-weight: bold; flex-shrink: 0; text-align: center; }
+    .color-hex { width: 85px; font-family: monospace; font-size: 13px; font-weight: bold; flex-shrink: 0; text-align: center; }
 
-    /* --- CSS CLASSES FOR HOVER EFFECTS --- */
-    .wiz-task-card {
-        background-color: var(--bg-color);
-        border: 1px solid var(--border-color);
-        border-left: 4px solid var(--brand-main);
-        transition: all 0.3s ease;
+    .btn-tooltip { position: relative; }
+    .btn-tooltip:hover::after {
+        content: attr(data-tooltip); position: absolute; top: calc(100% + 8px); left: 50%; transform: translateX(-50%);
+        background-color: rgba(15, 23, 42, 0.95); color: #FFFFFF; padding: 8px 12px; border-radius: 6px; font-size: 13px; 
+        white-space: normal; width: max-content; max-width: 220px; z-index: 9999; box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        pointer-events: none; opacity: 0; animation: fadeIn 0.2s forwards; text-align: center; line-height: 1.4;
     }
-    .wiz-task-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 15px rgba(128, 54, 201, 0.25);
-        border-color: var(--text-blue) !important;
+    .btn-tooltip:hover::before {
+        content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border-width: 5px; border-style: solid;
+        border-color: transparent transparent rgba(15, 23, 42, 0.95) transparent; z-index: 9999; pointer-events: none; opacity: 0; animation: fadeIn 0.2s forwards;
     }
+
+    .wiz-task-card { background-color: var(--bg-color); border: 1px solid var(--border-color); border-left: 4px solid var(--brand-main); transition: all 0.3s ease; }
+    .wiz-task-card:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(128, 54, 201, 0.25); border-color: var(--text-blue) !important; }
     .wiz-task-card:hover .task-title { color: var(--text-blue) !important; }
     .wiz-task-card .task-icon { color: transparent; transition: color 0.3s ease; }
     .wiz-task-card:hover .task-icon { color: var(--brand-accent) !important; }
     .wiz-task-card:hover .task-dur-badge { background-color: var(--text-blue) !important; }
     
-    .wiz-list-item {
-        border-left: 2px solid transparent;
-        transition: all 0.3s ease;
-    }
-    .wiz-list-item:hover {
-        background-color: #FFFFFF;
-        box-shadow: 0 2px 8px rgba(128, 54, 201, 0.15);
-        border-left-color: var(--text-blue) !important;
-    }
+    .wiz-list-item { border-left: 2px solid transparent; transition: all 0.3s ease; }
+    .wiz-list-item:hover { background-color: #FFFFFF; box-shadow: 0 2px 8px rgba(128, 54, 201, 0.15); border-left-color: var(--text-blue) !important; }
     .wiz-list-item:hover .task-title { color: var(--text-blue) !important; }
     .wiz-list-item .task-icon { color: transparent; transition: color 0.3s ease; }
     .wiz-list-item:hover .task-icon { color: var(--brand-accent) !important; }
     
-    .glow-card-hover {
-        transition: all 0.3s ease;
-    }
-    .glow-card-hover:hover {
-        box-shadow: 0 0 15px rgba(128, 54, 201, 0.35);
-        border-color: var(--text-blue) !important;
-    }
+    .glow-card-hover { transition: all 0.3s ease; }
+    .glow-card-hover:hover { box-shadow: 0 0 15px rgba(128, 54, 201, 0.35); border-color: var(--text-blue) !important; }
   </style>
 </head>
 <body>
+
+  <!-- Dialog Modal to replace browser alerts -->
+  <div id="dialogModal" class="modal-overlay">
+    <div class="modal-box">
+      <h3 id="dialogTitle" class="text-lg font-bold mb-2" style="color: var(--brand-negative);">Notice</h3>
+      <p id="dialogMsg" class="text-sm mb-4" style="color: var(--text-main);"></p>
+      <div class="flex justify-end">
+        <button onclick="closeModal('dialogModal')" class="px-4 py-2 rounded text-xs font-bold text-white transition-opacity hover:opacity-90" style="background-color: var(--brand-main);">OK</button>
+      </div>
+    </div>
+  </div>
 
   <!-- Modal: Google Drive Link -->
   <div id="driveModal" class="modal-overlay">
@@ -385,75 +293,70 @@
     </div>
   </div>
 
-  <!-- Top Navigation -->
-  <nav class="max-w-[1600px] mx-auto px-6 py-5 flex flex-col md:flex-row justify-between items-center gap-4">
-    
-    <!-- Left: Brand + Controls -->
-    <div class="flex flex-col sm:flex-row items-center gap-6">
-      <div class="flex items-center gap-4">
-        <div class="w-12 h-12 rounded-lg flex items-center justify-center text-white shadow-md" style="background-color: var(--brand-main);">
-          <i class="fa-solid fa-chart-pie text-xl"></i>
-        </div>
-        <div>
-          <h1 id="lblTitle" class="text-2xl font-bold" style="color: var(--text-main);">Project Dashboard V8.48</h1>
-          <p id="lblSubtitle" class="text-xs" style="color: var(--text-sub);">Annual Assessment System</p>
-        </div>
+  <nav class="max-w-[1600px] mx-auto px-6 py-6 flex flex-col xl:flex-row justify-between items-center gap-6">
+    <div class="flex flex-row items-center gap-6 w-full xl:w-auto">
+      <div class="w-36 h-36 flex items-center justify-center overflow-hidden flex-shrink-0 transition-transform duration-300 hover:scale-105">
+        <img src="https://upload.cc/i1/2026/06/17/FAfopV.png" alt="Logo" class="w-full h-full object-contain" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22%231495CC%22><path d=%22M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z%22/></svg>'">
       </div>
-
-      <!-- Controls Group -->
-      <div class="flex gap-2">
-        <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg border" style="background-color: var(--card-bg); border-color: var(--border-color);">
-          <button class="icon-btn" onclick="applyTheme('light')" title="Light (Cloud Dancer)"><i class="fa-solid fa-sun"></i></button>
-          <button class="icon-btn active" onclick="applyTheme('slightGray')" title="Slight Gray"><i class="fa-solid fa-cloud"></i></button>
-          <button class="icon-btn" onclick="applyTheme('dark')" title="Nature Green (New)"><i class="fa-solid fa-leaf"></i></button>
-          <button class="icon-btn" onclick="applyTheme('extraDark')" title="Extra Dark (Night)"><i class="fa-solid fa-moon"></i></button>
-          <button class="icon-btn" onclick="applyTheme('creative')" title="Vibrant Artist (Updated)"><i class="fa-solid fa-palette"></i></button>
-          <div class="w-px h-4 bg-gray-300 mx-1"></div>
-          <button class="icon-btn" onclick="openCustomColorModal()" title="Custom Theme Settings"><i class="fa-solid fa-sliders"></i></button>
-        </div>
-
-        <button id="btnLang" class="lang-switch" onclick="toggleLang()">
-          <i class="fa-solid fa-globe mr-1"></i> EN / 繁中
-        </button>
+      <div>
+        <h1 id="lblTitle" class="text-3xl font-bold tracking-tight text-slate-900 transition-colors" style="color: var(--text-main); font-family: 'Microsoft JhengHei UI', sans-serif;">Project Dashboard V8.58</h1>
+        <p id="lblSubtitle" class="text-sm font-semibold tracking-wide mt-1.5" style="color: var(--text-sub);">Annual Assessment System</p>
       </div>
     </div>
 
-    <!-- Right: Data Sources & Year Switcher -->
-    <div class="px-4 py-2 rounded-lg border shadow-sm flex items-center gap-4" style="background-color: var(--card-bg); border-color: var(--border-color);">
-      <!-- YEAR SWITCHER -->
+    <div class="px-4 py-3 rounded-lg border shadow-sm flex flex-wrap items-center gap-4 w-full xl:w-auto justify-start sm:justify-end" style="background-color: var(--card-bg); border-color: var(--border-color);">
       <div id="yearSwitcher" class="hidden items-center gap-2">
-         <span class="text-xs font-bold" style="color:var(--text-sub)">Period:</span>
+         <span class="text-xs font-semibold" style="color:var(--text-sub)">Period:</span>
          <div class="flex rounded-md border" style="border-color:var(--border-color);">
-             <button id="btnYear2025" onclick="switchYear('2025')" class="px-3 py-1 text-xs font-bold rounded-l hover:bg-gray-100 transition-colors" style="color:var(--text-main);">2025</button>
-             <button id="btnYear2026" onclick="switchYear('2026')" class="px-3 py-1 text-xs font-bold rounded-r hover:bg-gray-100 transition-colors" style="color:var(--text-main);">2026</button>
+             <button id="btnYear2025" onclick="switchYear('2025')" class="px-3 py-1.5 text-xs font-semibold rounded-l hover:bg-gray-100 transition-colors" style="color:var(--text-main);">2025</button>
+             <button id="btnYear2026" onclick="switchYear('2026')" class="px-3 py-1.5 text-xs font-semibold rounded-r hover:bg-gray-100 transition-colors" style="color:var(--text-main);">2026</button>
          </div>
-         <div class="h-6 w-px bg-gray-300 mx-2"></div>
       </div>
+
+      <div id="headerControlsDivider" class="h-6 w-px bg-gray-300 mx-1 hidden sm:hidden"></div>
+
+      <div class="flex flex-wrap items-center gap-2">
+        <div class="flex items-center gap-1.5 px-2 py-1.5 rounded-lg border" style="background-color: var(--bg-color); border-color: var(--border-color);">
+          <button class="icon-btn w-7 h-7" onclick="applyTheme('light')" title="Light (Cloud Dancer)"><i class="fa-solid fa-sun text-xs"></i></button>
+          <button class="icon-btn w-7 h-7 active" onclick="applyTheme('slightGray')" title="Slight Gray"><i class="fa-solid fa-cloud text-xs"></i></button>
+          <button class="icon-btn w-7 h-7" onclick="applyTheme('dark')" title="Nature Green (New)"><i class="fa-solid fa-leaf text-xs"></i></button>
+          <button class="icon-btn w-7 h-7" onclick="applyTheme('extraDark')" title="Extra Dark (Night)"><i class="fa-solid fa-moon text-xs"></i></button>
+          <button class="icon-btn w-7 h-7" onclick="applyTheme('creative')" title="Vibrant Artist (Updated)"><i class="fa-solid fa-palette text-xs"></i></button>
+          <div class="w-px h-4 bg-gray-300 mx-1"></div>
+          <button class="icon-btn w-7 h-7" onclick="openCustomColorModal()" title="Custom Theme Settings"><i class="fa-solid fa-sliders text-xs"></i></button>
+        </div>
+
+        <button id="btnLang" class="lang-switch text-xs py-1.5 px-3 h-9 flex items-center justify-center font-semibold" onclick="toggleLang()">
+          <i class="fa-solid fa-globe mr-1"></i> EN / 繁中
+        </button>
+      </div>
+
+      <div class="h-6 w-px bg-gray-300 mx-1 hidden sm:block"></div>
 
       <div class="flex items-center gap-2">
         <span class="w-2 h-2 rounded-full animate-pulse" style="background-color: var(--brand-sub);"></span>
-        <span id="lblDataSource" class="text-xs font-bold uppercase" style="color: var(--brand-main);">Data Source</span>
+        <span id="lblDataSource" class="text-xs font-semibold uppercase" style="color: var(--brand-text);">Data Source</span>
       </div>
+      
       <div class="h-6 w-px" style="background-color: var(--border-color);"></div>
       
       <label class="cursor-pointer flex items-center gap-2 hover:opacity-80 px-2 py-1.5 rounded transition" title="Upload Local File">
-        <i class="fa-solid fa-file-upload" style="color: var(--brand-main);"></i>
-        <span class="text-xs font-bold" style="color: var(--text-main);">Local</span>
+        <i class="fa-solid fa-file-upload" style="color: var(--brand-text);"></i>
+        <span class="text-xs font-semibold" style="color: var(--text-main);">Local</span>
         <input type="file" id="fileInput" accept=".xlsx,.xls,.csv,.pdf" class="hidden" />
       </label>
 
       <div class="h-4 w-px" style="background-color: var(--border-color);"></div>
 
       <button onclick="openModal('driveModal')" class="cursor-pointer flex items-center gap-2 hover:opacity-80 px-2 py-1.5 rounded transition" title="Link Google Sheet">
-        <i class="fa-brands fa-google-drive" style="color: var(--brand-main);"></i>
-        <span class="text-xs font-bold" style="color: var(--text-main);">Drive</span>
+        <i class="fa-brands fa-google-drive" style="color: var(--brand-text);"></i>
+        <span class="text-xs font-semibold" style="color: var(--text-main);">Drive</span>
       </button>
 
       <span id="fileStatus" class="text-xs font-mono ml-2" style="color: var(--text-sub);">No file</span>
     </div>
   </nav>
 
-  <!-- Main Content -->
   <main class="max-w-[1600px] mx-auto px-6 pb-12 space-y-6">
 
     <!-- GANTT CHART -->
@@ -464,26 +367,29 @@
                 <h3 id="lblGantt" class="text-base font-bold" style="color: var(--text-main);">Project Schedule (Gantt)</h3>
                 <p id="lblGanttSub" class="text-xs" style="color: var(--text-sub);">Timeline with Independent Filters</p>
             </div>
-            <div class="flex items-center gap-2">
-                <!-- EXPORT BUTTON -->
-                <button onclick="exportWizSummary()" class="text-xs hover:opacity-70 flex items-center gap-1 font-bold px-2 py-1 rounded border border-transparent hover:border-gray-300 transition-all" style="color:var(--text-sub);" title="Export Summary Report">
+            <div class="flex flex-wrap items-center gap-2">
+                <button onclick="exportWizHTML()" class="text-xs hover:opacity-70 flex items-center gap-1 font-semibold px-2 py-1 rounded border border-transparent hover:border-gray-300 transition-all" style="color:var(--brand-text);" title="Export HTML Report">
+                    <i class="fa-solid fa-file-code"></i> <span id="lblBtnExportHtml">HTML Report</span>
+                </button>
+                <div class="h-4 w-px bg-gray-300 mx-1"></div>
+                <button onclick="exportWizSummary()" class="text-xs hover:opacity-70 flex items-center gap-1 font-semibold px-2 py-1 rounded border border-transparent hover:border-gray-300 transition-all" style="color:var(--text-sub);" title="Export Summary Report">
                     <i class="fa-solid fa-file-export"></i> Export (CSV)
                 </button>
                 <div class="h-4 w-px bg-gray-300 mx-1"></div>
-                <button id="btnWiz" onclick="generateWizSummary(true)" class="px-3 py-1 text-xs font-bold rounded text-white flex items-center gap-2 hover:opacity-90 shadow-sm transition-all" style="background-color: var(--brand-accent);">
+                <button id="btnWiz" onclick="generateWizSummary(true)" class="px-3 py-1 text-xs font-semibold rounded text-white flex items-center gap-2 hover:opacity-90 shadow-sm transition-all" style="background-color: var(--brand-accent); color: #1A1A1A;">
                     <i class="fa-solid fa-wand-magic-sparkles"></i> <span id="lblWizBtn">Wiz</span>
                 </button>
-                <span class="px-2 py-1 text-[10px] font-bold rounded text-white" style="background-color: var(--brand-main);">INDEPENDENT</span>
+                <span class="px-2 py-1 text-[10px] font-semibold rounded text-white" style="background-color: var(--brand-main);">INDEPENDENT</span>
             </div>
         </div>
 
         <div class="grid grid-cols-2 md:grid-cols-6 gap-2 mt-4 bg-opacity-10 p-3 rounded-lg" style="background-color: var(--bg-color);">
-             <div><label class="block text-[10px] font-bold uppercase mb-1" style="color: var(--brand-main);">Owner</label><select id="gOwner" class="std-input text-xs"></select></div>
-             <div><label class="block text-[10px] font-bold uppercase mb-1" style="color: var(--brand-main);">Status</label><select id="gStatus" class="std-input text-xs"></select></div>
-             <div><label class="block text-[10px] font-bold uppercase mb-1" style="color: var(--brand-main);">Category</label><select id="gCategory" class="std-input text-xs"></select></div>
-             <div><label class="block text-[10px] font-bold uppercase mb-1" style="color: var(--brand-main);">Cluster</label><select id="gCluster" class="std-input text-xs"></select></div>
+             <div><label class="block text-[10px] font-semibold uppercase mb-1" style="color: var(--brand-text);">Owner</label><select id="gOwner" class="std-input text-xs"></select></div>
+             <div><label class="block text-[10px] font-semibold uppercase mb-1" style="color: var(--brand-text);">Status</label><select id="gStatus" class="std-input text-xs"></select></div>
+             <div><label class="block text-[10px] font-semibold uppercase mb-1" style="color: var(--brand-text);">Category</label><select id="gCategory" class="std-input text-xs"></select></div>
+             <div><label class="block text-[10px] font-semibold uppercase mb-1" style="color: var(--brand-text);">Cluster</label><select id="gCluster" class="std-input text-xs"></select></div>
              <div class="md:col-span-2">
-                 <label class="block text-[10px] font-bold uppercase mb-1" style="color: var(--brand-main);">Period</label>
+                 <label class="block text-[10px] font-semibold uppercase mb-1" style="color: var(--brand-text);">Period</label>
                  <div class="flex items-center gap-1">
                     <select id="gStartMonth" class="std-input text-xs"></select>
                     <span style="color: var(--text-sub);">-</span>
@@ -493,12 +399,14 @@
         </div>
       </div>
 
-      <div class="gantt-wrapper" id="ganttContainer">
-        <div id="ganttEmpty" class="gantt-empty">
-          <i class="fa-solid fa-filter mb-2 text-2xl"></i><br>
-          Select filters above to generate the schedule.
+      <div class="overflow-y-auto custom-scrollbar w-full" style="max-height: 600px;">
+        <div class="gantt-wrapper" id="ganttContainer" style="min-height: 400px; width: 100%;">
+          <div id="ganttEmpty" class="gantt-empty">
+            <i class="fa-solid fa-filter mb-2 text-2xl"></i><br>
+            Select filters above to generate the schedule.
+          </div>
+          <canvas id="cGantt" style="display: none;"></canvas>
         </div>
-        <canvas id="cGantt" style="display: none;"></canvas>
       </div>
     </div>
 
@@ -507,7 +415,7 @@
         <div class="flex justify-between items-start mb-4">
             <div class="flex items-center gap-3">
                 <div class="w-8 h-8 rounded-full flex items-center justify-center text-white shadow-sm" style="background-color: var(--brand-accent);">
-                    <i class="fa-solid fa-robot"></i>
+                    <i class="fa-solid fa-robot" style="color: #1A1A1A;"></i>
                 </div>
                 <div>
                     <h3 id="lblWizTitle" class="text-base font-bold" style="color: var(--text-main);">Wiz Summary</h3>
@@ -526,15 +434,15 @@
     <!-- Global Filters -->
     <div class="dashboard-card">
       <div class="flex justify-between mb-2">
-        <span class="text-xs font-bold uppercase" style="color: var(--text-sub)">Global Filters (KPIs & Charts)</span>
+        <span class="text-xs font-semibold uppercase" style="color: var(--text-sub)">Global Filters (KPIs & Charts)</span>
       </div>
       <div class="grid grid-cols-2 md:grid-cols-6 gap-4">
-        <div class="md:col-span-1"><label id="lblOwner" class="block text-[10px] font-bold uppercase mb-1" style="color: var(--brand-main);">Owner</label><select id="fOwner" class="std-input"></select></div>
-        <div class="md:col-span-1"><label id="lblStatus" class="block text-[10px] font-bold uppercase mb-1" style="color: var(--brand-main);">Status</label><select id="fStatus" class="std-input"></select></div>
-        <div class="md:col-span-1"><label id="lblCategory" class="block text-[10px] font-bold uppercase mb-1" style="color: var(--brand-main);">Category</label><select id="fCategory" class="std-input"></select></div>
-        <div class="md:col-span-1"><label id="lblCluster" class="block text-[10px] font-bold uppercase mb-1" style="color: var(--brand-main);">Cluster</label><select id="fCluster" class="std-input"></select></div>
+        <div class="md:col-span-1"><label id="lblOwner" class="block text-[10px] font-semibold uppercase mb-1" style="color: var(--brand-text);">Owner</label><select id="fOwner" class="std-input"></select></div>
+        <div class="md:col-span-1"><label id="lblStatus" class="block text-[10px] font-semibold uppercase mb-1" style="color: var(--brand-text);">Status</label><select id="fStatus" class="std-input"></select></div>
+        <div class="md:col-span-1"><label id="lblCategory" class="block text-[10px] font-semibold uppercase mb-1" style="color: var(--brand-text);">Category</label><select id="fCategory" class="std-input"></select></div>
+        <div class="md:col-span-1"><label id="lblCluster" class="block text-[10px] font-semibold uppercase mb-1" style="color: var(--brand-text);">Cluster</label><select id="fCluster" class="std-input"></select></div>
         <div class="md:col-span-2">
-          <label id="lblMonth" class="block text-[10px] font-bold uppercase mb-1" style="color: var(--brand-main);">Period (Month)</label>
+          <label id="lblMonth" class="block text-[10px] font-semibold uppercase mb-1" style="color: var(--brand-text);">Period (Month)</label>
           <div class="flex items-center gap-2">
             <select id="fStartMonth" class="std-input"></select>
             <span style="color: var(--text-sub); font-size: 12px;">to</span>
@@ -547,21 +455,21 @@
     <!-- KPIs -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       <div class="dashboard-card kpi-main relative overflow-hidden">
-        <h3 id="lblTotalItems" class="text-xs font-bold uppercase" style="color: var(--text-sub);">Total Items</h3>
-        <p id="kTotal" class="text-5xl font-bold mt-2 tracking-tight" style="color: var(--brand-main);">0</p>
+        <h3 id="lblTotalItems" class="text-xs font-semibold uppercase" style="color: var(--text-sub);">Total Items</h3>
+        <p id="kTotal" class="text-5xl font-bold mt-2 tracking-tight" style="color: var(--brand-text);">0</p>
         <p id="lblTotalDesc" class="text-xs mt-2" style="color: var(--text-sub);">All Projects Loaded</p>
         <i class="fa-solid fa-layer-group absolute right-4 top-6 text-8xl opacity-10 pointer-events-none" style="color: var(--brand-main);"></i>
       </div>
 
       <div class="dashboard-card kpi-sub relative overflow-hidden">
-        <h3 id="lblCompleted" class="text-xs font-bold uppercase" style="color: var(--text-sub);">Completed</h3>
+        <h3 id="lblCompleted" class="text-xs font-semibold uppercase" style="color: var(--text-sub);">Completed</h3>
         <p id="kClosed" class="text-5xl font-bold mt-2 tracking-tight" style="color: var(--brand-sub);">0</p>
         <p id="lblCompletedDesc" class="text-xs mt-2" style="color: var(--text-sub);">Status: "Closed"</p>
         <i class="fa-solid fa-check-circle absolute right-4 top-6 text-8xl opacity-10 pointer-events-none" style="color: var(--brand-sub);"></i>
       </div>
 
       <div class="dashboard-card kpi-positive relative overflow-hidden">
-        <h3 id="lblOnTimeRate" class="text-xs font-bold uppercase" style="color: var(--text-sub);">On-Time Rate</h3>
+        <h3 id="lblOnTimeRate" class="text-xs font-semibold uppercase" style="color: var(--text-sub);">On-Time Rate</h3>
         <p id="kOnTime" class="text-5xl font-bold mt-2 tracking-tight" style="color: var(--brand-positive);">0%</p>
         <p id="lblOnTimeDesc" class="text-xs mt-2" style="color: var(--text-sub);">Due Date == Revision_1</p>
         <i class="fa-solid fa-stopwatch absolute right-4 top-6 text-8xl opacity-10 pointer-events-none" style="color: var(--brand-positive);"></i>
@@ -570,31 +478,44 @@
 
     <!-- Charts Section 1 -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-      <div class="lg:col-span-4 dashboard-card flex flex-col">
-        <div class="flex justify-between items-start mb-4">
-          <div>
-            <h3 id="lblStatusDist" class="text-base font-bold" style="color: var(--text-main);">Status Distribution</h3>
-            <p id="lblStatusSub" class="text-xs" style="color: var(--text-sub);">Overview by status</p>
-          </div>
-        </div>
-        <div class="chart-wrapper">
-          <canvas id="cStatus"></canvas>
-        </div>
-      </div>
-
       <div class="lg:col-span-8 dashboard-card flex flex-col">
         <div class="flex justify-between items-start mb-4">
           <div>
             <h3 id="lblCatAnalysis" class="text-base font-bold" style="color: var(--text-main);">Category Analysis</h3>
             <p id="lblCatSub" class="text-xs" style="color: var(--text-sub);">Breakdown by category/cluster</p>
           </div>
-          <div class="p-1 rounded-md flex gap-1 border" style="background-color: var(--bg-color); border-color: var(--border-color);">
-            <button id="btnCat" class="px-3 py-1 text-xs font-bold rounded text-white" style="background-color: var(--brand-main);">Category</button>
-            <button id="btnClust" class="px-3 py-1 text-xs font-bold rounded hover:bg-white" style="color: var(--text-sub);">Cluster</button>
+          <div class="flex flex-col sm:flex-row gap-2">
+            <div class="p-1 rounded-md flex gap-1 border" style="background-color: var(--bg-color); border-color: var(--border-color);">
+              <button id="btnCatCount" class="btn-tooltip px-3 py-1 text-xs font-semibold rounded text-white transition-colors" style="background-color: var(--brand-main);" onclick="setCatMetric('count')">Count</button>
+              <button id="btnCatMH" class="btn-tooltip px-3 py-1 text-xs font-semibold rounded hover:bg-white transition-colors" style="color: var(--text-sub);" onclick="setCatMetric('mh')">Hours</button>
+            </div>
+            <div class="p-1 rounded-md flex gap-1 border" style="background-color: var(--bg-color); border-color: var(--border-color);">
+              <button id="btnCat" class="btn-tooltip px-3 py-1 text-xs font-semibold rounded text-white transition-colors" style="background-color: var(--brand-main);">Category</button>
+              <button id="btnClust" class="btn-tooltip px-3 py-1 text-xs font-semibold rounded hover:bg-white transition-colors" style="color: var(--text-sub);">Cluster</button>
+            </div>
           </div>
         </div>
         <div class="chart-wrapper">
           <canvas id="cCat"></canvas>
+        </div>
+      </div>
+
+      <div class="lg:col-span-4 dashboard-card flex flex-col">
+        <div class="flex justify-between items-start mb-4">
+          <div>
+            <h3 id="lblStatusDist" class="text-base font-bold" style="color: var(--text-main);">Status Distribution</h3>
+            <p id="lblStatusSub" class="text-xs" style="color: var(--text-sub);">Overview by status</p>
+          </div>
+          <div id="selStatusDistViewWrapper" class="btn-tooltip p-1 rounded-md flex gap-1 border" style="background-color: var(--bg-color); border-color: var(--border-color);">
+            <select id="selStatusDistView" onchange="setStatusDistView(this.value)" class="px-2 py-1 text-[10px] font-semibold rounded outline-none cursor-pointer bg-transparent transition-all" style="color:var(--brand-text);">
+                <option value="status" id="optStat1">Status</option>
+                <option value="category" id="optStat2">Category</option>
+                <option value="cluster" id="optStat3">Cluster</option>
+            </select>
+          </div>
+        </div>
+        <div class="chart-wrapper">
+          <canvas id="cStatus"></canvas>
         </div>
       </div>
     </div>
@@ -607,27 +528,35 @@
             <p id="lblOwnerSub" class="text-xs" style="color: var(--text-sub);">Project volume by owner</p>
         </div>
         <div class="flex p-1 rounded-md border" style="background-color: var(--bg-color); border-color: var(--border-color);">
-            <button id="btnOwnerCount" class="px-3 py-1 text-xs font-bold rounded text-white" style="background-color: var(--brand-main);" onclick="setOwnerMetric('count')">Count</button>
-            <button id="btnOwnerDur" class="px-3 py-1 text-xs font-bold rounded hover:bg-white" style="color: var(--text-sub);" onclick="setOwnerMetric('duration')">Duration</button>
+            <button id="btnOwnerCount" class="btn-tooltip px-3 py-1 text-xs font-semibold rounded text-white" style="background-color: var(--brand-main);" onclick="setOwnerMetric('count')">Count</button>
+            <button id="btnOwnerDur" class="btn-tooltip px-3 py-1 text-xs font-semibold rounded hover:bg-white" style="color: var(--text-sub);" onclick="setOwnerMetric('mh')">MH</button>
         </div>
       </div>
-      <div class="chart-wrapper" style="height: 350px;">
-        <canvas id="cOwner"></canvas>
+      
+      <div class="overflow-y-auto custom-scrollbar w-full" style="max-height: 500px;">
+        <div class="chart-wrapper" id="ownerContainer" style="height: 350px; min-height: 350px; width: 100%;">
+          <canvas id="cOwner"></canvas>
+        </div>
       </div>
     </div>
 
     <!-- Evidence List -->
     <div class="dashboard-card flex flex-col gap-4">
       <div class="flex justify-between items-center">
-        <h3 id="lblEvidence" class="text-base font-bold" style="color: var(--text-main);">Evidence List</h3>
+        <!-- V8.51 Update: Collapsible header -->
+        <div class="flex items-center gap-2 cursor-pointer select-none group" onclick="toggleEvidenceList()" title="Toggle Evidence List">
+          <h3 id="lblEvidence" class="text-base font-bold group-hover:opacity-80 transition-opacity" style="color: var(--text-main);">Evidence List</h3>
+          <i id="evidenceChevron" class="fa-solid fa-chevron-right text-sm transition-transform duration-300" style="color: var(--text-sub);"></i>
+        </div>
         <div class="flex gap-2">
           <input id="search" placeholder="Search..." class="std-input w-48" />
-          <button id="btnExport" class="bg-white border px-4 py-2 rounded-lg text-xs font-bold hover:opacity-80" style="border-color: var(--border-color); color: var(--brand-main);">
+          <button id="btnExport" class="bg-white border px-4 py-2 rounded-lg text-xs font-semibold hover:opacity-80" style="border-color: var(--border-color); color: var(--brand-text);">
             Export CSV
           </button>
         </div>
       </div>
-      <div class="overflow-x-auto border rounded-lg max-h-[500px]" style="border-color: var(--border-color);">
+      <!-- V8.51 Update: Default hidden state -->
+      <div id="evidenceContent" class="hidden overflow-x-auto border rounded-lg max-h-[500px] transition-all" style="border-color: var(--border-color);">
         <table class="w-full text-left border-collapse data-table">
           <thead class="sticky top-0 z-10 shadow-sm" style="background-color: var(--card-bg);">
             <tr>
@@ -655,42 +584,42 @@
 
 <script>
 /**
- * DASHBOARD V8.48
- * - NEW FEATURE: View Toggle (Cluster vs Project) added directly to the Resource Allocation Chart header.
- * - UX OPTIMIZATION: In 'Cluster' mode, a concise legend is shown at the bottom. In 'Project' mode, the legend is auto-hidden to prevent UI bloat from too many individual tasks.
- * - SEAMLESS TRANSITION: Toggling chart views intercepts and re-renders the Chart.js instance instantly without page jumps or flashing opacity.
+ * DASHBOARD V8.58
+ * - V8.51: Implemented 112.5% legibility scaling, anti-aliasing typography settings, and datalabel filtering.
+ * - V8.58 Finalized: 4-Point Diagnostic Metrics (Context, Schedule, Quality, Highlight Risk).
+ * - Implemented advanced Regex parsing on project descriptions, progress, and deliverables to trigger Amber alerts.
+ * - Export HTML Report button cleanly integrated without `validProjects` reference errors.
+ * - Uses Custom Dialog Modals instead of native browser alerts for enhanced safety in environments preventing alerts.
  */
 
 const THEMES = {
   light: { 
     bg: '#F0EEE9', card: '#E7EAEE', textMain: '#2B2B6E', textSub: '#7D8090', border: '#AEB4C1', 
-    main: '#2B2B6E', sub: '#918A9E', positive: '#70ca16', negative: '#c0397b', accent: '#ded717', blue: '#8036c9'      
+    main: '#2B2B6E', textBrand: '#2B2B6E', sub: '#918A9E', positive: '#70ca16', negative: '#c0397b', accent: '#ded717', blue: '#8036c9'      
   },
   slightGray: { 
     bg: '#E0DED8', card: '#F5F4F2', textMain: '#1A1A1A', textSub: '#444444', border: '#B5B5B5', 
-    main: '#086768', sub: '#3D9BB3', positive: '#36A668', negative: '#D03939', accent: '#D9A940', blue: '#4F7BB5' 
+    main: '#1495CC', textBrand: '#0D76A1', sub: '#A9A30A', positive: '#41C37C', negative: '#C01B84', accent: '#E6AC5B', blue: '#4F7BB5' 
   },
   dark: { 
     bg: '#DEE6E1', card: '#FCFCFC', textMain: '#262216', textSub: '#668177', border: '#BFC6B2', 
-    main: '#45CDA2', sub: '#668177', positive: '#45CDA2', negative: '#FF5C5C', accent: '#FFC44D', blue: '#45CDA2' 
+    main: '#45CDA2', textBrand: '#1A8F70', sub: '#668177', positive: '#45CDA2', negative: '#FF5C5C', accent: '#FFC44D', blue: '#45CDA2' 
   },
   extraDark: {
     bg: '#050505', card: '#101010', textMain: '#FFFFFF', textSub: '#D0D0D0', border: '#555555',
-    main: '#37B3AA', sub: '#79D3C9', positive: '#4FDC8A', negative: '#FF7070', accent: '#FFD166', blue: '#37B3AA'
+    main: '#37B3AA', textBrand: '#37B3AA', sub: '#79D3C9', positive: '#4FDC8A', negative: '#FF7070', accent: '#FFD166', blue: '#37B3AA'
   },
   creative: {
     bg: '#FAFAFA', card: '#FFFFFF', textMain: '#333333', textSub: '#666666', border: '#E5E7EB',
-    main: '#8B5CF6', sub: '#EC4899', positive: '#10B981', negative: '#EF4444', accent: '#F59E0B', blue: '#6366F1'
+    main: '#8B5CF6', textBrand: '#7C3AED', sub: '#EC4899', positive: '#10B981', negative: '#EF4444', accent: '#F59E0B', blue: '#6366F1'
   }
 };
 
-const CUSTOM_CATEGORY_COLORS = {
-    // Users can define specific colors for specific Clusters here to maintain permanent mappings across sessions
-};
+const CUSTOM_CATEGORY_COLORS = {};
 
 const TEXT = {
   en: {
-    title: "Project Dashboard V8.48", subtitle: "Annual Assessment System",
+    title: "Project Dashboard V8.58", subtitle: "BSD Project Tracker",
     dataSource: "Data Source", import: "Load Excel / CSV",
     owner: "Owner", status: "Status", category: "Category", cluster: "Cluster", month: "Period (Month)",
     total: "Total Items", totalDesc: "All Projects Loaded",
@@ -703,10 +632,18 @@ const TEXT = {
     evidence: "Evidence List", feedback: "Feedback", save: "Save",
     thHighlights: "Highlights & Deliverables", thDesc: "Description", thProgress: "Progress",
     wizBtn: "Wiz", wizTitle: "Wiz Summary", wizSub: "Insights based on current Gantt view",
-    wizAvgLoad: "Average Daily Load", wizProjects: "Active Projects", wizOwners: "Owners Involved", wizDeliv: "Project & Key Deliverables",
+    wizAvgLoad: "MH Load / Workday", wizProjects: "Active Projects", wizOwners: "Owners Involved", wizDeliv: "Project & Key Deliverables",
     wizWorkload: "Resource Allocation (Daily MH/d)", wizMaxCap: "Max Capacity: 5.0 MH/d",
     wizViewProj: "By Project", wizViewCat: "Category-Cluster", wizViewWeekly: "Weekly Highlight",
-    lblViewCluster: "By Cluster", lblViewProject: "By Project", // New V8.48
+    wizViewMh: "Hours Review",
+    wizMhProjectTitle: "Workload Highlight Summary",
+    wizMhClusterTitle: "Summary by Category",
+    wizMhBriefTitle: "4-Point Diagnostic Metrics",
+    btnExportHtml: "HTML Report",
+    tipExportHtml: "Generate a standalone HTML page for this summary.",
+    lblViewCluster: "By Cluster", lblViewProject: "By Project", 
+    wizFilterProc: "Processing", wizFilterPend: "Pending", wizFilterClosed: "Closed", wizFilterAll: "All Status", wizChartEmptyStatus: "No tasks found for the selected status in this period.",
+    wizNoDeliv: "No specific deliverable. Please update manually...",
     wizAvgTooltipFormula: "💡 Formula: Total MH ÷ Active Days",
     wizAvgTooltipDesc: "Calculates the macro-level daily bandwidth required across the actual timespan of all 'Processing' projects.",
     wizAvgTooltipExTitle: "Example:",
@@ -716,7 +653,19 @@ const TEXT = {
     wizMaxCapTooltipTitle: "Why cap at 5.0 hours instead of 8.0?",
     wizMaxCapTooltipDesc1: "Planning and strategic work are not purely administrative. Colleagues are expected to consciously engage in preliminary planning, pilot deployments, and iterative trial-and-error before delivering final results. This requires dedicated buffer time.",
     wizMaxCapTooltipDesc2: "Furthermore, reserving time fragments encourages self-directed learning and the ideation of innovative proposals.",
-    
+    tooltipTopProj: "--- Top 5 Projects ---", tooltipMore: "more",
+    tipCount: "Counts the absolute number of distinct projects matching the criteria.",
+    tipMH: "Calculates Accumulated Working Hours: Sum of (Daily MH × Duration).",
+    tipCat: "Groups the project data by standard Category.",
+    tipClust: "Groups the project data by organizational Cluster.",
+    tipStatusDist: "Switches the chart data source across Status, Category, or Cluster.",
+    tipWizViewProj: "Lists all individual projects.",
+    tipWizViewCat: "Hierarchically groups projects by Category and Cluster.",
+    tipWizViewWeekly: "Filters to show only projects active in the current calendar week.",
+    tipWizViewMh: "Analyze accumulated man-hours distributed by individual projects and categories.",
+    tipViewCluster: "Aggregates Daily MH of all overlapping projects within the same Cluster on a given day.",
+    tipViewProject: "Displays the Daily MH for each individual project independently on a given day.",
+    tipStatusFilter: "Filters the workload calculation by specific project statuses.",
     lblModalTitle: "Customize Theme Colors", lblModalSub: "Adjust HEX codes. Charts will automatically adapt to these settings.",
     lblBgGroup: "Backgrounds & Borders", lblTextGroup: "Typography", lblBrandGroup: "Brand & Chart Palette", lblStatusGroup: "Status Indication",
     lblBgPage: "Page Background", descBgPage: "Applies to the main body and canvas areas.",
@@ -730,10 +679,20 @@ const TEXT = {
     lblBrandAccent: "Chart Color 3 (Accent/Gold)", descBrandAccent: "Applies to stacked charts, the 'TODAY' indicator, and 'Wiz' button.",
     lblStatusPos: "Positive (Green)", descStatusPos: "Applies to 'Completed' metrics and 'Closed' chart elements.",
     lblStatusNeg: "Negative (Red)", descStatusNeg: "Applies to the 5.0 Capacity warning line and 'Pending' status.",
-    lblBtnCancel: "Cancel", lblBtnApply: "Apply & Refresh", lblBtnExportMd: "Export Markdown"
+    lblBtnCancel: "Cancel", lblBtnApply: "Apply & Refresh", lblBtnExportMd: "Export Markdown",
+    wizDiagContextTitle: "Context (Capacity Allocation)",
+    wizDiagScheduleTitle: "Schedule (Timeline Tracking)",
+    wizDiagQualityTitle: "Quality (Data Integrity)",
+    wizDiagHighlightTitle: "Highlight (Risk & Support)",
+    wizDiagScheduleGood: "All active projects are on track. Excellent!",
+    wizDiagScheduleBad: "The following projects are delayed/overdue: ",
+    wizDiagQualityGood: "All projects have concrete deliverables and progress. Great job!",
+    wizDiagQualityBad: "The following projects lack concrete deliverables or progress updates: ",
+    wizDiagHighlightGood: "No abnormal risks or support requests detected.",
+    wizDiagHighlightBad: "Attention required! The following projects have flagged risks, issues, or support needs: "
   },
   zh: {
-    title: "專案儀表板 V8.48", subtitle: "年度考核系統",
+    title: "專案儀表板 V8.58", subtitle: "BSD專案檢核",
     dataSource: "資料來源", import: "匯入 Excel / CSV",
     owner: "負責人", status: "狀態", category: "類別", cluster: "群組", month: "期間 (月份)",
     total: "總項目數", totalDesc: "已載入所有專案",
@@ -746,10 +705,18 @@ const TEXT = {
     evidence: "證據清單", feedback: "回饋與建議", save: "儲存",
     thHighlights: "重點與交付物", thDesc: "描述", thProgress: "進度",
     wizBtn: "Wiz 助手", wizTitle: "Wiz 智慧摘要", wizSub: "基於目前甘特圖視角的洞察",
-    wizAvgLoad: "平均每日負載", wizProjects: "活躍專案", wizOwners: "參與負責人", wizDeliv: "專案描述與關鍵交付物",
+    wizAvgLoad: "工時負載/工作日", wizProjects: "活躍專案", wizOwners: "參與負責人", wizDeliv: "專案描述與關鍵交付物",
     wizWorkload: "資源負載分佈 (每日工時)", wizMaxCap: "最大法定產能: 5.0 MH/d",
     wizViewProj: "依專案", wizViewCat: "類別-群組", wizViewWeekly: "本週亮點",
-    lblViewCluster: "依群組", lblViewProject: "依專案", // New V8.48
+    wizViewMh: "工時審查",
+    wizMhProjectTitle: "工作負載亮點 (專案排行)",
+    wizMhClusterTitle: "類別貢獻摘要 (Category)",
+    wizMhBriefTitle: "四大結構化診斷指標",
+    btnExportHtml: "HTML 報告",
+    tipExportHtml: "將此專案摘要匯出為獨立的診斷 HTML 網頁報告。",
+    lblViewCluster: "依群組", lblViewProject: "依專案", 
+    wizFilterProc: "執行中", wizFilterPend: "待處理", wizFilterClosed: "已結案", wizFilterAll: "全部狀態", wizChartEmptyStatus: "此期間無符合所選狀態的任務可計算產能。",
+    wizNoDeliv: "無具體交付物，請手動填寫更新...",
     wizAvgTooltipFormula: "💡 公式：總投入工時 ÷ 總活躍天數",
     wizAvgTooltipDesc: "計算篩選區間內，所有「執行中 (Processing)」專案在實際時間跨度下的宏觀每日資源消耗率。",
     wizAvgTooltipExTitle: "範例：",
@@ -759,7 +726,19 @@ const TEXT = {
     wizMaxCapTooltipTitle: "為何設定 5 個小時而非 8 小時？",
     wizMaxCapTooltipDesc1: "因為，企劃部工作並非全然事務性質，期望同仁有意識地進行前期規劃，試行部署，試錯迭代後提出成果，因此需要額外的留白時段。",
     wizMaxCapTooltipDesc2: "此外，預留時間片段，也鼓勵同仁自主學習與發想新案。",
-    
+    tooltipTopProj: "--- 前五大耗能專案 ---", tooltipMore: "項",
+    tipCount: "計算符合條件的不重複專案絕對數量。",
+    tipMH: "計算累積投入工時：加總 (每日工時 × 執行天數)。",
+    tipCat: "依據標準專案類別進行分群。",
+    tipClust: "依據組織群組進行分群。",
+    tipStatusDist: "切換圓餅圖的資料來源：狀態、類別或群組。",
+    tipWizViewProj: "獨立表列每一個專案。",
+    tipWizViewCat: "依據類別與群組的階層關係來歸納專案。",
+    tipWizViewWeekly: "僅篩選出當前日曆週內活躍的專案。",
+    tipWizViewMh: "分析個別專案與類別策略所分配的累計總投入工時佔比。",
+    tipViewCluster: "將同一群組內所有重疊專案的每日工時，依日期加總計算。",
+    tipViewProject: "獨立顯示每個專案在特定日期的每日工時消耗。",
+    tipStatusFilter: "依據特定的專案狀態來過濾產能負載計算。",
     lblModalTitle: "自定義主題色彩", lblModalSub: "調整色碼 (HEX)，所有圖表與介面將自動即時套用設定。",
     lblBgGroup: "背景與邊框", lblTextGroup: "文字排版", lblBrandGroup: "品牌與圖表調色盤", lblStatusGroup: "狀態指示",
     lblBgPage: "頁面背景 (Page Background)", descBgPage: "應用於主要背景、網頁空白處。",
@@ -773,17 +752,29 @@ const TEXT = {
     lblBrandAccent: "圖表強調色 (Chart Color 3 / Accent)", descBrandAccent: "應用於堆疊長條圖配色、「TODAY」發光線與 Wiz 按鈕。",
     lblStatusPos: "正面狀態 (Positive / Green)", descStatusPos: "應用於「已結案」數據、準時率、「Closed」狀態。",
     lblStatusNeg: "負面狀態 (Negative / Red)", descStatusNeg: "應用於 5.0 警戒線、延遲數據、「Pending」狀態。",
-    lblBtnCancel: "取消", lblBtnApply: "套用並重新整理", lblBtnExportMd: "匯出 Markdown"
+    lblBtnCancel: "取消", lblBtnApply: "套用並重新整理", lblBtnExportMd: "匯出 Markdown",
+    wizDiagContextTitle: "Context (產能配置)",
+    wizDiagScheduleTitle: "Schedule (時程追蹤)",
+    wizDiagQualityTitle: "Quality (資料品質)",
+    wizDiagHighlightTitle: "Highlight (風險與支援)",
+    wizDiagScheduleGood: "所有活躍專案均準時推進，表現優異！",
+    wizDiagScheduleBad: "以下專案進度落後或發生超時：",
+    wizDiagQualityGood: "所有專案皆具備具體交付物與進度說明，資料品質優良！",
+    wizDiagQualityBad: "以下專案缺乏具體進度或交付物說明，請盡速更新：",
+    wizDiagHighlightGood: "目前未偵測到異常風險或跨部門支援需求。",
+    wizDiagHighlightBad: "需注意！以下專案標示了風險、異常或支援需求："
   }
 };
 
 let currentLang = 'en';
-let PALETTE = { ...THEMES.slightGray, text: THEMES.slightGray.textMain, grid: THEMES.slightGray.border };
+let PALETTE = { ...THEMES.slightGray, text: THEMES.slightGray.textMain, grid: THEMES.slightGray.border, textBrand: THEMES.slightGray.textBrand };
 let rawData = [];
 let filteredData = [];
 let chartRefs = {};
 let groupBy = 'Category';
 let ownerMetric = 'count';
+let catMetric = 'count';
+let statusDistView = 'status'; 
 const filters = { owner: 'All', status: 'All', category: 'All', cluster: 'All', startMonth: 'All', endMonth: 'All', search: '' };
 const ganttFilters = { owner: 'All', status: 'All', category: 'All', cluster: 'All', startMonth: 'All', endMonth: 'All' };
 
@@ -791,8 +782,8 @@ let globalWorkbook = null;
 let currentYear = '2026'; 
 let wizRenderTimeout = null;
 
-// V8.48: New Global State for Wiz Workload Chart Aggregation Metric
 let wizChartMode = 'cluster'; 
+let wizChartStatusFilter = 'all';
 
 const $ = (id) => document.getElementById(id);
 Chart.register(ChartDataLabels);
@@ -804,6 +795,16 @@ function destroyChart(id) {
   }
 }
 
+// Custom Dialog to avoid native browser alerts
+function showDialog(title, msg) {
+    $('dialogTitle').textContent = title;
+    $('dialogMsg').innerHTML = msg;
+    openModal('dialogModal');
+}
+
+function openModal(id) { $(id).style.display = 'flex'; }
+function closeModal(id) { $(id).style.display = 'none'; }
+
 function toggleLang() {
   currentLang = currentLang === 'en' ? 'zh' : 'en';
   if (currentLang === 'zh') {
@@ -814,6 +815,10 @@ function toggleLang() {
   applyLanguage();
   updateTable();
   updateCharts(); 
+  
+  if ($('wizContent') && !$('wizBlock').classList.contains('hidden')) {
+      generateWizSummary(false); 
+  }
 }
 
 function applyLanguage() {
@@ -863,12 +868,23 @@ function applyLanguage() {
   setText('thHighlights', t.thHighlights);
   setText('thProgress', t.thProgress); 
   
+  if ($('optStat1')) { $('optStat1').textContent = t.status; $('optStat2').textContent = t.category; $('optStat3').textContent = t.cluster; }
+  
+  const setTooltip = (id, text) => { const el = $(id); if(el) el.setAttribute('data-tooltip', text); };
+  setTooltip('btnCatCount', t.tipCount);
+  setTooltip('btnCatMH', t.tipMH);
+  setTooltip('btnCat', t.tipCat);
+  setTooltip('btnClust', t.tipClust);
+  setTooltip('selStatusDistViewWrapper', t.tipStatusDist);
+  setTooltip('btnOwnerCount', t.tipCount);
+  setTooltip('btnOwnerDur', t.tipMH);
+
   const modalKeys = ['lblModalTitle', 'lblModalSub', 'lblBgGroup', 'lblTextGroup', 'lblBrandGroup', 'lblStatusGroup', 
                      'lblBgPage', 'descBgPage', 'lblBgCard', 'descBgCard', 'lblBgBorder', 'descBgBorder', 
                      'lblTxtMain', 'descTxtMain', 'lblTxtSub', 'descTxtSub', 'lblTxtBlue', 'descTxtBlue', 
                      'lblBrandMain', 'descBrandMain', 'lblBrandSub', 'descBrandSub', 'lblBrandAccent', 'descBrandAccent', 
                      'lblStatusPos', 'descStatusPos', 'lblStatusNeg', 'descStatusNeg', 
-                     'lblBtnCancel', 'lblBtnApply', 'lblBtnExportMd'];
+                     'lblBtnCancel', 'lblBtnApply', 'lblBtnExportMd', 'lblBtnExportHtml'];
   modalKeys.forEach(k => setText(k, t[k]));
 }
 
@@ -882,6 +898,7 @@ function applyTheme(themeName) {
   root.style.setProperty('--text-sub', t.textSub);
   root.style.setProperty('--border-color', t.border);
   root.style.setProperty('--brand-main', t.main);
+  root.style.setProperty('--brand-text', t.textBrand || t.main); 
   root.style.setProperty('--brand-sub', t.sub);
   root.style.setProperty('--brand-positive', t.positive);
   root.style.setProperty('--brand-negative', t.negative);
@@ -894,6 +911,7 @@ function applyTheme(themeName) {
   PALETTE.positive = t.positive;
   PALETTE.negative = t.negative;
   PALETTE.text = t.textMain;
+  PALETTE.textBrand = t.textBrand || t.main;
   PALETTE.grid = t.border;
   PALETTE.blue = t.blue;
 
@@ -986,6 +1004,7 @@ function applyCustomColors() {
     PALETTE.positive = cPos;
     PALETTE.negative = cNeg;
     PALETTE.text = cText;
+    PALETTE.textBrand = cMain; 
     PALETTE.grid = $('cp_border').value;
     PALETTE.blue = cBlue;
 
@@ -1074,7 +1093,6 @@ function formatBullets(text) {
   return `<ul class="hl-list">${items.map(i => `<li>${i}</li>`).join('')}</ul>`;
 }
 
-// --- 4. DATA PROCESSING ---
 async function loadGoogleSheet() {
   const url = $('gSheetUrl').value.trim();
   if(!url) return;
@@ -1107,7 +1125,7 @@ async function loadGoogleSheet() {
     
   } catch (error) {
     console.error(error);
-    alert("Failed to load Google Sheet.\n\nNote: If you are running this in a preview environment, strict browser security (CORS) might block the download.\n\nWorkaround: Download the Google Sheet as an .xlsx file to your computer, then use the 'Local' upload button instead.");
+    showDialog("Connection Error", "Failed to load Google Sheet.<br><br>Note: If you are running this in a preview environment, strict browser security (CORS) might block the download.<br><br><b>Workaround:</b> Download the Google Sheet as an .xlsx file to your computer, then use the 'Local' upload button instead.");
     $('fileStatus').textContent = "Error loading link";
   }
 }
@@ -1143,6 +1161,15 @@ function initYearSwitcher(wb) {
     if(has2025 || has2026) {
         $('yearSwitcher').classList.remove('hidden');
         $('yearSwitcher').classList.add('flex');
+        if ($('headerControlsDivider')) {
+          $('headerControlsDivider').classList.remove('hidden');
+          $('headerControlsDivider').classList.add('sm:block');
+        }
+    } else {
+        if ($('headerControlsDivider')) {
+          $('headerControlsDivider').classList.add('hidden');
+          $('headerControlsDivider').classList.remove('sm:block');
+        }
     }
 }
 
@@ -1328,7 +1355,7 @@ function runFilter() {
 async function processFile(file) {
   $('fileStatus').textContent = "Processing...";
   if (file.name.toLowerCase().endsWith('.pdf')) {
-    alert("PDF Preview only."); $('fileStatus').textContent = "PDF Loaded"; return;
+    showDialog("Notice", "PDF Preview only."); $('fileStatus').textContent = "PDF Loaded"; return;
   }
   try {
     const buffer = await file.arrayBuffer(); 
@@ -1353,11 +1380,10 @@ async function processFile(file) {
   } catch (err) {
     console.error(err);
     $('fileStatus').textContent = "Error reading file";
-    alert("Failed to process local file. Please ensure it is a valid Excel or CSV format.");
+    showDialog("Error", "Failed to process local file. Please ensure it is a valid Excel or CSV format.");
   }
 }
 
-// --- 5. UI UPDATES ---
 function setOwnerMetric(metric) {
     ownerMetric = metric;
     if(metric === 'count') {
@@ -1373,6 +1399,27 @@ function setOwnerMetric(metric) {
     }
     updateCharts();
 }
+
+window.setStatusDistView = function(val) {
+    statusDistView = val;
+    updateCharts();
+};
+
+window.setCatMetric = function(metric) {
+    catMetric = metric;
+    if(metric === 'count') {
+        $('btnCatCount').style.backgroundColor = 'var(--brand-main)';
+        $('btnCatCount').style.color = '#FFFFFF';
+        $('btnCatMH').style.backgroundColor = 'transparent';
+        $('btnCatMH').style.color = 'var(--text-sub)';
+    } else {
+        $('btnCatMH').style.backgroundColor = 'var(--brand-main)';
+        $('btnCatMH').style.color = '#FFFFFF';
+        $('btnCatCount').style.backgroundColor = 'transparent';
+        $('btnCatCount').style.color = 'var(--text-sub)';
+    }
+    updateCharts();
+};
 
 function updateDashboard() {
   updateKPIs();
@@ -1432,7 +1479,7 @@ function updateTable() {
     tr.innerHTML = `
       <td style="font-weight:500;">${d.owner}</td>
       <td style="color:var(--text-sub); min-width: 450px; white-space: normal;">${d.desc}</td>
-      <td><span class="px-2 py-1 rounded text-[10px] font-bold" style="${badgeStyle}">${d.status}</span></td>
+      <td><span class="px-2 py-1 rounded text-[10px] font-semibold" style="${badgeStyle}">${d.status}</span></td>
       <td><div style="min-width:150px; color:var(--text-main); font-size:11px;">${formatBullets(d.progressDisplay)}</div></td>
       <td>${d.category}</td>
       <td>${d.cluster}</td>
@@ -1469,9 +1516,11 @@ function updateCharts() {
     hover: { mode: 'nearest', intersect: true },
   };
 
-  // 1. Status Donut
   const statusCount = {};
-  filteredData.forEach(d => statusCount[d.status] = (statusCount[d.status] || 0) + 1);
+  filteredData.forEach(d => {
+      const key = d[statusDistView] || 'Unknown';
+      statusCount[key] = (statusCount[key] || 0) + 1;
+  });
   const statusLabels = Object.keys(statusCount);
   
   destroyChart('cStatus');
@@ -1481,7 +1530,7 @@ function updateCharts() {
       labels: statusLabels,
       datasets: [{
         data: Object.values(statusCount),
-        backgroundColor: statusLabels.map(s => getStatusColor(s)),
+        backgroundColor: statusLabels.map(s => statusDistView === 'status' ? getStatusColor(s) : getCustomColor(s)),
         borderWidth: 2,
         borderColor: getComputedStyle(document.documentElement).getPropertyValue('--card-bg'),
         hoverOffset: 15,
@@ -1501,7 +1550,9 @@ function updateCharts() {
                 font: { size: 12, weight: 'bold' },
                 formatter: (value, ctx) => {
                     const total = ctx.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
-                    const percentage = Math.round((value / total) * 100) + '%';
+                    const percentageNum = (value / total) * 100;
+                    if (percentageNum < 5) return ''; 
+                    const percentage = Math.round(percentageNum) + '%';
                     return `${value}\n(${percentage})`;
                 }
             }
@@ -1509,7 +1560,6 @@ function updateCharts() {
     }
   });
 
-  // 2. Category Bar
   const key = groupBy === 'Category' ? 'category' : 'cluster';
   const labels = [...new Set(filteredData.map(d => d[key]))].sort();
   const owners = [...new Set(filteredData.map(d => d.owner))].sort();
@@ -1517,7 +1567,13 @@ function updateCharts() {
   const datasets = owners.map((owner) => {
       return {
         label: owner,
-        data: labels.map(label => filteredData.filter(d => d[key] === label && d.owner === owner).length),
+        data: labels.map(label => {
+            const subset = filteredData.filter(d => d[key] === label && d.owner === owner);
+            if (catMetric === 'mh') {
+                return subset.reduce((acc, curr) => acc + ((curr.dailyMH || 0) * (curr.duration || 1)), 0);
+            }
+            return subset.length;
+        }),
         backgroundColor: getCustomColor(owner),
         borderRadius: 4,
         hoverBorderWidth: 3,
@@ -1539,21 +1595,34 @@ function updateCharts() {
           ...commonOpts.plugins,
           datalabels: {
               color: '#ffffff',
-              formatter: (value) => value === 0 ? '' : value
+              display: function(context) { return context.dataset.data[context.dataIndex] > 0; },
+              formatter: (value) => {
+                  if (value === 0) return '';
+                  return catMetric === 'mh' ? Math.round(value) + 'h' : value;
+              }
+          },
+          tooltip: {
+              callbacks: {
+                  label: (context) => {
+                      const ownerName = context.dataset.label;
+                      const value = context.parsed.y;
+                      const unit = catMetric === 'mh' ? 'hrs' : 'items';
+                      return `${ownerName}: ${catMetric === 'mh' ? value.toFixed(1) : value} ${unit}`;
+                  }
+              }
           }
       }
     }
   });
 
-  // 3. Owner Contribution
   const cats = [...new Set(filteredData.map(d => d.category))];
 
   const ownerDatasets = cats.map((c) => ({
     label: c,
     data: owners.map(o => {
         const subset = filteredData.filter(d => d.owner === o && d.category === c);
-        if (ownerMetric === 'duration') {
-            return subset.reduce((acc, curr) => acc + (curr.duration || 0), 0);
+        if (ownerMetric === 'mh') {
+            return subset.reduce((acc, curr) => acc + ((curr.dailyMH || 0) * Math.max(1, curr.duration || 1)), 0);
         }
         return subset.length;
     }),
@@ -1561,6 +1630,9 @@ function updateCharts() {
     hoverBorderWidth: 3,
     hoverBorderColor: 'white'
   }));
+
+  const requiredOwnerHeight = Math.max(350, owners.length * 45);
+  $('ownerContainer').style.height = requiredOwnerHeight + 'px';
 
   destroyChart('cOwner');
   chartRefs.cOwner = new Chart($('cOwner'), {
@@ -1577,9 +1649,10 @@ function updateCharts() {
         ...commonOpts.plugins,
         datalabels: {
             color: '#ffffff',
+            display: function(context) { return context.dataset.data[context.dataIndex] > 0; },
             formatter: (value) => {
                 if (value === 0) return '';
-                return ownerMetric === 'duration' ? value + 'd' : value;
+                return ownerMetric === 'mh' ? Math.round(value) : value;
             }
         },
         tooltip: {
@@ -1587,8 +1660,30 @@ function updateCharts() {
             label: (context) => {
                 const catName = context.dataset.label; 
                 const value = context.parsed.x; 
-                const unit = ownerMetric === 'duration' ? 'days' : 'items';
-                return `${catName}: ${value} ${unit}`;
+                const ownerName = context.label;
+                const unit = ownerMetric === 'mh' ? 'MH' : 'items';
+                let baseStr = `${catName}: ${ownerMetric === 'mh' ? value.toFixed(1) : value} ${unit}`;
+
+                if (ownerMetric === 'mh' && value > 0) {
+                    const subset = filteredData.filter(d => d.owner === ownerName && d.category === catName);
+                    const projs = subset.map(p => ({
+                        desc: p.desc,
+                        mh: (p.dailyMH || 0) * Math.max(1, p.duration || 1)
+                    })).filter(p => p.mh > 0).sort((a,b) => b.mh - a.mh);
+
+                    const top5 = projs.slice(0, 5);
+                    const t = TEXT[currentLang];
+                    let details = top5.map((p, i) => `  ${i+1}. ${shortName(p.desc, 25)} (${p.mh.toFixed(1)} MH)`);
+                    
+                    if (projs.length > 5) {
+                        details.push("  ... and " + (projs.length - 5) + " " + t.tooltipMore);
+                    }
+
+                    if (details.length > 0) {
+                        return [baseStr, '', t.tooltipTopProj, ...details];
+                    }
+                }
+                return baseStr;
             }
           }
         }
@@ -1655,6 +1750,9 @@ function updateGanttOnly() {
     
     const ganttColors = sortedGanttData.map(d => getStatusColor(d.status));
 
+    const requiredGanttHeight = Math.max(400, sortedGanttData.length * 40);
+    $('ganttContainer').style.height = requiredGanttHeight + 'px';
+
     destroyChart('cGantt');
     
     const ganttTodayPlugin = {
@@ -1680,10 +1778,11 @@ function updateGanttOnly() {
                 ctx.setLineDash([6, 4]);
                 ctx.stroke();
                 
-                const text = 'TODAY';
-                ctx.font = 'bold 10px "Microsoft JhengHei UI", Quicksand, sans-serif';
+                const todayRef = new Date();
+                const text = todayRef.getFullYear() + '/' + String(todayRef.getMonth() + 1).padStart(2, '0') + '/' + String(todayRef.getDate()).padStart(2, '0');
+                ctx.font = 'bold 11px "Microsoft JhengHei UI", Quicksand, sans-serif'; 
                 const tWidth = ctx.measureText(text).width;
-                const bHeight = 16;
+                const bHeight = 18; 
                 const yOffset = yAxis.top - bHeight - 2; 
                 
                 ctx.shadowColor = 'rgba(0,0,0,0.3)';
@@ -1696,7 +1795,7 @@ function updateGanttOnly() {
                 ctx.shadowBlur = 0;
                 ctx.shadowOffsetY = 0;
                 
-                ctx.fillStyle = '#FFFFFF';
+                ctx.fillStyle = '#1A1A1A'; 
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
                 ctx.fillText(text, x, yOffset + bHeight/2);
@@ -1715,13 +1814,14 @@ function updateGanttOnly() {
           data: ganttData,
           backgroundColor: ganttColors,
           borderRadius: 4,
-          barPercentage: 0.6,
+          barPercentage: 0.7,
+          categoryPercentage: 0.8,
           hoverBorderWidth: 3,
           hoverBorderColor: 'white'
         }]
       },
       options: {
-        layout: { padding: { top: 25 } },
+        layout: { padding: { top: 25, right: 50 } },
         responsive: true,
         maintainAspectRatio: false,
         indexAxis: 'y',
@@ -1735,6 +1835,14 @@ function updateGanttOnly() {
         },
         plugins: {
             legend: { position: 'bottom', labels: { color: PALETTE.text } },
+            subtitle: {
+                display: true,
+                text: currentLang === 'en' ? '(Unit: Day)' : '(單位：Day)',
+                align: 'end',
+                color: PALETTE.textSub,
+                font: { size: 11, style: 'italic', weight: 'bold', family: "'Microsoft JhengHei UI', 'Quicksand', sans-serif" },
+                padding: { bottom: 5 }
+            },
             tooltip: { callbacks: { label: (ctx) => {
                  const item = sortedGanttData[ctx.dataIndex];
                  const start = new Date(ctx.raw[0]).toLocaleDateString(currentLang==='en'?'en-US':'zh-TW', {timeZone: 'UTC'});
@@ -1742,12 +1850,15 @@ function updateGanttOnly() {
                  return [`${item.desc}`, `Duration: ${item.duration} days`, `MH/Day: ${item.dailyMH}`, `${start} - ${end}`];
             }}},
             datalabels: {
+                display: 'auto',
                 anchor: 'end',
                 align: 'end',
+                offset: (ctx) => (ctx.dataIndex % 2 === 0) ? 4 : 26,
                 color: PALETTE.text,
+                font: { weight: 'bold' },
                 formatter: (value, ctx) => {
                     const item = sortedGanttData[ctx.dataIndex];
-                    return `${item.duration}d`; 
+                    return item.duration; 
                 }
             }
         }
@@ -1759,7 +1870,291 @@ function updateGanttOnly() {
   }
 }
 
-// --- WIZ EXPORT FUNCTION ---
+// V8.58: HTML REPORT EXPORT
+window.exportWizHTML = function() {
+    const t = TEXT[currentLang];
+    
+    const wizData = rawData.filter(d => {
+        if(ganttFilters.owner !== 'All' && d.owner !== ganttFilters.owner) return false;
+        if(ganttFilters.status !== 'All' && d.status !== ganttFilters.status) return false;
+        if(ganttFilters.category !== 'All' && d.category !== ganttFilters.category) return false;
+        if(ganttFilters.cluster !== 'All' && d.cluster !== ganttFilters.cluster) return false;
+        if(!isDateOverlapping(d, ganttFilters.startMonth, ganttFilters.endMonth)) return false;
+        return true;
+    });
+
+    if (wizData.length === 0) { 
+        showDialog("Notice", "No active data to generate diagnostic report."); 
+        return; 
+    }
+
+    const totalPeriodMH = wizData.reduce((acc, d) => acc + ((d.dailyMH || 0) * Math.max(1, d.duration || 1)), 0);
+
+    const categoryMap = {};
+    wizData.forEach(d => {
+        const cat = d.category || (currentLang === 'en' ? 'Uncategorized' : '未分類');
+        const mh = (d.dailyMH || 0) * Math.max(1, d.duration || 1);
+        if(!categoryMap[cat]) categoryMap[cat] = { mh: 0, projects: [] };
+        categoryMap[cat].mh += mh;
+        categoryMap[cat].projects.push({ desc: d.desc, mh: mh });
+    });
+
+    const categorySummary = Object.keys(categoryMap).map(cat => {
+        const data = categoryMap[cat];
+        return { 
+            category: cat, 
+            mh: data.mh, 
+            pct: totalPeriodMH > 0 ? (data.mh / totalPeriodMH) * 100 : 0,
+            projects: data.projects.sort((a,b) => b.mh - a.mh)
+        };
+    }).sort((a, b) => b.mh - a.mh);
+
+    const projectSummary = [...wizData].map(d => {
+        const mh = (d.dailyMH || 0) * Math.max(1, d.duration || 1);
+        return { ...d, totalMh: mh, pct: totalPeriodMH > 0 ? (mh / totalPeriodMH) * 100 : 0 };
+    }).sort((a, b) => b.totalMh - a.totalMh);
+
+    const top3Projects = projectSummary.slice(0, 3);
+    const top3MhSum = top3Projects.reduce((sum, p) => sum + p.totalMh, 0);
+    const top3Pct = totalPeriodMH > 0 ? Math.round((top3MhSum / totalPeriodMH) * 100) : 0;
+    const isSingleOwner = ganttFilters.owner !== 'All';
+    const ownerTarget = isSingleOwner ? ganttFilters.owner : (currentLang === 'en' ? 'the team' : '團隊');
+    const topProjName = top3Projects.length > 0 ? top3Projects[0].desc : 'N/A';
+
+    const delayedProjects = projectSummary.filter(p => !p.isOnTime);
+    
+    const actionRequired = projectSummary.filter(p => {
+        const highlight = (p.highlights || '').trim().toLowerCase();
+        const progress = (p.progressDisplay || '').trim().toLowerCase();
+        const isHEmpty = highlight.length < 3 || highlight === 'tbd' || highlight === 'n/a';
+        const isPEmpty = progress === '-' || progress === '';
+        return isHEmpty || isPEmpty;
+    });
+
+    // V8.58 Regex Match for highlight anomalies
+    const riskRegex = /(issue|support|risk|abnormal|remind|warning|blocker|urgent|critical|attention|delay|fail|問題|支援|風險|提醒|異常|注意|緊急|阻礙|協助|瓶頸|求救|延遲|失敗)/i;
+    const highlightedProjects = projectSummary.filter(p => {
+        const combinedText = ((p.desc || '') + ' ' + (p.progressDisplay || '') + ' ' + (p.highlights || '')).toLowerCase();
+        return riskRegex.test(combinedText);
+    });
+
+    const reportTitle = currentLang === 'en' ? "Project Diagnostic Report" : "專案診斷報告";
+    const sec1Title = currentLang === 'en' ? "1. Summary by Category" : "1. 類別貢獻摘要";
+    const sec1Desc = currentLang === 'en' ? "Distribution of total working hours mapped against major strategic categories." : "反映目前產能在主要戰略類別上的資源分佈。";
+    const sec2Title = currentLang === 'en' ? "2. Workload Highlight Summary" : "2. 工作負載亮點與執行摘要";
+    
+    const narrativeIntro = currentLang === 'en' 
+        ? `<strong>${top3Pct}%</strong> of ${ownerTarget}'s capacity in this period is concentrated on these top ${top3Projects.length} projects, primarily focusing on delivering <strong>${topProjName}</strong>.`
+        : `在此期間內，${ownerTarget} 有高達 <strong>${top3Pct}%</strong> 的產能集中於這 ${top3Projects.length} 個關鍵專案，主要聚焦於交付 <strong>${topProjName}</strong>。`;
+    
+    const sec3Title = currentLang === 'en' ? "3. Goal Oriented Report (Action Required)" : "3. 目標導向行動清單 (需更新)";
+    const sec3Desc = currentLang === 'en' 
+        ? "The following projects lack concrete deliverables or progress updates. To maintain strict goal-oriented alignment, please update the source data immediately." 
+        : "以下專案缺乏具體的交付物或進度說明。為確保專案符合目標導向管理，請負責人盡速回歸系統更新資料。";
+
+    const emptyDataRow = currentLang === 'en' ? "No data to display." : "無資料可顯示。";
+
+    let contextText = '';
+    if (currentLang === 'en') {
+        contextText = `Across the selected period, total resource allocation is <strong style="color: #1495CC;">${totalPeriodMH.toFixed(1)}h</strong>. <strong>${top3Pct}%</strong> of ${ownerTarget}'s capacity is concentrated on the top ${top3Projects.length} projects (primarily delivering <strong>${topProjName}</strong>).`;
+    } else {
+        contextText = `在選定期間內，總資源配置為 <strong style="color: #1495CC;">${totalPeriodMH.toFixed(1)}h</strong>。${ownerTarget} 有高達 <strong>${top3Pct}%</strong> 的產能集中於前 ${top3Projects.length} 大專案（主要交付 <strong>${topProjName}</strong>）。`;
+    }
+
+    const scheduleText = delayedProjects.length > 0 
+        ? t.wizDiagScheduleBad + delayedProjects.map(p => `<strong>[${p.desc}]</strong>`).join(', ') 
+        : t.wizDiagScheduleGood;
+
+    const qualityText = actionRequired.length > 0 
+        ? t.wizDiagQualityBad + actionRequired.map(p => `<strong>[${p.desc}]</strong>`).join(', ') 
+        : t.wizDiagQualityGood;
+
+    const highlightText = highlightedProjects.length > 0 
+        ? t.wizDiagHighlightBad + highlightedProjects.map(p => `<strong>[${p.desc}]</strong>`).join(', ') 
+        : t.wizDiagHighlightGood;
+
+    const htmlContent = `
+    <!DOCTYPE html>
+    <html lang="${currentLang}">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>${reportTitle}</title>
+        <script src="https://cdn.tailwindcss.com"><\/script>
+        <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+        <style>
+            html { font-size: 112.5%; }
+            body { font-family: 'Microsoft JhengHei UI', Quicksand, sans-serif; background-color: #f8fafc; color: #0f172a; padding: 40px; -webkit-font-smoothing: antialiased; letter-spacing: 0.015em; }
+            .card { background: white; border-radius: 12px; padding: 30px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); margin-bottom: 24px; border: 1px solid #e2e8f0; }
+            .bar-bg { background-color: #e2e8f0; border-radius: 999px; height: 8px; width: 100%; overflow: hidden; margin-top: 6px; }
+            .bar-fill { height: 100%; background-color: #1495cc; border-radius: 999px; }
+            .tag { display: inline-block; padding: 4px 10px; border-radius: 4px; font-size: 11.5px; font-weight: bold; background: #f1f5f9; color: #475569; }
+            @media print { 
+                body { padding: 0; background: white; font-size: 100%; } 
+                .no-print { display: none !important; } 
+                .card { box-shadow: none; border: 1px solid #cbd5e1; page-break-inside: avoid; } 
+                .page-break { page-break-before: always; }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="max-w-5xl mx-auto">
+            <!-- Header -->
+            <div class="flex justify-between items-end border-b-2 border-slate-800 pb-6 mb-8">
+                <div>
+                    <h1 class="text-3xl font-bold tracking-tight text-slate-800"><i class="fa-solid fa-file-invoice mr-3 text-blue-600"></i>${reportTitle}</h1>
+                    <div class="flex gap-4 mt-3 text-sm font-semibold text-slate-500">
+                        <span><i class="fa-solid fa-user mr-1"></i> ${t.owner}: <span class="text-slate-800">${ganttFilters.owner}</span></span>
+                        <span><i class="fa-solid fa-calendar mr-1"></i> Period: <span class="text-slate-800">${ganttFilters.startMonth} ~ ${ganttFilters.endMonth}</span></span>
+                        <span><i class="fa-solid fa-clock mr-1"></i> Generated: <span class="text-slate-800">${new Date().toLocaleString()}</span></span>
+                    </div>
+                </div>
+                <button onclick="window.print()" class="no-print px-5 py-2.5 rounded shadow text-white font-bold transition-all hover:opacity-90 flex items-center gap-2 bg-blue-600">
+                    <i class="fa-solid fa-print"></i> Print PDF
+                </button>
+            </div>
+
+            <!-- V8.58 4-Point Diagnostic Metrics -->
+            <div class="card border-t-4 border-blue-600" style="background-color: #f0f9ff;">
+                <h2 class="text-xl font-bold mb-4" style="color: #0369a1;"><i class="fa-solid fa-stethoscope mr-2"></i>${t.wizMhBriefTitle}</h2>
+                <div class="space-y-4">
+                    <div class="bg-white p-4 rounded border border-blue-100 shadow-sm">
+                        <h3 class="text-sm font-bold text-blue-800 mb-1"><i class="fa-solid fa-layer-group mr-1"></i>${t.wizDiagContextTitle}</h3>
+                        <p class="text-[14.5px] text-slate-700 leading-relaxed">${contextText}</p>
+                    </div>
+                    <div class="bg-white p-4 rounded border ${delayedProjects.length > 0 ? 'border-rose-200' : 'border-emerald-200'} shadow-sm">
+                        <h3 class="text-sm font-bold ${delayedProjects.length > 0 ? 'text-rose-700' : 'text-emerald-700'} mb-1"><i class="fa-solid fa-calendar-check mr-1"></i>${t.wizDiagScheduleTitle}</h3>
+                        <p class="text-[14.5px] text-slate-700 leading-relaxed">${scheduleText}</p>
+                    </div>
+                    <div class="bg-white p-4 rounded border ${actionRequired.length > 0 ? 'border-orange-200' : 'border-emerald-200'} shadow-sm">
+                        <h3 class="text-sm font-bold ${actionRequired.length > 0 ? 'text-orange-700' : 'text-emerald-700'} mb-1"><i class="fa-solid fa-magnifying-glass-chart mr-1"></i>${t.wizDiagQualityTitle}</h3>
+                        <p class="text-[14.5px] text-slate-700 leading-relaxed">${qualityText}</p>
+                    </div>
+                    <div class="bg-white p-4 rounded border ${highlightedProjects.length > 0 ? 'border-amber-200' : 'border-emerald-200'} shadow-sm">
+                        <h3 class="text-sm font-bold ${highlightedProjects.length > 0 ? 'text-amber-700' : 'text-emerald-700'} mb-1"><i class="fa-solid fa-triangle-exclamation mr-1"></i>${t.wizDiagHighlightTitle}</h3>
+                        <p class="text-[14.5px] text-slate-700 leading-relaxed">${highlightText}</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Section 1: Summary by Category -->
+            <div class="card border-t-4 border-blue-600">
+                <h2 class="text-xl font-bold mb-2 text-slate-800">${sec1Title}</h2>
+                <p class="text-sm text-slate-500 mb-6">${sec1Desc}</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    ${categorySummary.length > 0 ? categorySummary.map(c => `
+                        <div>
+                            <div class="flex justify-between items-end mb-1">
+                                <span class="font-bold text-slate-700 text-lg">${c.category}</span>
+                                <span class="font-bold text-blue-600">${c.pct.toFixed(0)}% <span class="text-xs text-slate-400 font-normal">(${c.mh.toFixed(1)}h)</span></span>
+                            </div>
+                            <div class="bar-bg mb-3"><div class="bar-fill" style="width: ${c.pct}%;"></div></div>
+                            <ul class="list-disc pl-5 text-[13px] text-slate-600 space-y-1">
+                                ${c.projects.slice(0, 4).map(p => `<li><span class="font-medium text-slate-800">${p.desc}</span> <span class="text-slate-400 ml-1">(${p.mh.toFixed(1)}h)</span></li>`).join('')}
+                                ${c.projects.length > 4 ? `<li class="text-blue-500 italic font-semibold">... and ${c.projects.length - 4} more projects</li>` : ''}
+                            </ul>
+                        </div>
+                    `).join('') : `<p class="text-slate-500">${emptyDataRow}</p>`}
+                </div>
+            </div>
+
+            <!-- Section 2: Workload Highlight Summary -->
+            <div class="card border-t-4 border-teal-500">
+                <h2 class="text-xl font-bold mb-2 text-slate-800">${sec2Title}</h2>
+                <p class="text-[14.5px] text-slate-600 mb-6 bg-slate-50 p-4 rounded-lg border border-slate-200">
+                    <i class="fa-solid fa-lightbulb text-yellow-500 mr-2"></i>${narrativeIntro}
+                </p>
+                
+                <div class="space-y-6">
+                    ${top3Projects.length > 0 ? top3Projects.map((p, idx) => `
+                        <div class="border border-slate-200 rounded-lg p-5 hover:shadow-md transition-shadow bg-white">
+                            <div class="flex justify-between items-start mb-3">
+                                <h3 class="font-bold text-lg text-slate-800"><span class="text-teal-600 mr-2">#${idx + 1}</span>${p.desc}</h3>
+                                <div class="text-right">
+                                    <span class="block font-bold text-teal-600 text-lg">${p.totalMh.toFixed(1)}h</span>
+                                    <span class="block text-xs font-semibold text-slate-400">${p.pct.toFixed(0)}% of total</span>
+                                </div>
+                            </div>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="tag"><i class="fa-solid fa-layer-group mr-1"></i>${p.category}</span>
+                                <span class="tag"><i class="fa-solid fa-user mr-1"></i>${p.owner}</span>
+                                <span class="tag ${p.status.toLowerCase() === 'closed' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700'}"><i class="fa-solid fa-spinner mr-1"></i>${p.status}</span>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-slate-100">
+                                <div>
+                                    <h4 class="text-xs font-bold text-slate-400 uppercase mb-2 tracking-wider">Current Progress</h4>
+                                    <p class="text-[14px] text-slate-700 font-medium">${p.progressDisplay || 'No progress recorded.'}</p>
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-bold text-slate-400 uppercase mb-2 tracking-wider">Key Deliverables</h4>
+                                    <p class="text-[14px] text-slate-700 font-medium">${p.highlights || '<span class="italic text-red-400">Missing specific deliverables</span>'}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('') : `<p class="text-slate-500">${emptyDataRow}</p>`}
+                </div>
+            </div>
+
+            <!-- Section 3: Goal Oriented Report -->
+            <div class="card border-t-4 border-rose-500 page-break">
+                <h2 class="text-xl font-bold mb-2 text-rose-700"><i class="fa-solid fa-triangle-exclamation mr-2"></i>${sec3Title}</h2>
+                <p class="text-[14px] text-slate-600 mb-6">${sec3Desc}</p>
+                
+                ${actionRequired.length > 0 ? `
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse border border-slate-200 rounded-lg overflow-hidden">
+                            <thead class="bg-rose-50 border-b border-slate-200">
+                                <tr>
+                                    <th class="p-3 text-xs font-bold text-rose-800 uppercase">Project Name</th>
+                                    <th class="p-3 text-xs font-bold text-rose-800 uppercase">Owner</th>
+                                    <th class="p-3 text-xs font-bold text-rose-800 uppercase">Missing Data</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${actionRequired.map(p => {
+                                    const highlight = (p.highlights || '').trim().toLowerCase();
+                                    const progress = (p.progressDisplay || '').trim().toLowerCase();
+                                    const isHEmpty = highlight.length < 3 || highlight === 'tbd' || highlight === 'n/a';
+                                    const isPEmpty = progress === '-' || progress === '';
+                                    
+                                    let missingTags = [];
+                                    if(isHEmpty) missingTags.push('<span class="bg-rose-100 text-rose-700 px-2 py-1 rounded text-xs font-bold mr-2">Deliverables</span>');
+                                    if(isPEmpty) missingTags.push('<span class="bg-orange-100 text-orange-700 px-2 py-1 rounded text-xs font-bold">Progress</span>');
+
+                                    return `
+                                    <tr class="border-b border-slate-100 hover:bg-slate-50">
+                                        <td class="p-3 text-[13.5px] font-semibold text-slate-700">${p.desc}</td>
+                                        <td class="p-3 text-[13px] text-slate-600">${p.owner}</td>
+                                        <td class="p-3">${missingTags.join('')}</td>
+                                    </tr>
+                                `}).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                ` : `
+                    <div class="flex items-center justify-center p-8 bg-green-50 rounded-lg border border-green-200">
+                        <p class="text-green-700 font-bold text-lg"><i class="fa-solid fa-check-circle mr-2 text-2xl"></i>All active projects have properly documented deliverables and progress. Excellent alignment!</p>
+                    </div>
+                `}
+            </div>
+
+            <div class="text-center text-xs text-slate-400 font-semibold mt-8 mb-4">
+                &copy; ${new Date().getFullYear()} Annual Assessment System - V8.58 Diagnostic Engine
+            </div>
+        </div>
+    </body>
+    </html>
+    `;
+    
+    const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Diagnostic_Report_${new Date().toISOString().slice(0,10)}.html`;
+    a.click();
+};
+
 function exportWizSummary() {
     const wizData = rawData.filter(d => {
         if(ganttFilters.owner !== 'All' && d.owner !== ganttFilters.owner) return false;
@@ -1770,12 +2165,13 @@ function exportWizSummary() {
         return true;
     });
 
-    if (wizData.length === 0) { alert("No data to export"); return; }
+    if (wizData.length === 0) { showDialog("Notice", "No data to export"); return; }
 
     const csvRows = [];
-    csvRows.push(["Project Name", "Duration (Days)", "Owner", "Status", "Category", "Cluster", "Deliverables"]);
+    csvRows.push(["Project Name", "Duration (Days)", "Owner", "Status", "Category", "Cluster", "Deliverables", "Total Accumulated MH"]);
 
     wizData.forEach(d => {
+        const totalMH = ((d.dailyMH || 0) * (d.duration || 0)).toFixed(1);
         const row = [
             d.desc,
             d.duration,
@@ -1783,7 +2179,8 @@ function exportWizSummary() {
             d.status,
             d.category,
             d.cluster,
-            d.highlights ? d.highlights.replace(/[\r\n]+/g, ' ') : '' 
+            d.highlights ? d.highlights.replace(/[\r\n]+/g, ' ') : '',
+            totalMH
         ].map(val => {
              const str = String(val || '').replace(/"/g, '""');
              return `"${str}"`;
@@ -1800,7 +2197,6 @@ function exportWizSummary() {
     a.click();
 }
 
-// --- WIZ HTML TOOLTIP HANDLER ---
 const externalTooltipHandler = (context) => {
     const {chart, tooltip} = context;
     let tooltipEl = document.getElementById('wiz-custom-tooltip');
@@ -1815,14 +2211,13 @@ const externalTooltipHandler = (context) => {
         tooltipEl.style.color = 'white';
         tooltipEl.style.opacity = 1;
         tooltipEl.style.position = 'absolute';
-        tooltipEl.style.transition = 'all .1s ease';
+        tooltipEl.style.transition = 'opacity 0.15s ease, transform 0.1s ease, left 0.1s ease, top 0.1s ease'; 
         tooltipEl.style.zIndex = '99999'; 
         tooltipEl.style.pointerEvents = 'none';
         tooltipEl.style.padding = '12px';
         tooltipEl.style.minWidth = '250px';
         tooltipEl.style.maxWidth = '380px';
         tooltipEl.style.boxShadow = '0 0 20px rgba(128, 54, 201, 0.45)';
-        tooltipEl.style.border = '1px solid #8036c9';
         document.body.appendChild(tooltipEl);
     }
 
@@ -1862,9 +2257,6 @@ const externalTooltipHandler = (context) => {
     let left = position.left + window.pageXOffset + tooltip.caretX;
     let top = position.top + window.pageYOffset + tooltip.caretY;
     
-    tooltipEl.style.left = left + 'px';
-    tooltipEl.style.top = top + 'px';
-    
     let transformX = '-50%';
     let transformY = 'calc(-100% - 15px)'; 
 
@@ -1878,13 +2270,16 @@ const externalTooltipHandler = (context) => {
     tooltipEl.style.transform = `translate(${transformX}, ${transformY})`;
 };
 
-// V8.48 NEW GLOBAL STATE: Workload Chart Aggregation Metric
 window.setWizChartMetric = function(mode) {
     wizChartMode = mode;
-    generateWizSummary(false); // Seamlessly update only
+    generateWizSummary(false); 
 };
 
-// --- WIZ RESOURCE WORKLOAD CHART RENDERER ---
+window.setWizChartStatus = function(status) {
+    wizChartStatusFilter = status;
+    generateWizSummary(false); 
+};
+
 function renderWizWorkloadChart(data) {
     const canvas = $('cWizWorkload');
     if(!canvas) return;
@@ -1894,7 +2289,12 @@ function renderWizWorkloadChart(data) {
     const validProjects = [];
 
     data.forEach(d => {
-        if(d.status.toLowerCase() !== 'processing') return;
+        const s = (d.status || '').toLowerCase();
+        if (wizChartStatusFilter !== 'all') {
+            if (wizChartStatusFilter === 'processing' && s !== 'processing') return;
+            if (wizChartStatusFilter === 'pending' && s !== 'pending') return;
+            if (wizChartStatusFilter === 'closed' && s !== 'closed') return;
+        }
 
         const end = d.rev || d.due;
         if(!end) return;
@@ -1920,7 +2320,7 @@ function renderWizWorkloadChart(data) {
         if($('wizChartEmpty')) {
             $('wizChartEmpty').classList.remove('hidden');
             $('wizChartEmpty').classList.add('flex');
-            $('wizChartEmpty').innerHTML = `<i class="fa-solid fa-mug-hot text-2xl mb-2"></i><span>${currentLang === 'en' ? 'No "Processing" tasks found for workload calculation in this period.' : '此期間無執行中 (Processing) 的任務可計算產能。'}</span>`;
+            $('wizChartEmpty').innerHTML = `<i class="fa-solid fa-mug-hot text-2xl mb-2"></i><span>${currentLang === 'en' ? TEXT.en.wizChartEmptyStatus : TEXT.zh.wizChartEmptyStatus}</span>`;
         }
         return;
     }
@@ -1992,7 +2392,6 @@ function renderWizWorkloadChart(data) {
         datalabels: { display: false } 
     });
 
-    // V8.48 FIX: Dynamic Chart Branching based on user toggle
     if (wizChartMode === 'cluster') {
         const clusters = [...new Set(validProjects.map(p => p.cluster || 'Uncategorized'))].sort();
 
@@ -2022,7 +2421,6 @@ function renderWizWorkloadChart(data) {
             }
         });
     } else {
-        // Fallback to Project Level aggregation (from V8.46)
         const palette = getGenericPalette(validProjects.length);
         validProjects.forEach((p, i) => {
             const dailyData = labelTimes.map(t => {
@@ -2084,7 +2482,7 @@ function renderWizWorkloadChart(data) {
                 ctx.stroke();
                 
                 ctx.globalAlpha = 1.0;
-                const text = 'TODAY';
+                const text = todayRef.getFullYear() + '/' + String(todayRef.getMonth() + 1).padStart(2, '0') + '/' + String(todayRef.getDate()).padStart(2, '0');
                 ctx.font = 'bold 11px Quicksand, sans-serif';
                 const tWidth = ctx.measureText(text).width;
                 const bHeight = 18;
@@ -2100,7 +2498,7 @@ function renderWizWorkloadChart(data) {
                 ctx.shadowBlur = 0;
                 ctx.shadowOffsetY = 0;
                 
-                ctx.fillStyle = '#FFFFFF';
+                ctx.fillStyle = '#1A1A1A'; 
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
                 ctx.fillText(text, x, yOffset + bHeight/2);
@@ -2132,7 +2530,6 @@ function renderWizWorkloadChart(data) {
                 }
             },
             plugins: {
-                // V8.48 FIX: Legend is only enabled in 'Cluster' mode to prevent UI bloat when viewing by 'Project'
                 legend: { 
                     display: wizChartMode === 'cluster',
                     position: 'bottom', 
@@ -2168,7 +2565,6 @@ function renderWizWorkloadChart(data) {
     });
 }
 
-// Global View State for Wiz Summary
 let currentWizView = 'project';
 
 window.switchWizView = function(mode) {
@@ -2176,7 +2572,6 @@ window.switchWizView = function(mode) {
     generateWizSummary(false); 
 };
 
-// --- WIZ & OTHER LOGIC ---
 function generateWizSummary(autoScroll = false) {
     const wizBlock = $('wizBlock');
     const wizContent = $('wizContent');
@@ -2202,7 +2597,7 @@ function generateWizSummary(autoScroll = false) {
         wizContent.innerHTML = `
             <div class="col-span-1 md:col-span-12 flex flex-col items-center justify-center py-12 text-center" style="color: var(--text-sub);">
                 <i class="fa-solid fa-folder-open text-4xl mb-3 opacity-50"></i>
-                <p class="text-sm font-bold">${currentLang === 'en' ? 'No active projects found for this owner/filter combination.' : '在目前的篩選條件下，無任何活躍專案。'}</p>
+                <p class="text-sm font-semibold">${currentLang === 'en' ? 'No active projects found for this owner/filter combination.' : '在目前的篩選條件下，無任何活躍專案。'}</p>
             </div>
         `;
         
@@ -2230,7 +2625,12 @@ function generateWizSummary(autoScroll = false) {
     let totalMH = 0;
 
     wizData.forEach(d => {
-        if(d.status.toLowerCase() !== 'processing') return;
+        const s = (d.status || '').toLowerCase();
+        if (wizChartStatusFilter !== 'all') {
+            if (wizChartStatusFilter === 'processing' && s !== 'processing') return;
+            if (wizChartStatusFilter === 'pending' && s !== 'pending') return;
+            if (wizChartStatusFilter === 'closed' && s !== 'closed') return;
+        }
 
         const end = d.rev || d.due;
         if(!end) return;
@@ -2249,12 +2649,6 @@ function generateWizSummary(autoScroll = false) {
         
         totalMH += (d.dailyMH || 0) * dur;
     });
-
-    let avgDailyMH = 0;
-    if (globalMin !== Infinity && globalMax !== -Infinity) {
-        const activeDays = Math.round((globalMax - globalMin) / 86400000) + 1;
-        avgDailyMH = activeDays > 0 ? totalMH / activeDays : 0;
-    }
     
     let periodText = "";
     if (ganttFilters.startMonth !== 'All' && ganttFilters.endMonth !== 'All') periodText = `${ganttFilters.startMonth} ~ ${ganttFilters.endMonth}`;
@@ -2263,37 +2657,46 @@ function generateWizSummary(autoScroll = false) {
         periodText = dates.length > 0 ? `${dates[0]} ~ ${dates[dates.length-1]}` : (currentLang === 'en' ? "All Periods" : "所有期間");
     }
 
-    let rightColHTML = '<div class="overflow-y-auto pr-2 custom-scrollbar" style="max-height: 300px;">';
+    let rightColHTML = '<div class="overflow-y-auto pr-2 custom-scrollbar" style="max-height: 350px;">';
     
     if (currentWizView === 'project') {
         wizData.forEach((d, index) => {
             const pDesc = d.desc || ''; 
             const pDur = d.duration || 0; 
             const pMH = d.dailyMH || 0; 
+            const accumMH = (pMH * pDur).toFixed(1); 
             const cleanHighlight = d.highlights ? d.highlights.replace(/[•*-]/g, '').trim() : '';
-            const pDeliv = shortName(cleanHighlight, 80) || (currentLang === 'en' ? 'No specific deliverables' : '無具體交付物');
+            
+            let pDelivHTML = '';
+            if (cleanHighlight.length > 2 && cleanHighlight.toLowerCase() !== 'tbd' && cleanHighlight.toLowerCase() !== 'n/a') {
+                pDelivHTML = `<div class="text-[13px] font-medium leading-relaxed task-desc transition-colors text-gray-700 mt-1">${shortName(cleanHighlight, 120)}</div>`;
+            } else {
+                pDelivHTML = `<textarea class="w-full text-[12px] p-2 mt-2 border border-dashed rounded focus:bg-white outline-none transition-all resize-none custom-scrollbar shadow-inner" style="border-color: var(--border-color); color: var(--text-main); background-color: rgba(0,0,0,0.02);" rows="2" placeholder="✍️ ${t.wizNoDeliv}"></textarea>`;
+            }
             
             rightColHTML += `
                 <div class="mb-3 p-3 rounded-lg shadow-sm wiz-task-card cursor-pointer group">
-                    <div class="flex justify-between items-start mb-2">
-                        <span class="font-bold text-[15px] task-title transition-colors flex items-start gap-1" style="color:var(--text-main); line-height: 1.4; word-break: break-word;">
+                    <div class="flex justify-between items-start mb-1">
+                        <span class="font-semibold text-[15px] task-title transition-colors flex items-start gap-1" style="color:var(--text-main); line-height: 1.4; word-break: break-word;">
                             <i class="fa-solid fa-arrow-pointer mt-1 text-sm task-icon"></i>
                             <span>${index + 1}. ${pDesc}</span>
                         </span>
-                        <div class="flex items-center gap-1 ml-2 flex-shrink-0">
-                            <span class="text-[10px] font-bold whitespace-nowrap px-2 py-1 rounded shadow-sm task-dur-badge transition-colors" 
+                        <div class="flex items-center gap-1.5 ml-2 flex-shrink-0 flex-wrap justify-end">
+                            <span class="text-[10px] font-semibold whitespace-nowrap px-2 py-1 rounded shadow-sm task-dur-badge transition-colors" 
                                   style="background-color:var(--brand-sub); color:#FFFFFF;" title="Duration">
                                 ${pDur} days
                             </span>
-                            <span class="text-[10px] font-bold whitespace-nowrap px-2 py-1 rounded shadow-sm" 
+                            <span class="text-[10px] font-semibold whitespace-nowrap px-2 py-1 rounded shadow-sm" 
                                   style="background-color:var(--text-blue); color:#FFFFFF;" title="Man-Hours / Per Day">
                                 ${pMH} MH/d
                             </span>
+                            <span class="text-[10px] font-semibold whitespace-nowrap px-2 py-1 rounded shadow-sm text-white" 
+                                  style="background-color: var(--brand-text);" title="Total Accumulated Man-Hours">
+                                ${accumMH} Total MH
+                            </span>
                         </div>
                     </div>
-                    <div class="text-[13px] font-medium leading-relaxed task-desc transition-colors text-gray-700">
-                        ${pDeliv}
-                    </div>
+                    ${pDelivHTML}
                 </div>
             `;
         });
@@ -2309,24 +2712,33 @@ function generateWizSummary(autoScroll = false) {
         });
 
         Object.keys(grouped).sort().forEach(cat => {
-            rightColHTML += `<div class="mb-5"><h5 class="font-bold text-sm border-b-2 pb-1 mb-3" style="color:var(--brand-main); border-color:var(--border-color);">${cat}</h5>`;
+            rightColHTML += `<div class="mb-5"><h5 class="font-bold text-sm border-b-2 pb-1 mb-3" style="color:var(--brand-text); border-color:var(--border-color);">${cat}</h5>`;
             Object.keys(grouped[cat]).sort().forEach(clust => {
                 const projs = grouped[cat][clust];
                 rightColHTML += `<div class="mb-3 ml-2">
-                                    <h6 class="font-bold text-[13px] mb-1.5" style="color:var(--brand-sub);">
+                                    <h6 class="font-semibold text-[13px] mb-1.5" style="color:var(--brand-sub);">
                                         <i class="fa-solid fa-layer-group mr-1"></i>${clust} 
                                         <span class="text-[10px] font-normal px-1.5 py-0.5 rounded ml-1" style="background-color:rgba(0,0,0,0.05); color:var(--text-sub);">${projs.length} items</span>
                                     </h6>
                                     <ul class="hl-list mt-1 ml-2 mb-3">`;
                 projs.forEach(p => {
-                    const cleanHighlight = p.highlights ? p.highlights.replace(/[•*-]/g, '').trim() : (currentLang === 'en' ? 'No specific deliverables' : '無具體交付物');
+                    const cleanHighlight = p.highlights ? p.highlights.replace(/[•*-]/g, '').trim() : '';
+                    const accumMH = ((p.dailyMH || 0) * (p.duration || 0)).toFixed(1); 
+                    
+                    let highlightHTML = '';
+                    if (cleanHighlight.length > 2 && cleanHighlight.toLowerCase() !== 'tbd' && cleanHighlight.toLowerCase() !== 'n/a') {
+                        highlightHTML = `<span class="block pl-4 mt-1 text-[13px] font-medium task-desc transition-colors text-gray-700">${shortName(cleanHighlight, 70)}</span>`;
+                    } else {
+                        highlightHTML = `<textarea class="block ml-4 mt-1.5 w-[90%] text-[12px] p-1.5 border border-dashed rounded focus:bg-white outline-none resize-none custom-scrollbar" style="border-color: var(--border-color); color: var(--text-main); background-color: rgba(0,0,0,0.02);" rows="1" placeholder="✍️ ${t.wizNoDeliv}"></textarea>`;
+                    }
+
                     rightColHTML += `
                         <li class="leading-relaxed mb-2 p-2 rounded-r wiz-list-item cursor-pointer group list-none flex flex-col">
-                            <span class="font-bold text-[14.5px] task-title transition-colors flex items-start gap-1" style="color:var(--text-main); word-break: break-word;">
+                            <span class="font-semibold text-[14.5px] task-title transition-colors flex items-start gap-1" style="color:var(--text-main); word-break: break-word;">
                                 <i class="fa-solid fa-caret-right mt-1 text-[13px] task-icon"></i>
-                                <span>${p.desc}:</span>
+                                <span>${p.desc} <span class="text-xs px-1.5 py-0.5 rounded" style="background-color:rgba(0,0,0,0.05); color:var(--brand-text);">${accumMH} MH</span>:</span>
                             </span> 
-                            <span class="block pl-4 mt-1 text-[13px] font-medium task-desc transition-colors text-gray-700">${shortName(cleanHighlight, 70)}</span>
+                            ${highlightHTML}
                         </li>`;
                 });
                 rightColHTML += `</ul></div>`;
@@ -2348,7 +2760,7 @@ function generateWizSummary(autoScroll = false) {
         const endT_week = endOfWeek.getTime();
 
         const weekStr = `${startOfWeek.toLocaleDateString(currentLang==='en'?'en-US':'zh-TW', {month:'short', day:'numeric'})} ~ ${endOfWeek.toLocaleDateString(currentLang==='en'?'en-US':'zh-TW', {month:'short', day:'numeric'})}`;
-        rightColHTML += `<div class="mb-4 p-2 rounded text-center text-[13px] font-bold" style="background-color:rgba(0,0,0,0.05); color:var(--brand-main);">📅 Current Week: ${weekStr}</div>`;
+        rightColHTML += `<div class="mb-4 p-2 rounded text-center text-[13px] font-semibold" style="background-color:rgba(0,0,0,0.05); color:var(--brand-text);">📅 Current Week: ${weekStr}</div>`;
 
         const weeklyProjects = wizData.filter(d => {
             const end = d.rev || d.due;
@@ -2372,27 +2784,173 @@ function generateWizSummary(autoScroll = false) {
             Object.keys(groupedWeekly).sort().forEach(clust => {
                 const projs = groupedWeekly[clust];
                 rightColHTML += `<div class="mb-4">
-                                    <h5 class="font-bold text-[14px] border-b pb-1 mb-2" style="color:var(--brand-main); border-color:var(--border-color);">
+                                    <h5 class="font-bold text-[14px] border-b pb-1 mb-2" style="color:var(--brand-text); border-color:var(--border-color);">
                                         <i class="fa-solid fa-layer-group mr-1"></i>${clust}
                                     </h5>
                                     <ul class="hl-list ml-2">`;
                 projs.forEach(p => {
+                    const cleanHighlight = p.highlights ? p.highlights.replace(/[•*-]/g, '').trim() : '';
+                    const accumMH = ((p.dailyMH || 0) * (p.duration || 0)).toFixed(1); 
+                    
+                    let highlightHTML = '';
+                    if (cleanHighlight.length > 2 && cleanHighlight.toLowerCase() !== 'tbd' && cleanHighlight.toLowerCase() !== 'n/a') {
+                        highlightHTML = `<span class="block pl-4 mt-1 text-[12.5px] font-normal task-desc transition-colors text-gray-600">${shortName(cleanHighlight, 70)}</span>`;
+                    } else {
+                        highlightHTML = `<textarea class="block ml-4 mt-1.5 w-[90%] text-[11px] p-1.5 border border-dashed rounded focus:bg-white outline-none resize-none custom-scrollbar" style="border-color: var(--border-color); color: var(--text-main); background-color: rgba(0,0,0,0.02);" rows="1" placeholder="✍️ ${t.wizNoDeliv}"></textarea>`;
+                    }
+
                     rightColHTML += `
-                        <li class="leading-relaxed mb-2 p-2 rounded-r wiz-list-item cursor-pointer group list-none flex items-start gap-1 font-bold text-[14.5px]" style="color:var(--text-main);">
-                            <i class="fa-solid fa-bolt mt-1 text-[13px] task-icon"></i>
-                            <span class="task-title transition-colors" style="word-break: break-word;">${p.desc}</span>
+                        <li class="leading-relaxed mb-2 p-2 rounded-r wiz-list-item cursor-pointer group list-none flex flex-col">
+                            <div class="flex items-start gap-1 font-semibold text-[14.5px]" style="color:var(--text-main);">
+                                <i class="fa-solid fa-bolt mt-1 text-[13px] task-icon"></i>
+                                <span class="task-title transition-colors" style="word-break: break-word;">${p.desc} <span class="text-xs px-1.5 py-0.5 rounded" style="background-color:rgba(0,0,0,0.05); color:var(--brand-text);">${accumMH} MH</span></span>
+                            </div>
+                            ${highlightHTML}
                         </li>`;
                 });
                 rightColHTML += `</ul></div>`;
             });
         }
     }
+    else if (currentWizView === 'mh_breakdown') {
+        const totalPeriodMH = wizData.reduce((acc, d) => acc + ((d.dailyMH || 0) * Math.max(1, d.duration || 1)), 0);
+
+        const projHours = wizData.map(d => {
+            const duration = Math.max(1, d.duration || 1);
+            const mh = (d.dailyMH || 0) * duration;
+            return { desc: d.desc, mh: mh, pct: totalPeriodMH > 0 ? (mh / totalPeriodMH) * 100 : 0 };
+        }).sort((a, b) => b.mh - a.mh);
+
+        const clusterMap = {};
+        wizData.forEach(d => {
+            const cluster = d.cluster || (currentLang === 'en' ? 'Uncategorized' : '未分類');
+            const duration = Math.max(1, d.duration || 1);
+            const mh = (d.dailyMH || 0) * duration;
+            clusterMap[cluster] = (clusterMap[cluster] || 0) + mh;
+        });
+        const clusterHours = Object.keys(clusterMap).map(c => {
+            const mh = clusterMap[c];
+            return { cluster: c, mh: mh, pct: totalPeriodMH > 0 ? (mh / totalPeriodMH) * 100 : 0 };
+        }).sort((a, b) => b.mh - a.mh);
+
+        // V8.58: 4-Point Diagnostic Metrics Logic
+        const top3Projects = projHours.slice(0, 3);
+        const top3MhSum = top3Projects.reduce((sum, p) => sum + p.mh, 0);
+        const top3Pct = totalPeriodMH > 0 ? Math.round((top3MhSum / totalPeriodMH) * 100) : 0;
+        const topProjName = top3Projects.length > 0 ? top3Projects[0].desc : 'N/A';
+        const isSingleOwner = ganttFilters.owner !== 'All';
+        const ownerTarget = isSingleOwner ? ganttFilters.owner : (currentLang === 'en' ? 'the team' : '團隊');
+        
+        const delayedProjects = wizData.filter(p => !p.isOnTime);
+        const actionRequired = wizData.filter(p => {
+            const highlight = (p.highlights || '').trim().toLowerCase();
+            const progress = (p.progressDisplay || '').trim().toLowerCase();
+            const isHEmpty = highlight.length < 3 || highlight === 'tbd' || highlight === 'n/a';
+            const isPEmpty = progress === '-' || progress === '';
+            return isHEmpty || isPEmpty;
+        });
+        
+        // Background Regex Scanner for Highlight Risk
+        const riskRegex = /(issue|support|risk|abnormal|remind|warning|blocker|urgent|critical|attention|delay|fail|問題|支援|風險|提醒|異常|注意|緊急|阻礙|協助|瓶頸|求救|延遲|失敗)/i;
+        const highlightedProjects = wizData.filter(p => {
+            const combinedText = ((p.desc || '') + ' ' + (p.progressDisplay || '') + ' ' + (p.highlights || '')).toLowerCase();
+            return riskRegex.test(combinedText);
+        });
+
+        let contextText = '';
+        if (currentLang === 'en') {
+            contextText = `Across the selected period, total resource allocation is <strong style="color:var(--brand-main)">${totalPeriodMH.toFixed(1)}h</strong>. <strong>${top3Pct}%</strong> of ${ownerTarget}'s capacity is concentrated on the top ${top3Projects.length} projects (primarily delivering <strong>${topProjName}</strong>).`;
+        } else {
+            contextText = `在選定期間內，總資源配置為 <strong style="color:var(--brand-main)">${totalPeriodMH.toFixed(1)}h</strong>。${ownerTarget} 有高達 <strong>${top3Pct}%</strong> 的產能集中於前 ${top3Projects.length} 大專案（主要交付 <strong>${topProjName}</strong>）。`;
+        }
+
+        const scheduleText = delayedProjects.length > 0 
+            ? t.wizDiagScheduleBad + delayedProjects.map(p => `<strong>[${p.desc}]</strong>`).join(', ') 
+            : t.wizDiagScheduleGood;
+
+        const qualityText = actionRequired.length > 0 
+            ? t.wizDiagQualityBad + actionRequired.map(p => `<strong>[${p.desc}]</strong>`).join(', ') 
+            : t.wizDiagQualityGood;
+            
+        const highlightText = highlightedProjects.length > 0 
+            ? t.wizDiagHighlightBad + highlightedProjects.map(p => `<strong>[${p.desc}]</strong>`).join(', ') 
+            : t.wizDiagHighlightGood;
+
+        rightColHTML += `
+            <div class="p-1">
+                <!-- 4-Point Diagnostic Metrics Briefing Card -->
+                <div class="flex flex-col bg-white bg-opacity-60 border rounded-lg p-4 mb-4" style="border-color: var(--border-color);">
+                    <div class="flex justify-between items-start mb-2">
+                        <h4 class="text-[13px] font-bold" style="color: var(--brand-text);"><i class="fa-solid fa-stethoscope mr-1"></i> ${t.wizMhBriefTitle}</h4>
+                    </div>
+                    <div class="space-y-2.5 text-[12.5px] mt-1" style="color: var(--text-sub); line-height: 1.5;">
+                        <div class="flex items-start gap-2">
+                            <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-700 flex-shrink-0 mt-0.5">Context</span>
+                            <span>${contextText}</span>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <span class="px-1.5 py-0.5 rounded text-[10px] font-bold ${delayedProjects.length > 0 ? 'bg-rose-100 text-rose-700' : 'bg-emerald-100 text-emerald-700'} flex-shrink-0 mt-0.5">Schedule</span>
+                            <span>${scheduleText}</span>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <span class="px-1.5 py-0.5 rounded text-[10px] font-bold ${actionRequired.length > 0 ? 'bg-orange-100 text-orange-700' : 'bg-emerald-100 text-emerald-700'} flex-shrink-0 mt-0.5">Quality</span>
+                            <span>${qualityText}</span>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <span class="px-1.5 py-0.5 rounded text-[10px] font-bold ${highlightedProjects.length > 0 ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700'} flex-shrink-0 mt-0.5">Highlight</span>
+                            <span>${highlightText}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="flex flex-col border rounded-lg p-4 bg-white bg-opacity-40" style="border-color: var(--border-color);">
+                        <h5 class="text-xs font-bold uppercase mb-3 flex justify-between items-center" style="color: var(--brand-text);">
+                            <span><i class="fa-solid fa-folder-tree mr-1.5"></i> ${t.wizMhProjectTitle}</span>
+                        </h5>
+                        <div class="space-y-3 overflow-y-auto max-h-[220px] pr-1 custom-scrollbar">
+                            ${projHours.map((p, idx) => `
+                                <div class="text-[12.5px]">
+                                    <div class="flex justify-between font-semibold mb-1">
+                                        <span class="truncate max-w-[70%]" title="${p.desc}">${idx+1}. ${p.desc}</span>
+                                        <span style="color: var(--brand-text);">${p.mh.toFixed(1)}h (${p.pct.toFixed(0)}%)</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 h-2 rounded-full overflow-hidden">
+                                        <div class="h-full rounded-full transition-all duration-500" style="width: ${p.pct}%; background-color: var(--brand-main);"></div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col border rounded-lg p-4 bg-white bg-opacity-40" style="border-color: var(--border-color);">
+                        <h5 class="text-xs font-bold uppercase mb-3 flex justify-between items-center" style="color: var(--brand-text);">
+                            <span><i class="fa-solid fa-cubes mr-1.5"></i> ${t.wizMhClusterTitle}</span>
+                        </h5>
+                        <div class="space-y-3 overflow-y-auto max-h-[220px] pr-1 custom-scrollbar">
+                            ${clusterHours.map((c, idx) => `
+                                <div class="text-[12.5px]">
+                                    <div class="flex justify-between font-semibold mb-1">
+                                        <span>${idx+1}. ${c.cluster}</span>
+                                        <span style="color: var(--brand-sub);">${c.mh.toFixed(1)}h (${c.pct.toFixed(0)}%)</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 h-2 rounded-full overflow-hidden">
+                                        <div class="h-full rounded-full transition-all duration-500" style="width: ${c.pct}%; background-color: var(--brand-sub);"></div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
     rightColHTML += '</div>';
 
     const leftCol = `
         <div class="flex flex-col gap-3 w-full">
             <div>
-                <h4 class="font-bold mb-1 uppercase text-xs flex flex-wrap items-center gap-2" style="color:var(--brand-main);">
+                <h4 class="font-bold mb-1 uppercase text-xs flex flex-wrap items-center gap-2" style="color:var(--brand-text);">
                     ${t.wizProjects} 
                     <span class="text-[10px] px-2 py-0.5 rounded border border-gray-300 bg-opacity-50" style="color:var(--text-main); background-color:var(--bg-color);">
                        <i class="fa-regular fa-calendar mr-1"></i> ${periodText}
@@ -2402,37 +2960,13 @@ function generateWizSummary(autoScroll = false) {
                     <p class="text-3xl font-bold" style="color:var(--text-main);">${wizData.length}</p>
                     <div class="text-[11px]" style="color:var(--text-sub);">
                         <span style="color:var(--brand-positive); font-weight:bold;">${closedCount}</span> Completed, 
-                        <span style="color:var(--brand-sub); font-weight:bold;">${processingCount}</span> In Progress
+                        <span style="color:var(--brand-text); font-weight:bold;">${processingCount}</span> In Progress
                     </div>
-                </div>
-            </div>
-            
-            <div class="px-4 py-3 rounded-lg border shadow-sm group relative cursor-help glow-card-hover w-full box-border" style="background-color: var(--card-bg); border-color: var(--brand-sub);">
-                <h4 class="font-bold mb-1 uppercase text-xs flex justify-between items-center" style="color:var(--brand-main);">
-                    ${t.wizAvgLoad}
-                    <i class="fa-solid fa-circle-info opacity-50 group-hover:opacity-100 transition-opacity" style="color:var(--brand-main);"></i>
-                </h4>
-                <div class="flex items-baseline gap-1">
-                    <p class="text-3xl font-bold" style="color:var(--brand-accent); text-shadow: 1px 1px 2px rgba(0,0,0,0.05);">
-                        ${avgDailyMH.toFixed(1)}
-                    </p>
-                    <span class="text-xs font-medium" style="color:var(--text-sub);">MH/d</span>
-                </div>
-                
-                <div class="absolute left-0 top-full mt-2 hidden group-hover:block w-80 max-w-[90vw] p-4 rounded-xl shadow-2xl z-[100] pointer-events-none" style="background: rgba(17, 24, 39, 0.98); backdrop-filter: blur(8px); color: #f3f4f6; border: 1px solid rgba(255,255,255,0.15);">
-                    <div class="font-bold mb-2 pb-2 border-b border-gray-700 text-sm" style="color: var(--brand-accent);">${t.wizAvgTooltipFormula}</div>
-                    <p class="mb-3 text-[13px] leading-relaxed opacity-90">${t.wizAvgTooltipDesc}</p>
-                    <div class="font-bold mb-1 text-[13px]" style="color: var(--brand-positive);">${t.wizAvgTooltipExTitle}</div>
-                    <ul class="list-disc pl-4 text-[12px] opacity-85 space-y-1.5">
-                        <li>${t.wizAvgTooltipEx1}</li>
-                        <li>${t.wizAvgTooltipEx2}</li>
-                        <li>${t.wizAvgTooltipEx3}</li>
-                    </ul>
                 </div>
             </div>
 
             <div>
-                <h4 class="font-bold mb-1 uppercase text-xs" style="color:var(--brand-main);">${t.wizOwners}</h4>
+                <h4 class="font-bold mb-1 uppercase text-xs" style="color:var(--brand-text);">${t.wizOwners}</h4>
                 <div class="flex flex-wrap gap-1">
                     ${uniqueOwners.map(o => `<span class="px-2 py-0.5 rounded text-[10px] border" style="border-color:var(--border-color); color:var(--text-sub);">${o}</span>`).join('')}
                 </div>
@@ -2445,29 +2979,37 @@ function generateWizSummary(autoScroll = false) {
             <div class="md:col-span-4 lg:col-span-3 w-full">${leftCol}</div>
             <div class="md:col-span-8 lg:col-span-9 flex flex-col w-full overflow-hidden">
                 <div class="flex flex-wrap justify-between items-end gap-3 mb-3 border-b pb-2" style="border-color:var(--border-color);">
-                    <h4 class="font-bold uppercase text-xs" style="color:var(--brand-main);">${t.wizDeliv}</h4>
+                    <h4 class="font-bold uppercase text-xs" style="color:var(--brand-text);">${t.wizDeliv}</h4>
                     <div class="flex flex-wrap rounded p-0.5 shadow-sm" style="background-color: var(--bg-color); border: 1px solid var(--border-color);">
-                        <button onclick="switchWizView('project')" class="px-3 py-1 text-[10px] font-bold rounded transition-all" style="${currentWizView === 'project' ? 'background-color:var(--brand-main); color:#FFF; box-shadow:0 1px 2px rgba(0,0,0,0.1);' : 'color:var(--text-sub); hover:opacity-80;'}">${t.wizViewProj}</button>
-                        <button onclick="switchWizView('category')" class="px-3 py-1 text-[10px] font-bold rounded transition-all" style="${currentWizView === 'category' ? 'background-color:var(--brand-main); color:#FFF; box-shadow:0 1px 2px rgba(0,0,0,0.1);' : 'color:var(--text-sub); hover:opacity-80;'}">${t.wizViewCat}</button>
-                        <button onclick="switchWizView('weekly')" class="px-3 py-1 text-[10px] font-bold rounded transition-all" style="${currentWizView === 'weekly' ? 'background-color:var(--brand-accent); color:#FFF; box-shadow:0 1px 2px rgba(0,0,0,0.1); text-shadow: 1px 1px 2px rgba(0,0,0,0.2);' : 'color:var(--text-sub); hover:opacity-80;'}"><i class="fa-solid fa-calendar-day mr-1"></i> ${t.wizViewWeekly}</button>
+                        <button onclick="switchWizView('project')" class="btn-tooltip px-3 py-1 text-[10px] font-semibold rounded transition-all" data-tooltip="${t.tipWizViewProj}" style="${currentWizView === 'project' ? 'background-color:var(--brand-main); color:#FFF; box-shadow:0 1px 2px rgba(0,0,0,0.1);' : 'color:var(--text-sub); hover:opacity-80;'}">${t.wizViewProj}</button>
+                        <button onclick="switchWizView('category')" class="btn-tooltip px-3 py-1 text-[10px] font-semibold rounded transition-all" data-tooltip="${t.tipWizViewCat}" style="${currentWizView === 'category' ? 'background-color:var(--brand-main); color:#FFF; box-shadow:0 1px 2px rgba(0,0,0,0.1);' : 'color:var(--text-sub); hover:opacity-80;'}">${t.wizViewCat}</button>
+                        <button onclick="switchWizView('weekly')" class="btn-tooltip px-3 py-1 text-[10px] font-semibold rounded transition-all" data-tooltip="${t.tipWizViewWeekly}" style="${currentWizView === 'weekly' ? 'background-color:var(--brand-accent); color:#1A1A1A; box-shadow:0 1px 2px rgba(0,0,0,0.1); text-shadow: 1px 1px 2px rgba(0,0,0,0.1);' : 'color:var(--text-sub); hover:opacity-80;'}"><i class="fa-solid fa-calendar-day mr-1"></i> ${t.wizViewWeekly}</button>
+                        <button onclick="switchWizView('mh_breakdown')" class="btn-tooltip px-3 py-1 text-[10px] font-semibold rounded transition-all" data-tooltip="${t.tipWizViewMh}" style="${currentWizView === 'mh_breakdown' ? 'background-color:var(--brand-text); color:#FFF; box-shadow:0 1px 2px rgba(0,0,0,0.1);' : 'color:var(--text-sub); hover:opacity-80;'}"><i class="fa-solid fa-clock-rotate-left mr-1"></i> ${t.wizViewMh}</button>
                     </div>
                 </div>
                 ${rightColHTML}
             </div>
             
             <div class="md:col-span-12 mt-2 border-t pt-4 p-2 rounded-lg glow-card-hover transition-all duration-300 w-full" style="border-color:var(--border-color);">
-                <h4 class="font-bold mb-2 uppercase text-xs flex justify-between items-center" style="color:var(--brand-main);">
-                    <!-- V8.48 FIX: Dynamic Chart View Toggle -->
-                    <div class="flex items-center gap-3">
+                <h4 class="font-bold mb-2 uppercase text-xs flex justify-between items-center" style="color:var(--brand-text);">
+                    <div class="flex flex-wrap items-center gap-2 sm:gap-3">
                         <span><i class="fa-solid fa-chart-area mr-1"></i> ${t.wizWorkload}</span>
                         <div class="flex p-0.5 rounded shadow-sm" style="background-color: var(--bg-color); border: 1px solid var(--border-color);">
-                            <button onclick="setWizChartMetric('cluster')" class="px-2 py-0.5 text-[10px] font-bold rounded transition-all" style="${wizChartMode === 'cluster' ? 'background-color:var(--brand-main); color:#FFF; box-shadow:0 1px 2px rgba(0,0,0,0.1);' : 'color:var(--text-sub); hover:opacity-80;'}">${t.lblViewCluster}</button>
-                            <button onclick="setWizChartMetric('project')" class="px-2 py-0.5 text-[10px] font-bold rounded transition-all" style="${wizChartMode === 'project' ? 'background-color:var(--brand-main); color:#FFF; box-shadow:0 1px 2px rgba(0,0,0,0.1);' : 'color:var(--text-sub); hover:opacity-80;'}">${t.lblViewProject}</button>
+                            <button onclick="setWizChartMetric('cluster')" class="btn-tooltip px-2 py-0.5 text-[10px] font-semibold rounded transition-all" data-tooltip="${t.tipViewCluster}" style="${wizChartMode === 'cluster' ? 'background-color:var(--brand-main); color:#FFF; box-shadow:0 1px 2px rgba(0,0,0,0.1);' : 'color:var(--text-sub); hover:opacity-80;'}">${t.lblViewCluster}</button>
+                            <button onclick="setWizChartMetric('project')" class="btn-tooltip px-2 py-0.5 text-[10px] font-semibold rounded transition-all" data-tooltip="${t.tipViewProject}" style="${wizChartMode === 'project' ? 'background-color:var(--brand-main); color:#FFF; box-shadow:0 1px 2px rgba(0,0,0,0.1);' : 'color:var(--text-sub); hover:opacity-80;'}">${t.lblViewProject}</button>
+                        </div>
+                        <div class="flex p-0.5 rounded shadow-sm btn-tooltip" data-tooltip="${t.tipStatusFilter}" style="background-color: var(--bg-color); border: 1px solid var(--border-color);">
+                            <select onchange="setWizChartStatus(this.value)" class="px-1 py-0.5 text-[10px] font-semibold rounded outline-none cursor-pointer bg-transparent transition-all" style="color:var(--brand-text);">
+                                <option value="all" ${wizChartStatusFilter === 'all' ? 'selected' : ''}>${t.wizFilterAll}</option>
+                                <option value="processing" ${wizChartStatusFilter === 'processing' ? 'selected' : ''}>${t.wizFilterProc}</option>
+                                <option value="pending" ${wizChartStatusFilter === 'pending' ? 'selected' : ''}>${t.wizFilterPend}</option>
+                                <option value="closed" ${wizChartStatusFilter === 'closed' ? 'selected' : ''}>${t.wizFilterClosed}</option>
+                            </select>
                         </div>
                     </div>
                     
                     <div class="group relative flex items-center cursor-help">
-                        <span class="text-[10px] font-bold px-2 py-0.5 rounded flex items-center gap-1 transition-all hover:bg-[#FECACA]" style="background-color:#FEE2E2; color:#B91C1C; border: 1px solid #FECACA;">
+                        <span class="text-[10px] font-semibold px-2 py-0.5 rounded flex items-center gap-1 transition-all hover:bg-[#FECACA]" style="background-color:#FEE2E2; color:#B91C1C; border: 1px solid #FECACA;">
                             ${t.wizMaxCap}
                             <i class="fa-solid fa-circle-info opacity-60 group-hover:opacity-100"></i>
                         </span>
@@ -2515,17 +3057,20 @@ function generateWizSummary(autoScroll = false) {
 $('fileInput').onchange = (e) => { const file = e.target.files[0]; if(file) processFile(file); };
 $('btnCat').onclick = () => { groupBy = 'Category'; $('btnCat').style.backgroundColor = 'var(--brand-main)'; $('btnCat').style.color='#fff'; $('btnClust').style.backgroundColor='transparent'; $('btnClust').style.color='var(--text-sub)'; updateCharts(); };
 $('btnClust').onclick = () => { groupBy = 'Cluster'; $('btnClust').style.backgroundColor = 'var(--brand-main)'; $('btnClust').style.color='#fff'; $('btnCat').style.backgroundColor='transparent'; $('btnCat').style.color='var(--text-sub)'; updateCharts(); };
-$('btnExport').onclick = () => {
-  if(!filteredData.length) return;
-  const header = "Owner,Description,Status,Category,Cluster,Duration,Deviation,Revision 1,IsOnTime,Highlights";
-  const rows = filteredData.map(d => `"${d.owner}","${d.desc.replace(/"/g, '""')}","${d.status}","${d.category}","${d.cluster}","${d.duration}","${d.deviation}","${formatDate(d.rev)}","${d.isOnTime}","${d.highlights.replace(/"/g, '""')}"`).join('\n');
-  const blob = new Blob([header + '\n' + rows], {type: 'text/csv'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a'); a.href = url; a.download = 'export.csv'; a.click();
-};
 
-function openModal(id) { $(id).style.display = 'flex'; }
-function closeModal(id) { $(id).style.display = 'none'; }
+window.toggleEvidenceList = function() {
+    const content = $('evidenceContent');
+    const icon = $('evidenceChevron');
+    if (content.classList.contains('hidden')) {
+        content.classList.remove('hidden');
+        icon.classList.remove('fa-chevron-right');
+        icon.classList.add('fa-chevron-down');
+    } else {
+        content.classList.add('hidden');
+        icon.classList.remove('fa-chevron-down');
+        icon.classList.add('fa-chevron-right');
+    }
+};
 
 // --- INIT ---
 applyTheme('slightGray');
