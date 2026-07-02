@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Annual Assessment Dashboard V8.58</title>
+  <title>Annual Assessment Dashboard V8.59</title>
 
   <!-- Google Fonts: Quicksand -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -65,8 +65,8 @@
       letter-spacing: 0.015em; 
     }
 
-    p { line-height: 1.6; }
-    h1, h2, h3, h4, h5, h6 { letter-spacing: -0.015em; line-height: 1.25; }
+    p { line-height: 1.2; }
+    h1, h2, h3, h4, h5, h6 { letter-spacing: -0.015em; line-height: 1.2; }
 
     /* --- COMPONENTS & DEPTH --- */
     .dashboard-card {
@@ -129,46 +129,53 @@
     }
     .lang-switch:hover { border-color: var(--brand-main); color: var(--brand-main); }
 
+    /* Table & Column Typo */
     .data-table th {
       background-color: rgba(0,0,0,0.05); color: var(--brand-text); font-weight: 700; text-transform: uppercase; font-size: 13px; 
-      padding: 12px 10px; border-bottom: 2px solid var(--border-color); white-space: nowrap; letter-spacing: 0.03em;
+      padding: 8px 10px; border-bottom: 2px solid var(--border-color); white-space: nowrap; letter-spacing: 0.03em; line-height: 1.2;
     }
-    .data-table td { border-bottom: 1px solid var(--border-color); padding: 12px 10px; font-size: 14.5px; color: var(--text-main); vertical-align: top; line-height: 1.5; }
+    .data-table td { border-bottom: 1px solid var(--border-color); padding: 8px 10px; font-size: 14.5px; color: var(--text-main); vertical-align: top; line-height: 1.2; }
     .data-table tr:hover { background-color: rgba(128,128,128,0.05); }
     
     .hl-list { margin: 0; padding-left: 1.2em; list-style-type: disc; }
-    .hl-list li { margin-bottom: 6px; line-height: 1.5; }
+    .hl-list li { margin-bottom: 4px; line-height: 1.2; }
 
+    /* Modal */
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999; display: none; align-items: center; justify-content: center; }
     .modal-box { background: var(--card-bg); padding: 24px; border-radius: 12px; max-width: 400px; width: 90%; box-shadow: 0 10px 25px rgba(0,0,0,0.2); border: 1px solid var(--border-color); }
     .modal-box-lg { max-width: 650px; }
 
+    /* Gantt Empty State */
     .gantt-empty { text-align: center; color: var(--text-sub); padding: 20px; border: 2px dashed var(--border-color); border-radius: 8px; background-color: rgba(0,0,0,0.02); width: 80%; }
 
+    /* Custom Scrollbar */
     .custom-scrollbar::-webkit-scrollbar { width: 6px; }
     .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
     .custom-scrollbar::-webkit-scrollbar-thumb { background-color: var(--border-color); border-radius: 3px; }
     .custom-scrollbar::-webkit-scrollbar-thumb:hover { background-color: var(--brand-sub); }
     
+    /* Color Input Styling */
     .color-input-group { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; }
     .color-input-group .input-labels { flex: 1; display: flex; flex-direction: column; justify-content: center; }
-    .color-input-group label { font-size: 13.5px; font-weight: 700; color: var(--text-main); }
-    .color-input-group p { font-size: 11.5px; color: var(--text-sub); margin: 2px 0 0 0; line-height: 1.3; opacity: 0.85; }
+    .color-input-group label { font-size: 13.5px; font-weight: 700; color: var(--text-main); line-height: 1.2; }
+    .color-input-group p { font-size: 11.5px; color: var(--text-sub); margin: 2px 0 0 0; line-height: 1.2; opacity: 0.85; }
     .color-preview { width: 32px; height: 32px; border: 1px solid var(--border-color); border-radius: 6px; cursor: pointer; padding: 0; background: none; flex-shrink: 0; }
     .color-hex { width: 85px; font-family: monospace; font-size: 13px; font-weight: bold; flex-shrink: 0; text-align: center; }
 
+    /* Custom Tooltip for Analysis Switchers */
     .btn-tooltip { position: relative; }
     .btn-tooltip:hover::after {
         content: attr(data-tooltip); position: absolute; top: calc(100% + 8px); left: 50%; transform: translateX(-50%);
         background-color: rgba(15, 23, 42, 0.95); color: #FFFFFF; padding: 8px 12px; border-radius: 6px; font-size: 13px; 
         white-space: normal; width: max-content; max-width: 220px; z-index: 9999; box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-        pointer-events: none; opacity: 0; animation: fadeIn 0.2s forwards; text-align: center; line-height: 1.4;
+        pointer-events: none; opacity: 0; animation: fadeIn 0.2s forwards; text-align: center; line-height: 1.2;
     }
     .btn-tooltip:hover::before {
         content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border-width: 5px; border-style: solid;
         border-color: transparent transparent rgba(15, 23, 42, 0.95) transparent; z-index: 9999; pointer-events: none; opacity: 0; animation: fadeIn 0.2s forwards;
     }
 
+    /* --- CSS CLASSES FOR HOVER EFFECTS --- */
     .wiz-task-card { background-color: var(--bg-color); border: 1px solid var(--border-color); border-left: 4px solid var(--brand-main); transition: all 0.3s ease; }
     .wiz-task-card:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(128, 54, 201, 0.25); border-color: var(--text-blue) !important; }
     .wiz-task-card:hover .task-title { color: var(--text-blue) !important; }
@@ -191,7 +198,7 @@
   <!-- Dialog Modal to replace browser alerts -->
   <div id="dialogModal" class="modal-overlay">
     <div class="modal-box">
-      <h3 id="dialogTitle" class="text-lg font-bold mb-2" style="color: var(--brand-negative);">Notice</h3>
+      <h3 id="dialogTitle" class="text-lg font-bold mb-2" style="color: var(--brand-negative); line-height: 1.2;">Notice</h3>
       <p id="dialogMsg" class="text-sm mb-4" style="color: var(--text-main);"></p>
       <div class="flex justify-end">
         <button onclick="closeModal('dialogModal')" class="px-4 py-2 rounded text-xs font-bold text-white transition-opacity hover:opacity-90" style="background-color: var(--brand-main);">OK</button>
@@ -202,7 +209,7 @@
   <!-- Modal: Google Drive Link -->
   <div id="driveModal" class="modal-overlay">
     <div class="modal-box">
-      <h3 class="text-lg font-bold mb-2" style="color: var(--text-main);">Import from Google Drive</h3>
+      <h3 class="text-lg font-bold mb-2" style="color: var(--text-main); line-height: 1.2;">Import from Google Drive</h3>
       <p class="text-xs mb-4" style="color: var(--text-sub);">Please paste a <b>public</b> Google Sheet link.</p>
       <input id="gSheetUrl" class="std-input mb-4" value="https://docs.google.com/spreadsheets/d/1Bpw5hltxat4uI0wJNgaUzaZOp-PrYba9NSCFP7VOcCU/edit?usp=sharing" placeholder="https://docs.google.com/spreadsheets/d/..." />
       <div class="flex justify-end gap-2">
@@ -215,13 +222,13 @@
   <!-- Modal: Custom Colors -->
   <div id="customColorModal" class="modal-overlay">
     <div class="modal-box modal-box-lg">
-      <h3 id="lblModalTitle" class="text-lg font-bold mb-1" style="color: var(--text-main);">Customize Theme Colors</h3>
+      <h3 id="lblModalTitle" class="text-lg font-bold mb-1" style="color: var(--text-main); line-height: 1.2;">Customize Theme Colors</h3>
       <p id="lblModalSub" class="text-xs mb-4" style="color: var(--text-sub);">Adjust HEX codes. Charts will automatically adapt to these settings.</p>
       
       <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2 max-h-[500px] overflow-y-auto custom-scrollbar pr-2 mb-4">
           <!-- Backgrounds -->
           <div>
-              <h4 id="lblBgGroup" class="text-xs font-bold uppercase mb-3 border-b pb-1" style="color: var(--brand-sub); border-color: var(--border-color);">Backgrounds & Borders</h4>
+              <h4 id="lblBgGroup" class="text-xs font-bold uppercase mb-3 border-b pb-1" style="color: var(--brand-sub); border-color: var(--border-color); line-height: 1.2;">Backgrounds & Borders</h4>
               <div class="color-input-group">
                   <div class="input-labels"><label id="lblBgPage">Page Background</label><p id="descBgPage">Applies to the main body and canvas areas.</p></div>
                   <input type="color" id="cp_bg" class="color-preview"><input type="text" id="txt_bg" class="std-input color-hex">
@@ -237,7 +244,7 @@
           </div>
           <!-- Text -->
           <div>
-              <h4 id="lblTextGroup" class="text-xs font-bold uppercase mb-3 border-b pb-1" style="color: var(--brand-sub); border-color: var(--border-color);">Typography</h4>
+              <h4 id="lblTextGroup" class="text-xs font-bold uppercase mb-3 border-b pb-1" style="color: var(--brand-sub); border-color: var(--border-color); line-height: 1.2;">Typography</h4>
               <div class="color-input-group">
                   <div class="input-labels"><label id="lblTxtMain">Main Text</label><p id="descTxtMain">Primary color for titles, values, and table data.</p></div>
                   <input type="color" id="cp_textMain" class="color-preview"><input type="text" id="txt_textMain" class="std-input color-hex">
@@ -253,7 +260,7 @@
           </div>
           <!-- Branding -->
           <div>
-              <h4 id="lblBrandGroup" class="text-xs font-bold uppercase mb-3 border-b pb-1" style="color: var(--brand-sub); border-color: var(--border-color);">Brand & Chart Palette</h4>
+              <h4 id="lblBrandGroup" class="text-xs font-bold uppercase mb-3 border-b pb-1" style="color: var(--brand-sub); border-color: var(--border-color); line-height: 1.2;">Brand & Chart Palette</h4>
               <div class="color-input-group">
                   <div class="input-labels"><label id="lblBrandMain">Chart Base (Brand Main)</label><p id="descBrandMain">Primary color for all bar charts, headers, and 'Processing' tasks.</p></div>
                   <input type="color" id="cp_main" class="color-preview"><input type="text" id="txt_main" class="std-input color-hex">
@@ -269,7 +276,7 @@
           </div>
           <!-- Status -->
           <div>
-              <h4 id="lblStatusGroup" class="text-xs font-bold uppercase mb-3 border-b pb-1" style="color: var(--brand-sub); border-color: var(--border-color);">Status Indication</h4>
+              <h4 id="lblStatusGroup" class="text-xs font-bold uppercase mb-3 border-b pb-1" style="color: var(--brand-sub); border-color: var(--border-color); line-height: 1.2;">Status Indication</h4>
               <div class="color-input-group">
                   <div class="input-labels"><label id="lblStatusPos">Positive (Green)</label><p id="descStatusPos">Applies to 'Completed' metrics and 'Closed' chart elements.</p></div>
                   <input type="color" id="cp_pos" class="color-preview"><input type="text" id="txt_pos" class="std-input color-hex">
@@ -299,7 +306,7 @@
         <img src="https://upload.cc/i1/2026/06/17/FAfopV.png" alt="Logo" class="w-full h-full object-contain" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22%231495CC%22><path d=%22M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z%22/></svg>'">
       </div>
       <div>
-        <h1 id="lblTitle" class="text-3xl font-bold tracking-tight text-slate-900 transition-colors" style="color: var(--text-main); font-family: 'Microsoft JhengHei UI', sans-serif;">Project Dashboard V8.58</h1>
+        <h1 id="lblTitle" class="text-3xl font-bold tracking-tight text-slate-900 transition-colors" style="color: var(--text-main); font-family: 'Microsoft JhengHei UI', sans-serif;">Project Dashboard V8.59</h1>
         <p id="lblSubtitle" class="text-sm font-semibold tracking-wide mt-1.5" style="color: var(--text-sub);">Annual Assessment System</p>
       </div>
     </div>
@@ -384,12 +391,12 @@
         </div>
 
         <div class="grid grid-cols-2 md:grid-cols-6 gap-2 mt-4 bg-opacity-10 p-3 rounded-lg" style="background-color: var(--bg-color);">
-             <div><label class="block text-[10px] font-semibold uppercase mb-1" style="color: var(--brand-text);">Owner</label><select id="gOwner" class="std-input text-xs"></select></div>
-             <div><label class="block text-[10px] font-semibold uppercase mb-1" style="color: var(--brand-text);">Status</label><select id="gStatus" class="std-input text-xs"></select></div>
-             <div><label class="block text-[10px] font-semibold uppercase mb-1" style="color: var(--brand-text);">Category</label><select id="gCategory" class="std-input text-xs"></select></div>
-             <div><label class="block text-[10px] font-semibold uppercase mb-1" style="color: var(--brand-text);">Cluster</label><select id="gCluster" class="std-input text-xs"></select></div>
+             <div><label class="block text-[10px] font-semibold uppercase mb-1" style="color: var(--brand-text); line-height: 1.2;">Owner</label><select id="gOwner" class="std-input text-xs"></select></div>
+             <div><label class="block text-[10px] font-semibold uppercase mb-1" style="color: var(--brand-text); line-height: 1.2;">Status</label><select id="gStatus" class="std-input text-xs"></select></div>
+             <div><label class="block text-[10px] font-semibold uppercase mb-1" style="color: var(--brand-text); line-height: 1.2;">Category</label><select id="gCategory" class="std-input text-xs"></select></div>
+             <div><label class="block text-[10px] font-semibold uppercase mb-1" style="color: var(--brand-text); line-height: 1.2;">Cluster</label><select id="gCluster" class="std-input text-xs"></select></div>
              <div class="md:col-span-2">
-                 <label class="block text-[10px] font-semibold uppercase mb-1" style="color: var(--brand-text);">Period</label>
+                 <label class="block text-[10px] font-semibold uppercase mb-1" style="color: var(--brand-text); line-height: 1.2;">Period</label>
                  <div class="flex items-center gap-1">
                     <select id="gStartMonth" class="std-input text-xs"></select>
                     <span style="color: var(--text-sub);">-</span>
@@ -400,7 +407,7 @@
       </div>
 
       <div class="overflow-y-auto custom-scrollbar w-full" style="max-height: 600px;">
-        <div class="gantt-wrapper" id="ganttContainer" style="min-height: 400px; width: 100%;">
+        <div class="gantt-wrapper" id="ganttContainer" style="min-height: 300px; width: 100%;">
           <div id="ganttEmpty" class="gantt-empty">
             <i class="fa-solid fa-filter mb-2 text-2xl"></i><br>
             Select filters above to generate the schedule.
@@ -437,12 +444,12 @@
         <span class="text-xs font-semibold uppercase" style="color: var(--text-sub)">Global Filters (KPIs & Charts)</span>
       </div>
       <div class="grid grid-cols-2 md:grid-cols-6 gap-4">
-        <div class="md:col-span-1"><label id="lblOwner" class="block text-[10px] font-semibold uppercase mb-1" style="color: var(--brand-text);">Owner</label><select id="fOwner" class="std-input"></select></div>
-        <div class="md:col-span-1"><label id="lblStatus" class="block text-[10px] font-semibold uppercase mb-1" style="color: var(--brand-text);">Status</label><select id="fStatus" class="std-input"></select></div>
-        <div class="md:col-span-1"><label id="lblCategory" class="block text-[10px] font-semibold uppercase mb-1" style="color: var(--brand-text);">Category</label><select id="fCategory" class="std-input"></select></div>
-        <div class="md:col-span-1"><label id="lblCluster" class="block text-[10px] font-semibold uppercase mb-1" style="color: var(--brand-text);">Cluster</label><select id="fCluster" class="std-input"></select></div>
+        <div class="md:col-span-1"><label id="lblOwner" class="block text-[10px] font-semibold uppercase mb-1" style="color: var(--brand-text); line-height: 1.2;">Owner</label><select id="fOwner" class="std-input"></select></div>
+        <div class="md:col-span-1"><label id="lblStatus" class="block text-[10px] font-semibold uppercase mb-1" style="color: var(--brand-text); line-height: 1.2;">Status</label><select id="fStatus" class="std-input"></select></div>
+        <div class="md:col-span-1"><label id="lblCategory" class="block text-[10px] font-semibold uppercase mb-1" style="color: var(--brand-text); line-height: 1.2;">Category</label><select id="fCategory" class="std-input"></select></div>
+        <div class="md:col-span-1"><label id="lblCluster" class="block text-[10px] font-semibold uppercase mb-1" style="color: var(--brand-text); line-height: 1.2;">Cluster</label><select id="fCluster" class="std-input"></select></div>
         <div class="md:col-span-2">
-          <label id="lblMonth" class="block text-[10px] font-semibold uppercase mb-1" style="color: var(--brand-text);">Period (Month)</label>
+          <label id="lblMonth" class="block text-[10px] font-semibold uppercase mb-1" style="color: var(--brand-text); line-height: 1.2;">Period (Month)</label>
           <div class="flex items-center gap-2">
             <select id="fStartMonth" class="std-input"></select>
             <span style="color: var(--text-sub); font-size: 12px;">to</span>
@@ -534,7 +541,7 @@
       </div>
       
       <div class="overflow-y-auto custom-scrollbar w-full" style="max-height: 500px;">
-        <div class="chart-wrapper" id="ownerContainer" style="height: 350px; min-height: 350px; width: 100%;">
+        <div class="chart-wrapper" id="ownerContainer" style="height: 250px; min-height: 250px; width: 100%;">
           <canvas id="cOwner"></canvas>
         </div>
       </div>
@@ -584,12 +591,11 @@
 
 <script>
 /**
- * DASHBOARD V8.58
- * - V8.51: Implemented 112.5% legibility scaling, anti-aliasing typography settings, and datalabel filtering.
+ * DASHBOARD V8.59
+ * - V8.51: Implemented 112.5% legibility scaling, anti-aliasing typography settings.
  * - V8.58 Finalized: 4-Point Diagnostic Metrics (Context, Schedule, Quality, Highlight Risk).
- * - Implemented advanced Regex parsing on project descriptions, progress, and deliverables to trigger Amber alerts.
- * - Export HTML Report button cleanly integrated without `validProjects` reference errors.
- * - Uses Custom Dialog Modals instead of native browser alerts for enhanced safety in environments preventing alerts.
+ * - V8.59: Squeezed row heights dynamically for Gantt and Owner charts to ensure a compact, high-density view (e.g. 28px per row instead of 40px).
+ * - Re-enforced global line-height to 1.2 for ultra-compact, readable data tracking.
  */
 
 const THEMES = {
@@ -619,7 +625,7 @@ const CUSTOM_CATEGORY_COLORS = {};
 
 const TEXT = {
   en: {
-    title: "Project Dashboard V8.58", subtitle: "BSD Project Tracker",
+    title: "Project Dashboard V8.59", subtitle: "BSD Project Tracker",
     dataSource: "Data Source", import: "Load Excel / CSV",
     owner: "Owner", status: "Status", category: "Category", cluster: "Cluster", month: "Period (Month)",
     total: "Total Items", totalDesc: "All Projects Loaded",
@@ -692,7 +698,7 @@ const TEXT = {
     wizDiagHighlightBad: "Attention required! The following projects have flagged risks, issues, or support needs: "
   },
   zh: {
-    title: "專案儀表板 V8.58", subtitle: "BSD專案檢核",
+    title: "專案儀表板 V8.59", subtitle: "BSD專案檢核",
     dataSource: "資料來源", import: "匯入 Excel / CSV",
     owner: "負責人", status: "狀態", category: "類別", cluster: "群組", month: "期間 (月份)",
     total: "總項目數", totalDesc: "已載入所有專案",
@@ -1352,38 +1358,6 @@ function runFilter() {
   updateGanttOnly(); 
 }
 
-async function processFile(file) {
-  $('fileStatus').textContent = "Processing...";
-  if (file.name.toLowerCase().endsWith('.pdf')) {
-    showDialog("Notice", "PDF Preview only."); $('fileStatus').textContent = "PDF Loaded"; return;
-  }
-  try {
-    const buffer = await file.arrayBuffer(); 
-    const wb = XLSX.read(buffer, { type: "array" });
-    
-    globalWorkbook = wb;
-    initYearSwitcher(wb);
-    
-    let sheetName = "";
-    if (wb.SheetNames.some(n => n.includes("2026"))) {
-        sheetName = wb.SheetNames.find(n => n.includes("2026"));
-        currentYear = "2026";
-    } else if (wb.SheetNames.some(n => n.includes("2025"))) {
-        sheetName = wb.SheetNames.find(n => n.includes("2025"));
-        currentYear = "2025";
-    } else {
-        sheetName = wb.SheetNames[0];
-        currentYear = "2026"; 
-    }
-
-    switchYear(currentYear);
-  } catch (err) {
-    console.error(err);
-    $('fileStatus').textContent = "Error reading file";
-    showDialog("Error", "Failed to process local file. Please ensure it is a valid Excel or CSV format.");
-  }
-}
-
 function setOwnerMetric(metric) {
     ownerMetric = metric;
     if(metric === 'count') {
@@ -1631,7 +1605,8 @@ function updateCharts() {
     hoverBorderColor: 'white'
   }));
 
-  const requiredOwnerHeight = Math.max(350, owners.length * 45);
+  // V8.59 Squeeze: 24px per owner
+  const requiredOwnerHeight = Math.max(250, owners.length * 24);
   $('ownerContainer').style.height = requiredOwnerHeight + 'px';
 
   destroyChart('cOwner');
@@ -1643,7 +1618,7 @@ function updateCharts() {
       indexAxis: 'y',
       scales: {
         x: { stacked: true, grid: { color: PALETTE.grid }, ticks: { color: PALETTE.text } },
-        y: { stacked: true, grid: { display: false }, ticks: { color: PALETTE.text } }
+        y: { stacked: true, grid: { display: false }, ticks: { color: PALETTE.text, font: { size: 12.5, family: "'Microsoft JhengHei UI', 'Quicksand', sans-serif" } } }
       },
       plugins: {
         ...commonOpts.plugins,
@@ -1750,7 +1725,8 @@ function updateGanttOnly() {
     
     const ganttColors = sortedGanttData.map(d => getStatusColor(d.status));
 
-    const requiredGanttHeight = Math.max(400, sortedGanttData.length * 40);
+    // V8.59 Squeeze: 22px per task row for compact view
+    const requiredGanttHeight = Math.max(300, sortedGanttData.length * 22);
     $('ganttContainer').style.height = requiredGanttHeight + 'px';
 
     destroyChart('cGantt');
@@ -1814,8 +1790,8 @@ function updateGanttOnly() {
           data: ganttData,
           backgroundColor: ganttColors,
           borderRadius: 4,
-          barPercentage: 0.7,
-          categoryPercentage: 0.8,
+          barPercentage: 0.75, // V8.59 adjusted for compact height
+          categoryPercentage: 0.85,
           hoverBorderWidth: 3,
           hoverBorderColor: 'white'
         }]
@@ -1831,7 +1807,10 @@ function updateGanttOnly() {
             grid: { color: PALETTE.grid },
             ticks: { color: PALETTE.text, callback: (val) => new Date(val).toLocaleDateString(currentLang==='en'?'en-US':'zh-TW', {month:'short', day:'numeric', timeZone: 'UTC'}) }
           },
-          y: { grid: { display: false }, ticks: { color: PALETTE.text } }
+          y: { 
+              grid: { display: false }, 
+              ticks: { color: PALETTE.text, font: { size: 12.5, family: "'Microsoft JhengHei UI', 'Quicksand', sans-serif" } } 
+          }
         },
         plugins: {
             legend: { position: 'bottom', labels: { color: PALETTE.text } },
@@ -1870,7 +1849,6 @@ function updateGanttOnly() {
   }
 }
 
-// V8.58: HTML REPORT EXPORT
 window.exportWizHTML = function() {
     const t = TEXT[currentLang];
     
@@ -1931,7 +1909,6 @@ window.exportWizHTML = function() {
         return isHEmpty || isPEmpty;
     });
 
-    // V8.58 Regex Match for highlight anomalies
     const riskRegex = /(issue|support|risk|abnormal|remind|warning|blocker|urgent|critical|attention|delay|fail|問題|支援|風險|提醒|異常|注意|緊急|阻礙|協助|瓶頸|求救|延遲|失敗)/i;
     const highlightedProjects = projectSummary.filter(p => {
         const combinedText = ((p.desc || '') + ' ' + (p.progressDisplay || '') + ' ' + (p.highlights || '')).toLowerCase();
@@ -1985,7 +1962,8 @@ window.exportWizHTML = function() {
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
         <style>
             html { font-size: 112.5%; }
-            body { font-family: 'Microsoft JhengHei UI', Quicksand, sans-serif; background-color: #f8fafc; color: #0f172a; padding: 40px; -webkit-font-smoothing: antialiased; letter-spacing: 0.015em; }
+            body { font-family: 'Microsoft JhengHei UI', Quicksand, sans-serif; background-color: #f8fafc; color: #0f172a; padding: 40px; -webkit-font-smoothing: antialiased; letter-spacing: 0.015em; line-height: 1.2; }
+            p, li { line-height: 1.2; }
             .card { background: white; border-radius: 12px; padding: 30px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); margin-bottom: 24px; border: 1px solid #e2e8f0; }
             .bar-bg { background-color: #e2e8f0; border-radius: 999px; height: 8px; width: 100%; overflow: hidden; margin-top: 6px; }
             .bar-fill { height: 100%; background-color: #1495cc; border-radius: 999px; }
@@ -2021,19 +1999,19 @@ window.exportWizHTML = function() {
                 <div class="space-y-4">
                     <div class="bg-white p-4 rounded border border-blue-100 shadow-sm">
                         <h3 class="text-sm font-bold text-blue-800 mb-1"><i class="fa-solid fa-layer-group mr-1"></i>${t.wizDiagContextTitle}</h3>
-                        <p class="text-[14.5px] text-slate-700 leading-relaxed">${contextText}</p>
+                        <p class="text-[14.5px] text-slate-700 leading-[1.2]">${contextText}</p>
                     </div>
                     <div class="bg-white p-4 rounded border ${delayedProjects.length > 0 ? 'border-rose-200' : 'border-emerald-200'} shadow-sm">
                         <h3 class="text-sm font-bold ${delayedProjects.length > 0 ? 'text-rose-700' : 'text-emerald-700'} mb-1"><i class="fa-solid fa-calendar-check mr-1"></i>${t.wizDiagScheduleTitle}</h3>
-                        <p class="text-[14.5px] text-slate-700 leading-relaxed">${scheduleText}</p>
+                        <p class="text-[14.5px] text-slate-700 leading-[1.2]">${scheduleText}</p>
                     </div>
                     <div class="bg-white p-4 rounded border ${actionRequired.length > 0 ? 'border-orange-200' : 'border-emerald-200'} shadow-sm">
                         <h3 class="text-sm font-bold ${actionRequired.length > 0 ? 'text-orange-700' : 'text-emerald-700'} mb-1"><i class="fa-solid fa-magnifying-glass-chart mr-1"></i>${t.wizDiagQualityTitle}</h3>
-                        <p class="text-[14.5px] text-slate-700 leading-relaxed">${qualityText}</p>
+                        <p class="text-[14.5px] text-slate-700 leading-[1.2]">${qualityText}</p>
                     </div>
                     <div class="bg-white p-4 rounded border ${highlightedProjects.length > 0 ? 'border-amber-200' : 'border-emerald-200'} shadow-sm">
                         <h3 class="text-sm font-bold ${highlightedProjects.length > 0 ? 'text-amber-700' : 'text-emerald-700'} mb-1"><i class="fa-solid fa-triangle-exclamation mr-1"></i>${t.wizDiagHighlightTitle}</h3>
-                        <p class="text-[14.5px] text-slate-700 leading-relaxed">${highlightText}</p>
+                        <p class="text-[14.5px] text-slate-700 leading-[1.2]">${highlightText}</p>
                     </div>
                 </div>
             </div>
@@ -2041,13 +2019,13 @@ window.exportWizHTML = function() {
             <!-- Section 1: Summary by Category -->
             <div class="card border-t-4 border-blue-600">
                 <h2 class="text-xl font-bold mb-2 text-slate-800">${sec1Title}</h2>
-                <p class="text-sm text-slate-500 mb-6">${sec1Desc}</p>
+                <p class="text-sm text-slate-500 mb-6 leading-[1.2]">${sec1Desc}</p>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     ${categorySummary.length > 0 ? categorySummary.map(c => `
                         <div>
                             <div class="flex justify-between items-end mb-1">
-                                <span class="font-bold text-slate-700 text-lg">${c.category}</span>
-                                <span class="font-bold text-blue-600">${c.pct.toFixed(0)}% <span class="text-xs text-slate-400 font-normal">(${c.mh.toFixed(1)}h)</span></span>
+                                <span class="font-bold text-slate-700 text-lg leading-[1.2]">${c.category}</span>
+                                <span class="font-bold text-blue-600 leading-[1.2]">${c.pct.toFixed(0)}% <span class="text-xs text-slate-400 font-normal">(${c.mh.toFixed(1)}h)</span></span>
                             </div>
                             <div class="bar-bg mb-3"><div class="bar-fill" style="width: ${c.pct}%;"></div></div>
                             <ul class="list-disc pl-5 text-[13px] text-slate-600 space-y-1">
@@ -2055,14 +2033,14 @@ window.exportWizHTML = function() {
                                 ${c.projects.length > 4 ? `<li class="text-blue-500 italic font-semibold">... and ${c.projects.length - 4} more projects</li>` : ''}
                             </ul>
                         </div>
-                    `).join('') : `<p class="text-slate-500">${emptyDataRow}</p>`}
+                    `).join('') : `<p class="text-slate-500 leading-[1.2]">${emptyDataRow}</p>`}
                 </div>
             </div>
 
             <!-- Section 2: Workload Highlight Summary -->
             <div class="card border-t-4 border-teal-500">
                 <h2 class="text-xl font-bold mb-2 text-slate-800">${sec2Title}</h2>
-                <p class="text-[14.5px] text-slate-600 mb-6 bg-slate-50 p-4 rounded-lg border border-slate-200">
+                <p class="text-[14.5px] text-slate-600 mb-6 bg-slate-50 p-4 rounded-lg border border-slate-200 leading-[1.2]">
                     <i class="fa-solid fa-lightbulb text-yellow-500 mr-2"></i>${narrativeIntro}
                 </p>
                 
@@ -2070,10 +2048,10 @@ window.exportWizHTML = function() {
                     ${top3Projects.length > 0 ? top3Projects.map((p, idx) => `
                         <div class="border border-slate-200 rounded-lg p-5 hover:shadow-md transition-shadow bg-white">
                             <div class="flex justify-between items-start mb-3">
-                                <h3 class="font-bold text-lg text-slate-800"><span class="text-teal-600 mr-2">#${idx + 1}</span>${p.desc}</h3>
+                                <h3 class="font-bold text-lg text-slate-800 leading-[1.2]"><span class="text-teal-600 mr-2">#${idx + 1}</span>${p.desc}</h3>
                                 <div class="text-right">
-                                    <span class="block font-bold text-teal-600 text-lg">${p.totalMh.toFixed(1)}h</span>
-                                    <span class="block text-xs font-semibold text-slate-400">${p.pct.toFixed(0)}% of total</span>
+                                    <span class="block font-bold text-teal-600 text-lg leading-[1.2]">${p.totalMh.toFixed(1)}h</span>
+                                    <span class="block text-xs font-semibold text-slate-400 leading-[1.2]">${p.pct.toFixed(0)}% of total</span>
                                 </div>
                             </div>
                             <div class="flex flex-wrap gap-2 mb-4">
@@ -2084,22 +2062,22 @@ window.exportWizHTML = function() {
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-slate-100">
                                 <div>
                                     <h4 class="text-xs font-bold text-slate-400 uppercase mb-2 tracking-wider">Current Progress</h4>
-                                    <p class="text-[14px] text-slate-700 font-medium">${p.progressDisplay || 'No progress recorded.'}</p>
+                                    <p class="text-[14px] text-slate-700 font-medium leading-[1.2]">${p.progressDisplay || 'No progress recorded.'}</p>
                                 </div>
                                 <div>
                                     <h4 class="text-xs font-bold text-slate-400 uppercase mb-2 tracking-wider">Key Deliverables</h4>
-                                    <p class="text-[14px] text-slate-700 font-medium">${p.highlights || '<span class="italic text-red-400">Missing specific deliverables</span>'}</p>
+                                    <p class="text-[14px] text-slate-700 font-medium leading-[1.2]">${p.highlights || '<span class="italic text-red-400">Missing specific deliverables</span>'}</p>
                                 </div>
                             </div>
                         </div>
-                    `).join('') : `<p class="text-slate-500">${emptyDataRow}</p>`}
+                    `).join('') : `<p class="text-slate-500 leading-[1.2]">${emptyDataRow}</p>`}
                 </div>
             </div>
 
             <!-- Section 3: Goal Oriented Report -->
             <div class="card border-t-4 border-rose-500 page-break">
                 <h2 class="text-xl font-bold mb-2 text-rose-700"><i class="fa-solid fa-triangle-exclamation mr-2"></i>${sec3Title}</h2>
-                <p class="text-[14px] text-slate-600 mb-6">${sec3Desc}</p>
+                <p class="text-[14px] text-slate-600 mb-6 leading-[1.2]">${sec3Desc}</p>
                 
                 ${actionRequired.length > 0 ? `
                     <div class="overflow-x-auto">
@@ -2124,9 +2102,9 @@ window.exportWizHTML = function() {
 
                                     return `
                                     <tr class="border-b border-slate-100 hover:bg-slate-50">
-                                        <td class="p-3 text-[13.5px] font-semibold text-slate-700">${p.desc}</td>
-                                        <td class="p-3 text-[13px] text-slate-600">${p.owner}</td>
-                                        <td class="p-3">${missingTags.join('')}</td>
+                                        <td class="p-3 text-[13.5px] font-semibold text-slate-700 leading-[1.2]">${p.desc}</td>
+                                        <td class="p-3 text-[13px] text-slate-600 leading-[1.2]">${p.owner}</td>
+                                        <td class="p-3 leading-[1.2]">${missingTags.join('')}</td>
                                     </tr>
                                 `}).join('')}
                             </tbody>
@@ -2134,13 +2112,13 @@ window.exportWizHTML = function() {
                     </div>
                 ` : `
                     <div class="flex items-center justify-center p-8 bg-green-50 rounded-lg border border-green-200">
-                        <p class="text-green-700 font-bold text-lg"><i class="fa-solid fa-check-circle mr-2 text-2xl"></i>All active projects have properly documented deliverables and progress. Excellent alignment!</p>
+                        <p class="text-green-700 font-bold text-lg leading-[1.2]"><i class="fa-solid fa-check-circle mr-2 text-2xl"></i>All active projects have properly documented deliverables and progress. Excellent alignment!</p>
                     </div>
                 `}
             </div>
 
             <div class="text-center text-xs text-slate-400 font-semibold mt-8 mb-4">
-                &copy; ${new Date().getFullYear()} Annual Assessment System - V8.58 Diagnostic Engine
+                &copy; ${new Date().getFullYear()} Annual Assessment System - V8.59 Diagnostic Engine
             </div>
         </div>
     </body>
@@ -2231,19 +2209,19 @@ const externalTooltipHandler = (context) => {
         const bodyLines = tooltip.body.map(b => b.lines);
         const footerLines = tooltip.footer || [];
 
-        let innerHtml = '<div style="font-weight:bold; margin-bottom:8px; padding-bottom:6px; border-bottom:1px solid rgba(255,255,255,0.2); font-size:13px;">';
+        let innerHtml = '<div style="font-weight:bold; margin-bottom:8px; padding-bottom:6px; border-bottom:1px solid rgba(255,255,255,0.2); font-size:13px; line-height: 1.2;">';
         titleLines.forEach(title => { innerHtml += title; });
         innerHtml += '</div><div style="display:flex; flex-direction:column; gap:6px; font-size:12px;">';
 
         bodyLines.forEach((body, i) => {
             const colors = tooltip.labelColors[i];
             const span = `<span style="background:${colors.backgroundColor}; width:10px; height:10px; display:inline-block; border-radius:2px; margin-right:8px; margin-top: 2px; flex-shrink:0;"></span>`;
-            innerHtml += `<div style="display:flex; align-items:flex-start;">${span} <span style="line-height:1.4; word-break:break-word;">${body}</span></div>`;
+            innerHtml += `<div style="display:flex; align-items:flex-start;">${span} <span style="line-height:1.2; word-break:break-word;">${body}</span></div>`;
         });
         innerHtml += '</div>';
 
         if(footerLines.length > 0) {
-            innerHtml += '<div style="margin-top: 10px; border-top:1px solid rgba(255,255,255,0.2); padding-top:8px; font-weight:bold; font-size:13px; color:var(--brand-accent);">';
+            innerHtml += '<div style="margin-top: 10px; border-top:1px solid rgba(255,255,255,0.2); padding-top:8px; font-weight:bold; font-size:13px; color:var(--brand-accent); line-height: 1.2;">';
             footerLines.forEach(f => innerHtml += f);
             innerHtml += '</div>';
         }
@@ -2256,6 +2234,9 @@ const externalTooltipHandler = (context) => {
     
     let left = position.left + window.pageXOffset + tooltip.caretX;
     let top = position.top + window.pageYOffset + tooltip.caretY;
+    
+    tooltipEl.style.left = left + 'px';
+    tooltipEl.style.top = top + 'px';
     
     let transformX = '-50%';
     let transformY = 'calc(-100% - 15px)'; 
@@ -2669,28 +2650,28 @@ function generateWizSummary(autoScroll = false) {
             
             let pDelivHTML = '';
             if (cleanHighlight.length > 2 && cleanHighlight.toLowerCase() !== 'tbd' && cleanHighlight.toLowerCase() !== 'n/a') {
-                pDelivHTML = `<div class="text-[13px] font-medium leading-relaxed task-desc transition-colors text-gray-700 mt-1">${shortName(cleanHighlight, 120)}</div>`;
+                pDelivHTML = `<div class="text-[13px] font-medium text-slate-700 mt-1 leading-[1.2]">${shortName(cleanHighlight, 120)}</div>`;
             } else {
-                pDelivHTML = `<textarea class="w-full text-[12px] p-2 mt-2 border border-dashed rounded focus:bg-white outline-none transition-all resize-none custom-scrollbar shadow-inner" style="border-color: var(--border-color); color: var(--text-main); background-color: rgba(0,0,0,0.02);" rows="2" placeholder="✍️ ${t.wizNoDeliv}"></textarea>`;
+                pDelivHTML = `<textarea class="w-full text-[12px] p-2 mt-2 border border-dashed rounded focus:bg-white outline-none transition-all resize-none custom-scrollbar shadow-inner leading-[1.2]" style="border-color: var(--border-color); color: var(--text-main); background-color: rgba(0,0,0,0.02);" rows="2" placeholder="✍️ ${t.wizNoDeliv}"></textarea>`;
             }
             
             rightColHTML += `
                 <div class="mb-3 p-3 rounded-lg shadow-sm wiz-task-card cursor-pointer group">
                     <div class="flex justify-between items-start mb-1">
-                        <span class="font-semibold text-[15px] task-title transition-colors flex items-start gap-1" style="color:var(--text-main); line-height: 1.4; word-break: break-word;">
-                            <i class="fa-solid fa-arrow-pointer mt-1 text-sm task-icon"></i>
+                        <span class="font-semibold text-[15px] task-title transition-colors flex items-start gap-1 leading-[1.2]" style="color:var(--text-main); word-break: break-word;">
+                            <i class="fa-solid fa-arrow-pointer mt-0.5 text-sm task-icon"></i>
                             <span>${index + 1}. ${pDesc}</span>
                         </span>
                         <div class="flex items-center gap-1.5 ml-2 flex-shrink-0 flex-wrap justify-end">
-                            <span class="text-[10px] font-semibold whitespace-nowrap px-2 py-1 rounded shadow-sm task-dur-badge transition-colors" 
+                            <span class="text-[10px] font-semibold whitespace-nowrap px-2 py-1 rounded shadow-sm task-dur-badge transition-colors leading-[1.2]" 
                                   style="background-color:var(--brand-sub); color:#FFFFFF;" title="Duration">
                                 ${pDur} days
                             </span>
-                            <span class="text-[10px] font-semibold whitespace-nowrap px-2 py-1 rounded shadow-sm" 
+                            <span class="text-[10px] font-semibold whitespace-nowrap px-2 py-1 rounded shadow-sm leading-[1.2]" 
                                   style="background-color:var(--text-blue); color:#FFFFFF;" title="Man-Hours / Per Day">
                                 ${pMH} MH/d
                             </span>
-                            <span class="text-[10px] font-semibold whitespace-nowrap px-2 py-1 rounded shadow-sm text-white" 
+                            <span class="text-[10px] font-semibold whitespace-nowrap px-2 py-1 rounded shadow-sm text-white leading-[1.2]" 
                                   style="background-color: var(--brand-text);" title="Total Accumulated Man-Hours">
                                 ${accumMH} Total MH
                             </span>
@@ -2712,11 +2693,11 @@ function generateWizSummary(autoScroll = false) {
         });
 
         Object.keys(grouped).sort().forEach(cat => {
-            rightColHTML += `<div class="mb-5"><h5 class="font-bold text-sm border-b-2 pb-1 mb-3" style="color:var(--brand-text); border-color:var(--border-color);">${cat}</h5>`;
+            rightColHTML += `<div class="mb-5"><h5 class="font-bold text-sm border-b-2 pb-1 mb-3 leading-[1.2]" style="color:var(--brand-text); border-color:var(--border-color);">${cat}</h5>`;
             Object.keys(grouped[cat]).sort().forEach(clust => {
                 const projs = grouped[cat][clust];
                 rightColHTML += `<div class="mb-3 ml-2">
-                                    <h6 class="font-semibold text-[13px] mb-1.5" style="color:var(--brand-sub);">
+                                    <h6 class="font-semibold text-[13px] mb-1.5 leading-[1.2]" style="color:var(--brand-sub);">
                                         <i class="fa-solid fa-layer-group mr-1"></i>${clust} 
                                         <span class="text-[10px] font-normal px-1.5 py-0.5 rounded ml-1" style="background-color:rgba(0,0,0,0.05); color:var(--text-sub);">${projs.length} items</span>
                                     </h6>
@@ -2727,15 +2708,15 @@ function generateWizSummary(autoScroll = false) {
                     
                     let highlightHTML = '';
                     if (cleanHighlight.length > 2 && cleanHighlight.toLowerCase() !== 'tbd' && cleanHighlight.toLowerCase() !== 'n/a') {
-                        highlightHTML = `<span class="block pl-4 mt-1 text-[13px] font-medium task-desc transition-colors text-gray-700">${shortName(cleanHighlight, 70)}</span>`;
+                        highlightHTML = `<span class="block pl-4 mt-1 text-[13px] font-medium text-slate-700 leading-[1.2]">${shortName(cleanHighlight, 70)}</span>`;
                     } else {
-                        highlightHTML = `<textarea class="block ml-4 mt-1.5 w-[90%] text-[12px] p-1.5 border border-dashed rounded focus:bg-white outline-none resize-none custom-scrollbar" style="border-color: var(--border-color); color: var(--text-main); background-color: rgba(0,0,0,0.02);" rows="1" placeholder="✍️ ${t.wizNoDeliv}"></textarea>`;
+                        highlightHTML = `<textarea class="block ml-4 mt-1 w-[90%] text-[12px] p-1 border border-dashed rounded focus:bg-white outline-none resize-none custom-scrollbar leading-[1.2]" style="border-color: var(--border-color); color: var(--text-main); background-color: rgba(0,0,0,0.02);" rows="1" placeholder="✍️ ${t.wizNoDeliv}"></textarea>`;
                     }
 
                     rightColHTML += `
-                        <li class="leading-relaxed mb-2 p-2 rounded-r wiz-list-item cursor-pointer group list-none flex flex-col">
-                            <span class="font-semibold text-[14.5px] task-title transition-colors flex items-start gap-1" style="color:var(--text-main); word-break: break-word;">
-                                <i class="fa-solid fa-caret-right mt-1 text-[13px] task-icon"></i>
+                        <li class="mb-2 p-1.5 rounded-r wiz-list-item cursor-pointer group list-none flex flex-col leading-[1.2]">
+                            <span class="font-semibold text-[14.5px] task-title transition-colors flex items-start gap-1 leading-[1.2]" style="color:var(--text-main); word-break: break-word;">
+                                <i class="fa-solid fa-caret-right mt-0.5 text-[13px] task-icon"></i>
                                 <span>${p.desc} <span class="text-xs px-1.5 py-0.5 rounded" style="background-color:rgba(0,0,0,0.05); color:var(--brand-text);">${accumMH} MH</span>:</span>
                             </span> 
                             ${highlightHTML}
@@ -2760,7 +2741,7 @@ function generateWizSummary(autoScroll = false) {
         const endT_week = endOfWeek.getTime();
 
         const weekStr = `${startOfWeek.toLocaleDateString(currentLang==='en'?'en-US':'zh-TW', {month:'short', day:'numeric'})} ~ ${endOfWeek.toLocaleDateString(currentLang==='en'?'en-US':'zh-TW', {month:'short', day:'numeric'})}`;
-        rightColHTML += `<div class="mb-4 p-2 rounded text-center text-[13px] font-semibold" style="background-color:rgba(0,0,0,0.05); color:var(--brand-text);">📅 Current Week: ${weekStr}</div>`;
+        rightColHTML += `<div class="mb-4 p-2 rounded text-center text-[13px] font-semibold leading-[1.2]" style="background-color:rgba(0,0,0,0.05); color:var(--brand-text);">📅 Current Week: ${weekStr}</div>`;
 
         const weeklyProjects = wizData.filter(d => {
             const end = d.rev || d.due;
@@ -2772,7 +2753,7 @@ function generateWizSummary(autoScroll = false) {
         });
 
         if (weeklyProjects.length === 0) {
-            rightColHTML += `<div class="text-center py-6 text-[13px]" style="color:var(--text-sub);"><i class="fa-solid fa-mug-hot text-xl mb-2"></i><br>${currentLang === 'en' ? 'No active tasks scheduled for this week.' : '本週沒有排定的任務。'}</div>`;
+            rightColHTML += `<div class="text-center py-6 text-[13px] leading-[1.2]" style="color:var(--text-sub);"><i class="fa-solid fa-mug-hot text-xl mb-2"></i><br>${currentLang === 'en' ? 'No active tasks scheduled for this week.' : '本週沒有排定的任務。'}</div>`;
         } else {
             const groupedWeekly = {};
             weeklyProjects.forEach(d => {
@@ -2784,7 +2765,7 @@ function generateWizSummary(autoScroll = false) {
             Object.keys(groupedWeekly).sort().forEach(clust => {
                 const projs = groupedWeekly[clust];
                 rightColHTML += `<div class="mb-4">
-                                    <h5 class="font-bold text-[14px] border-b pb-1 mb-2" style="color:var(--brand-text); border-color:var(--border-color);">
+                                    <h5 class="font-bold text-[14px] border-b pb-1 mb-2 leading-[1.2]" style="color:var(--brand-text); border-color:var(--border-color);">
                                         <i class="fa-solid fa-layer-group mr-1"></i>${clust}
                                     </h5>
                                     <ul class="hl-list ml-2">`;
@@ -2794,15 +2775,15 @@ function generateWizSummary(autoScroll = false) {
                     
                     let highlightHTML = '';
                     if (cleanHighlight.length > 2 && cleanHighlight.toLowerCase() !== 'tbd' && cleanHighlight.toLowerCase() !== 'n/a') {
-                        highlightHTML = `<span class="block pl-4 mt-1 text-[12.5px] font-normal task-desc transition-colors text-gray-600">${shortName(cleanHighlight, 70)}</span>`;
+                        highlightHTML = `<span class="block pl-4 mt-1 text-[12.5px] font-normal text-slate-600 leading-[1.2]">${shortName(cleanHighlight, 70)}</span>`;
                     } else {
-                        highlightHTML = `<textarea class="block ml-4 mt-1.5 w-[90%] text-[11px] p-1.5 border border-dashed rounded focus:bg-white outline-none resize-none custom-scrollbar" style="border-color: var(--border-color); color: var(--text-main); background-color: rgba(0,0,0,0.02);" rows="1" placeholder="✍️ ${t.wizNoDeliv}"></textarea>`;
+                        highlightHTML = `<textarea class="block ml-4 mt-1 w-[90%] text-[11px] p-1 border border-dashed rounded focus:bg-white outline-none resize-none custom-scrollbar leading-[1.2]" style="border-color: var(--border-color); color: var(--text-main); background-color: rgba(0,0,0,0.02);" rows="1" placeholder="✍️ ${t.wizNoDeliv}"></textarea>`;
                     }
 
                     rightColHTML += `
-                        <li class="leading-relaxed mb-2 p-2 rounded-r wiz-list-item cursor-pointer group list-none flex flex-col">
-                            <div class="flex items-start gap-1 font-semibold text-[14.5px]" style="color:var(--text-main);">
-                                <i class="fa-solid fa-bolt mt-1 text-[13px] task-icon"></i>
+                        <li class="mb-2 p-1.5 rounded-r wiz-list-item cursor-pointer group list-none flex flex-col leading-[1.2]">
+                            <div class="flex items-start gap-1 font-semibold text-[14.5px] leading-[1.2]" style="color:var(--text-main);">
+                                <i class="fa-solid fa-bolt mt-0.5 text-[13px] task-icon"></i>
                                 <span class="task-title transition-colors" style="word-break: break-word;">${p.desc} <span class="text-xs px-1.5 py-0.5 rounded" style="background-color:rgba(0,0,0,0.05); color:var(--brand-text);">${accumMH} MH</span></span>
                             </div>
                             ${highlightHTML}
@@ -2881,9 +2862,9 @@ function generateWizSummary(autoScroll = false) {
                 <!-- 4-Point Diagnostic Metrics Briefing Card -->
                 <div class="flex flex-col bg-white bg-opacity-60 border rounded-lg p-4 mb-4" style="border-color: var(--border-color);">
                     <div class="flex justify-between items-start mb-2">
-                        <h4 class="text-[13px] font-bold" style="color: var(--brand-text);"><i class="fa-solid fa-stethoscope mr-1"></i> ${t.wizMhBriefTitle}</h4>
+                        <h4 class="text-[13px] font-bold leading-[1.2]" style="color: var(--brand-text);"><i class="fa-solid fa-stethoscope mr-1"></i> ${t.wizMhBriefTitle}</h4>
                     </div>
-                    <div class="space-y-2.5 text-[12.5px] mt-1" style="color: var(--text-sub); line-height: 1.5;">
+                    <div class="space-y-2.5 text-[12.5px] mt-1 leading-[1.2]" style="color: var(--text-sub);">
                         <div class="flex items-start gap-2">
                             <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-700 flex-shrink-0 mt-0.5">Context</span>
                             <span>${contextText}</span>
@@ -2905,12 +2886,12 @@ function generateWizSummary(autoScroll = false) {
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="flex flex-col border rounded-lg p-4 bg-white bg-opacity-40" style="border-color: var(--border-color);">
-                        <h5 class="text-xs font-bold uppercase mb-3 flex justify-between items-center" style="color: var(--brand-text);">
+                        <h5 class="text-xs font-bold uppercase mb-3 flex justify-between items-center leading-[1.2]" style="color: var(--brand-text);">
                             <span><i class="fa-solid fa-folder-tree mr-1.5"></i> ${t.wizMhProjectTitle}</span>
                         </h5>
                         <div class="space-y-3 overflow-y-auto max-h-[220px] pr-1 custom-scrollbar">
                             ${projHours.map((p, idx) => `
-                                <div class="text-[12.5px]">
+                                <div class="text-[12.5px] leading-[1.2]">
                                     <div class="flex justify-between font-semibold mb-1">
                                         <span class="truncate max-w-[70%]" title="${p.desc}">${idx+1}. ${p.desc}</span>
                                         <span style="color: var(--brand-text);">${p.mh.toFixed(1)}h (${p.pct.toFixed(0)}%)</span>
@@ -2924,12 +2905,12 @@ function generateWizSummary(autoScroll = false) {
                     </div>
 
                     <div class="flex flex-col border rounded-lg p-4 bg-white bg-opacity-40" style="border-color: var(--border-color);">
-                        <h5 class="text-xs font-bold uppercase mb-3 flex justify-between items-center" style="color: var(--brand-text);">
+                        <h5 class="text-xs font-bold uppercase mb-3 flex justify-between items-center leading-[1.2]" style="color: var(--brand-text);">
                             <span><i class="fa-solid fa-cubes mr-1.5"></i> ${t.wizMhClusterTitle}</span>
                         </h5>
                         <div class="space-y-3 overflow-y-auto max-h-[220px] pr-1 custom-scrollbar">
                             ${clusterHours.map((c, idx) => `
-                                <div class="text-[12.5px]">
+                                <div class="text-[12.5px] leading-[1.2]">
                                     <div class="flex justify-between font-semibold mb-1">
                                         <span>${idx+1}. ${c.cluster}</span>
                                         <span style="color: var(--brand-sub);">${c.mh.toFixed(1)}h (${c.pct.toFixed(0)}%)</span>
@@ -2950,15 +2931,15 @@ function generateWizSummary(autoScroll = false) {
     const leftCol = `
         <div class="flex flex-col gap-3 w-full">
             <div>
-                <h4 class="font-bold mb-1 uppercase text-xs flex flex-wrap items-center gap-2" style="color:var(--brand-text);">
+                <h4 class="font-bold mb-1 uppercase text-xs flex flex-wrap items-center gap-2 leading-[1.2]" style="color:var(--brand-text);">
                     ${t.wizProjects} 
                     <span class="text-[10px] px-2 py-0.5 rounded border border-gray-300 bg-opacity-50" style="color:var(--text-main); background-color:var(--bg-color);">
                        <i class="fa-regular fa-calendar mr-1"></i> ${periodText}
                     </span>
                 </h4>
                 <div class="flex items-baseline gap-2">
-                    <p class="text-3xl font-bold" style="color:var(--text-main);">${wizData.length}</p>
-                    <div class="text-[11px]" style="color:var(--text-sub);">
+                    <p class="text-3xl font-bold leading-[1.2]" style="color:var(--text-main);">${wizData.length}</p>
+                    <div class="text-[11px] leading-[1.2]" style="color:var(--text-sub);">
                         <span style="color:var(--brand-positive); font-weight:bold;">${closedCount}</span> Completed, 
                         <span style="color:var(--brand-text); font-weight:bold;">${processingCount}</span> In Progress
                     </div>
@@ -2966,9 +2947,9 @@ function generateWizSummary(autoScroll = false) {
             </div>
 
             <div>
-                <h4 class="font-bold mb-1 uppercase text-xs" style="color:var(--brand-text);">${t.wizOwners}</h4>
+                <h4 class="font-bold mb-1 uppercase text-xs leading-[1.2]" style="color:var(--brand-text);">${t.wizOwners}</h4>
                 <div class="flex flex-wrap gap-1">
-                    ${uniqueOwners.map(o => `<span class="px-2 py-0.5 rounded text-[10px] border" style="border-color:var(--border-color); color:var(--text-sub);">${o}</span>`).join('')}
+                    ${uniqueOwners.map(o => `<span class="px-2 py-0.5 rounded text-[10px] border leading-[1.2]" style="border-color:var(--border-color); color:var(--text-sub);">${o}</span>`).join('')}
                 </div>
             </div>
         </div>
@@ -2979,7 +2960,7 @@ function generateWizSummary(autoScroll = false) {
             <div class="md:col-span-4 lg:col-span-3 w-full">${leftCol}</div>
             <div class="md:col-span-8 lg:col-span-9 flex flex-col w-full overflow-hidden">
                 <div class="flex flex-wrap justify-between items-end gap-3 mb-3 border-b pb-2" style="border-color:var(--border-color);">
-                    <h4 class="font-bold uppercase text-xs" style="color:var(--brand-text);">${t.wizDeliv}</h4>
+                    <h4 class="font-bold uppercase text-xs leading-[1.2]" style="color:var(--brand-text);">${t.wizDeliv}</h4>
                     <div class="flex flex-wrap rounded p-0.5 shadow-sm" style="background-color: var(--bg-color); border: 1px solid var(--border-color);">
                         <button onclick="switchWizView('project')" class="btn-tooltip px-3 py-1 text-[10px] font-semibold rounded transition-all" data-tooltip="${t.tipWizViewProj}" style="${currentWizView === 'project' ? 'background-color:var(--brand-main); color:#FFF; box-shadow:0 1px 2px rgba(0,0,0,0.1);' : 'color:var(--text-sub); hover:opacity-80;'}">${t.wizViewProj}</button>
                         <button onclick="switchWizView('category')" class="btn-tooltip px-3 py-1 text-[10px] font-semibold rounded transition-all" data-tooltip="${t.tipWizViewCat}" style="${currentWizView === 'category' ? 'background-color:var(--brand-main); color:#FFF; box-shadow:0 1px 2px rgba(0,0,0,0.1);' : 'color:var(--text-sub); hover:opacity-80;'}">${t.wizViewCat}</button>
@@ -2991,7 +2972,7 @@ function generateWizSummary(autoScroll = false) {
             </div>
             
             <div class="md:col-span-12 mt-2 border-t pt-4 p-2 rounded-lg glow-card-hover transition-all duration-300 w-full" style="border-color:var(--border-color);">
-                <h4 class="font-bold mb-2 uppercase text-xs flex justify-between items-center" style="color:var(--brand-text);">
+                <h4 class="font-bold mb-2 uppercase text-xs flex justify-between items-center leading-[1.2]" style="color:var(--brand-text);">
                     <div class="flex flex-wrap items-center gap-2 sm:gap-3">
                         <span><i class="fa-solid fa-chart-area mr-1"></i> ${t.wizWorkload}</span>
                         <div class="flex p-0.5 rounded shadow-sm" style="background-color: var(--bg-color); border: 1px solid var(--border-color);">
@@ -2999,7 +2980,7 @@ function generateWizSummary(autoScroll = false) {
                             <button onclick="setWizChartMetric('project')" class="btn-tooltip px-2 py-0.5 text-[10px] font-semibold rounded transition-all" data-tooltip="${t.tipViewProject}" style="${wizChartMode === 'project' ? 'background-color:var(--brand-main); color:#FFF; box-shadow:0 1px 2px rgba(0,0,0,0.1);' : 'color:var(--text-sub); hover:opacity-80;'}">${t.lblViewProject}</button>
                         </div>
                         <div class="flex p-0.5 rounded shadow-sm btn-tooltip" data-tooltip="${t.tipStatusFilter}" style="background-color: var(--bg-color); border: 1px solid var(--border-color);">
-                            <select onchange="setWizChartStatus(this.value)" class="px-1 py-0.5 text-[10px] font-semibold rounded outline-none cursor-pointer bg-transparent transition-all" style="color:var(--brand-text);">
+                            <select onchange="setWizChartStatus(this.value)" class="px-1 py-0.5 text-[10px] font-semibold rounded outline-none cursor-pointer bg-transparent transition-all leading-[1.2]" style="color:var(--brand-text);">
                                 <option value="all" ${wizChartStatusFilter === 'all' ? 'selected' : ''}>${t.wizFilterAll}</option>
                                 <option value="processing" ${wizChartStatusFilter === 'processing' ? 'selected' : ''}>${t.wizFilterProc}</option>
                                 <option value="pending" ${wizChartStatusFilter === 'pending' ? 'selected' : ''}>${t.wizFilterPend}</option>
@@ -3009,16 +2990,16 @@ function generateWizSummary(autoScroll = false) {
                     </div>
                     
                     <div class="group relative flex items-center cursor-help">
-                        <span class="text-[10px] font-semibold px-2 py-0.5 rounded flex items-center gap-1 transition-all hover:bg-[#FECACA]" style="background-color:#FEE2E2; color:#B91C1C; border: 1px solid #FECACA;">
+                        <span class="text-[10px] font-semibold px-2 py-0.5 rounded flex items-center gap-1 transition-all hover:bg-[#FECACA] leading-[1.2]" style="background-color:#FEE2E2; color:#B91C1C; border: 1px solid #FECACA;">
                             ${t.wizMaxCap}
                             <i class="fa-solid fa-circle-info opacity-60 group-hover:opacity-100"></i>
                         </span>
                         
                         <div class="absolute right-0 top-full mt-2 hidden group-hover:block w-72 sm:w-80 max-w-[90vw] p-4 rounded-xl shadow-2xl z-[100] pointer-events-none" style="background: rgba(17, 24, 39, 0.98); backdrop-filter: blur(8px); color: #f3f4f6; border: 1px solid rgba(255,255,255,0.15); text-transform: none;">
-                            <div class="font-bold mb-2 pb-2 border-b border-gray-700 text-sm" style="color: #FECACA;">
+                            <div class="font-bold mb-2 pb-2 border-b border-gray-700 text-sm leading-[1.2]" style="color: #FECACA;">
                                 <i class="fa-solid fa-lightbulb mr-1 text-yellow-300"></i> ${t.wizMaxCapTooltipTitle}
                             </div>
-                            <ul class="list-disc pl-4 opacity-90 space-y-2 text-[13px] leading-relaxed font-normal">
+                            <ul class="list-disc pl-4 opacity-90 space-y-2 text-[13px] font-normal leading-[1.2]">
                                 <li>${t.wizMaxCapTooltipDesc1}</li>
                                 <li>${t.wizMaxCapTooltipDesc2}</li>
                             </ul>
@@ -3026,7 +3007,7 @@ function generateWizSummary(autoScroll = false) {
                     </div>
                 </h4>
                 <div class="chart-wrapper mt-2 relative" style="height: 250px;">
-                    <div id="wizChartEmpty" class="absolute inset-0 hidden flex-col items-center justify-center text-xs text-center" style="color:var(--text-sub); z-index:10; background-color:var(--card-bg); border-radius:8px;">
+                    <div id="wizChartEmpty" class="absolute inset-0 hidden flex-col items-center justify-center text-xs text-center leading-[1.2]" style="color:var(--text-sub); z-index:10; background-color:var(--card-bg); border-radius:8px;">
                     </div>
                     <canvas id="cWizWorkload"></canvas>
                 </div>
