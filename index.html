@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Annual Assessment Dashboard V8.59</title>
+  <title>Annual Assessment Dashboard V9.60</title>
 
   <!-- Google Fonts: Quicksand -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -212,7 +212,7 @@
     <div class="modal-box">
       <h3 class="text-lg font-bold mb-2" style="color: var(--text-main); line-height: 1.2;">Connect Data via Web App</h3>
       <p class="text-xs mb-4" style="color: var(--text-sub);">Please paste your <b>Google Apps Script Web App URL</b>.</p>
-      <input id="gSheetUrl" class="std-input mb-4" value="https://script.google.com/macros/s/AKfycbxN_VpsB9gvi_97vBjekfw66G2x68C2tncopMvJfDh_rKF9ALWCo6th18UR9jjitNuCCQ/exec" placeholder="https://script.google.com/macros/s/.../exec" />
+      <input id="gSheetUrl" class="std-input mb-4" value="https://script.google.com/macros/s/AKfycbww91fgTQIYG-dngmp0J8qe9-Nzt9QpG8qVCY7lWaYrV31CWJ8ZbqugPY8qTbAP2LKxRA/exec" placeholder="https://script.google.com/macros/s/.../exec" />
       <div class="flex justify-end gap-2">
         <button onclick="closeModal('driveModal')" class="px-4 py-2 rounded text-xs font-bold" style="color: var(--text-sub);">Cancel</button>
         <button onclick="loadGoogleSheet()" class="px-4 py-2 rounded text-xs font-bold text-white" style="background-color: var(--brand-main);">Load Data</button>
@@ -307,7 +307,7 @@
         <img src="https://upload.cc/i1/2026/06/17/FAfopV.png" alt="Logo" class="w-full h-full object-contain" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22%231495CC%22><path d=%22M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z%22/></svg>'">
       </div>
       <div>
-        <h1 id="lblTitle" class="text-3xl font-bold tracking-tight text-slate-900 transition-colors" style="color: var(--text-main); font-family: 'Microsoft JhengHei UI', sans-serif;">Project Dashboard V8.59</h1>
+        <h1 id="lblTitle" class="text-3xl font-bold tracking-tight text-slate-900 transition-colors" style="color: var(--text-main); font-family: 'Microsoft JhengHei UI', sans-serif;">Project Dashboard V9.60</h1>
         <p id="lblSubtitle" class="text-sm font-semibold tracking-wide mt-1.5" style="color: var(--text-sub);">Annual Assessment System</p>
       </div>
     </div>
@@ -592,12 +592,13 @@
 
 <script>
 /**
- * DASHBOARD V8.59
+ * DASHBOARD V9.60
  * - V8.51: Implemented 112.5% legibility scaling, anti-aliasing typography settings.
  * - V8.58: 4-Point Diagnostic Metrics (Context, Schedule, Quality, Highlight Risk).
  * - V8.59: Squeezed row heights dynamically for Gantt (22px) and Owner (24px) charts to ensure a highly compact view.
  * - V8.59: Fixed the "Local" file upload by implementing the FileReader API to bypass browser arrayBuffer restrictions.
  * - V8.59: Removed buggy custom HTML external tooltips on cWizWorkload and restored robust Chart.js Native tooltips.
+ * - V9.60: Version bump.
  */
 
 const THEMES = {
@@ -627,7 +628,7 @@ const CUSTOM_CATEGORY_COLORS = {};
 
 const TEXT = {
   en: {
-    title: "Project Dashboard V8.59", subtitle: "BSD Project Tracker",
+    title: "Project Dashboard V9.60", subtitle: "BSD Project Tracker",
     dataSource: "Data Source", import: "Load Excel / CSV",
     owner: "Owner", status: "Status", category: "Category", cluster: "Cluster", month: "Period (Month)",
     total: "Total Items", totalDesc: "All Projects Loaded",
@@ -700,7 +701,7 @@ const TEXT = {
     wizDiagHighlightBad: "Attention required! The following projects have flagged risks, issues, or support needs: "
   },
   zh: {
-    title: "專案儀表板 V8.59", subtitle: "BSD專案檢核",
+    title: "專案儀表板 V9.60", subtitle: "BSD專案檢核",
     dataSource: "資料來源", import: "匯入 Excel / CSV",
     owner: "負責人", status: "狀態", category: "類別", cluster: "群組", month: "期間 (月份)",
     total: "總項目數", totalDesc: "已載入所有專案",
@@ -1109,7 +1110,11 @@ async function loadGoogleSheet() {
   closeModal('driveModal');
   $('fileStatus').textContent = "Downloading...";
   try {
-    const response = await fetch(url);
+    const response = await fetch(url, {
+        method: 'GET',
+        mode: 'cors',
+        redirect: 'follow'
+    });
     if (!response.ok) throw new Error("Network response was not ok");
     const data = await response.json();
     
@@ -1136,7 +1141,7 @@ async function loadGoogleSheet() {
     
   } catch (error) {
     console.error(error);
-    showDialog("Connection Error", "Failed to load data.<br><br>Please verify your <b>Google Apps Script Web App URL</b> is correct and deployed with 'Anyone' access.");
+    showDialog("Connection Error", "Failed to fetch data.<br><br><b>CORS/Access Error:</b> Please ensure your Google Apps Script is deployed with:<br>1. Execute as: <b>Me</b><br>2. Who has access: <b>Anyone</b> (Not 'Anyone with Google Account')");
     $('fileStatus').textContent = "Error loading link";
   }
 }
@@ -2128,7 +2133,7 @@ window.exportWizHTML = function() {
             </div>
 
             <div class="text-center text-xs text-slate-400 font-semibold mt-8 mb-4">
-                &copy; ${new Date().getFullYear()} Annual Assessment System - V8.59 Diagnostic Engine
+                &copy; ${new Date().getFullYear()} Annual Assessment System - V9.60 Diagnostic Engine
             </div>
         </div>
     </body>
