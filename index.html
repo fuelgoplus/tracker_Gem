@@ -8,7 +8,7 @@
   <!-- Google Fonts: Quicksand -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- TailwindCSS (CDN) -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -47,7 +47,7 @@
       --text-blue: #4F7BB5; 
     }
 
-    /* --- FONTS & ANTIALIASING (V8.51+ Legibility Polish) --- */
+    /* --- FONTS & ANTIALIASING (V8.51+ Legibility Polish & Line-Height Compress) --- */
     html {
       font-size: 112.5%; /* Extreme legibility scaling */
     }
@@ -65,6 +65,7 @@
       letter-spacing: 0.015em; 
     }
 
+    /* Force line height to 1.2 for compact view */
     p { line-height: 1.2; }
     h1, h2, h3, h4, h5, h6 { letter-spacing: -0.015em; line-height: 1.2; }
 
@@ -91,7 +92,7 @@
       border: 1px solid var(--border-color);
       color: var(--text-main);
       border-radius: 6px;
-      padding: 8px 12px;
+      padding: 6px 10px; /* Condensed input padding */
       font-size: 14.5px;
       width: 100%;
       outline: none;
@@ -129,7 +130,7 @@
     }
     .lang-switch:hover { border-color: var(--brand-main); color: var(--brand-main); }
 
-    /* Table & Column Typo */
+    /* Table & Column Typo Compact */
     .data-table th {
       background-color: rgba(0,0,0,0.05); color: var(--brand-text); font-weight: 700; text-transform: uppercase; font-size: 13px; 
       padding: 8px 10px; border-bottom: 2px solid var(--border-color); white-space: nowrap; letter-spacing: 0.03em; line-height: 1.2;
@@ -206,12 +207,12 @@
     </div>
   </div>
 
-  <!-- Modal: Google Drive Link -->
+  <!-- Modal: Google Drive Link (Updated for Web App URL) -->
   <div id="driveModal" class="modal-overlay">
     <div class="modal-box">
-      <h3 class="text-lg font-bold mb-2" style="color: var(--text-main); line-height: 1.2;">Import from Google Drive</h3>
-      <p class="text-xs mb-4" style="color: var(--text-sub);">Please paste a <b>public</b> Google Sheet link.</p>
-      <input id="gSheetUrl" class="std-input mb-4" value="https://docs.google.com/spreadsheets/d/1Bpw5hltxat4uI0wJNgaUzaZOp-PrYba9NSCFP7VOcCU/edit?usp=sharing" placeholder="https://docs.google.com/spreadsheets/d/..." />
+      <h3 class="text-lg font-bold mb-2" style="color: var(--text-main); line-height: 1.2;">Connect Data via Web App</h3>
+      <p class="text-xs mb-4" style="color: var(--text-sub);">Please paste your <b>Google Apps Script Web App URL</b>.</p>
+      <input id="gSheetUrl" class="std-input mb-4" value="https://script.google.com/macros/s/AKfycbxN_VpsB9gvi_97vBjekfw66G2x68C2tncopMvJfDh_rKF9ALWCo6th18UR9jjitNuCCQ/exec" placeholder="https://script.google.com/macros/s/.../exec" />
       <div class="flex justify-end gap-2">
         <button onclick="closeModal('driveModal')" class="px-4 py-2 rounded text-xs font-bold" style="color: var(--text-sub);">Cancel</button>
         <button onclick="loadGoogleSheet()" class="px-4 py-2 rounded text-xs font-bold text-white" style="background-color: var(--brand-main);">Load Data</button>
@@ -347,7 +348,7 @@
       
       <div class="h-6 w-px" style="background-color: var(--border-color);"></div>
       
-      <label class="cursor-pointer flex items-center gap-2 hover:opacity-80 px-2 py-1.5 rounded transition" title="Upload Local File">
+      <label class="cursor-pointer flex items-center gap-2 hover:opacity-80 px-2 py-1.5 rounded transition" title="Upload Local File (.xlsx, .csv)">
         <i class="fa-solid fa-file-upload" style="color: var(--brand-text);"></i>
         <span class="text-xs font-semibold" style="color: var(--text-main);">Local</span>
         <input type="file" id="fileInput" accept=".xlsx,.xls,.csv,.pdf" class="hidden" />
@@ -434,7 +435,7 @@
             </button>
         </div>
         <div id="wizContent">
-            <!-- Dynamic Content (Stats, List, and Workload Chart) -->
+            <!-- Dynamic Content -->
         </div>
     </div>
 
@@ -562,7 +563,7 @@
           </button>
         </div>
       </div>
-      <!-- V8.51 Update: Default hidden state -->
+      <!-- Default hidden state -->
       <div id="evidenceContent" class="hidden overflow-x-auto border rounded-lg max-h-[500px] transition-all" style="border-color: var(--border-color);">
         <table class="w-full text-left border-collapse data-table">
           <thead class="sticky top-0 z-10 shadow-sm" style="background-color: var(--card-bg);">
@@ -593,9 +594,10 @@
 /**
  * DASHBOARD V8.59
  * - V8.51: Implemented 112.5% legibility scaling, anti-aliasing typography settings.
- * - V8.58 Finalized: 4-Point Diagnostic Metrics (Context, Schedule, Quality, Highlight Risk).
- * - V8.59: Squeezed row heights dynamically for Gantt and Owner charts to ensure a compact, high-density view (e.g. 28px per row instead of 40px).
- * - Re-enforced global line-height to 1.2 for ultra-compact, readable data tracking.
+ * - V8.58: 4-Point Diagnostic Metrics (Context, Schedule, Quality, Highlight Risk).
+ * - V8.59: Squeezed row heights dynamically for Gantt (22px) and Owner (24px) charts to ensure a highly compact view.
+ * - V8.59: Fixed the "Local" file upload by implementing the FileReader API to bypass browser arrayBuffer restrictions.
+ * - V8.59: Removed buggy custom HTML external tooltips on cWizWorkload and restored robust Chart.js Native tooltips.
  */
 
 const THEMES = {
@@ -1099,31 +1101,34 @@ function formatBullets(text) {
   return `<ul class="hl-list">${items.map(i => `<li>${i}</li>`).join('')}</ul>`;
 }
 
+// Updated loadGoogleSheet logic for Web App JSON API
 async function loadGoogleSheet() {
   const url = $('gSheetUrl').value.trim();
   if(!url) return;
-  let xlsxUrl = url.replace(/\/edit.*$/, '/export?format=xlsx');
   
   closeModal('driveModal');
   $('fileStatus').textContent = "Downloading...";
   try {
-    const response = await fetch(xlsxUrl);
+    const response = await fetch(url);
     if (!response.ok) throw new Error("Network response was not ok");
-    const arrayBuffer = await response.arrayBuffer();
-    const wb = XLSX.read(arrayBuffer, { type: "array" });
+    const data = await response.json();
     
-    globalWorkbook = wb;
-    initYearSwitcher(wb);
+    globalWorkbook = {
+        isGAS: true,
+        SheetNames: data.SheetNames,
+        Sheets: data.Sheets
+    };
+    initYearSwitcher(globalWorkbook);
     
     let sheetName = "";
-    if (wb.SheetNames.some(n => n.includes("2026"))) {
-        sheetName = wb.SheetNames.find(n => n.includes("2026"));
+    if (globalWorkbook.SheetNames.some(n => n.includes("2026"))) {
+        sheetName = globalWorkbook.SheetNames.find(n => n.includes("2026"));
         currentYear = "2026";
-    } else if (wb.SheetNames.some(n => n.includes("2025"))) {
-        sheetName = wb.SheetNames.find(n => n.includes("2025"));
+    } else if (globalWorkbook.SheetNames.some(n => n.includes("2025"))) {
+        sheetName = globalWorkbook.SheetNames.find(n => n.includes("2025"));
         currentYear = "2025";
     } else {
-        sheetName = wb.SheetNames[0];
+        sheetName = globalWorkbook.SheetNames[0];
         currentYear = "2026"; 
     }
 
@@ -1131,7 +1136,7 @@ async function loadGoogleSheet() {
     
   } catch (error) {
     console.error(error);
-    showDialog("Connection Error", "Failed to load Google Sheet.<br><br>Note: If you are running this in a preview environment, strict browser security (CORS) might block the download.<br><br><b>Workaround:</b> Download the Google Sheet as an .xlsx file to your computer, then use the 'Local' upload button instead.");
+    showDialog("Connection Error", "Failed to load data.<br><br>Please verify your <b>Google Apps Script Web App URL</b> is correct and deployed with 'Anyone' access.");
     $('fileStatus').textContent = "Error loading link";
   }
 }
@@ -1155,8 +1160,13 @@ function switchYear(year) {
         $('btnYear2026').style.color = 'var(--text-main)';
     }
 
-    const ws = globalWorkbook.Sheets[sheetName];
-    const json = XLSX.utils.sheet_to_json(ws, {defval:''});
+    let json;
+    if (globalWorkbook.isGAS) {
+        json = globalWorkbook.Sheets[sheetName];
+    } else {
+        const ws = globalWorkbook.Sheets[sheetName];
+        json = XLSX.utils.sheet_to_json(ws, {defval:''});
+    }
     processLoadedData(json);
 }
 
@@ -1605,7 +1615,7 @@ function updateCharts() {
     hoverBorderColor: 'white'
   }));
 
-  // V8.59 Squeeze: 24px per owner
+  // V8.59 Extreme Squeeze: 24px per owner
   const requiredOwnerHeight = Math.max(250, owners.length * 24);
   $('ownerContainer').style.height = requiredOwnerHeight + 'px';
 
@@ -1725,7 +1735,7 @@ function updateGanttOnly() {
     
     const ganttColors = sortedGanttData.map(d => getStatusColor(d.status));
 
-    // V8.59 Squeeze: 22px per task row for compact view
+    // V8.59 Extreme Squeeze: 22px per task row for compact view
     const requiredGanttHeight = Math.max(300, sortedGanttData.length * 22);
     $('ganttContainer').style.height = requiredGanttHeight + 'px';
 
@@ -1790,7 +1800,7 @@ function updateGanttOnly() {
           data: ganttData,
           backgroundColor: ganttColors,
           borderRadius: 4,
-          barPercentage: 0.75, // V8.59 adjusted for compact height
+          barPercentage: 0.75, 
           categoryPercentage: 0.85,
           hoverBorderWidth: 3,
           hoverBorderColor: 'white'
@@ -2175,82 +2185,6 @@ function exportWizSummary() {
     a.click();
 }
 
-const externalTooltipHandler = (context) => {
-    const {chart, tooltip} = context;
-    let tooltipEl = document.getElementById('wiz-custom-tooltip');
-
-    if (!tooltipEl) {
-        tooltipEl = document.createElement('div');
-        tooltipEl.id = 'wiz-custom-tooltip';
-        tooltipEl.className = 'wiz-custom-tooltip';
-        tooltipEl.style.background = 'rgba(15, 23, 42, 0.95)';
-        tooltipEl.style.backdropFilter = 'blur(4px)';
-        tooltipEl.style.borderRadius = '8px';
-        tooltipEl.style.color = 'white';
-        tooltipEl.style.opacity = 1;
-        tooltipEl.style.position = 'absolute';
-        tooltipEl.style.transition = 'opacity 0.15s ease, transform 0.1s ease, left 0.1s ease, top 0.1s ease'; 
-        tooltipEl.style.zIndex = '99999'; 
-        tooltipEl.style.pointerEvents = 'none';
-        tooltipEl.style.padding = '12px';
-        tooltipEl.style.minWidth = '250px';
-        tooltipEl.style.maxWidth = '380px';
-        tooltipEl.style.boxShadow = '0 0 20px rgba(128, 54, 201, 0.45)';
-        document.body.appendChild(tooltipEl);
-    }
-
-    if (tooltip.opacity === 0) {
-        tooltipEl.style.opacity = 0;
-        return;
-    }
-
-    if (tooltip.body) {
-        const titleLines = tooltip.title || [];
-        const bodyLines = tooltip.body.map(b => b.lines);
-        const footerLines = tooltip.footer || [];
-
-        let innerHtml = '<div style="font-weight:bold; margin-bottom:8px; padding-bottom:6px; border-bottom:1px solid rgba(255,255,255,0.2); font-size:13px; line-height: 1.2;">';
-        titleLines.forEach(title => { innerHtml += title; });
-        innerHtml += '</div><div style="display:flex; flex-direction:column; gap:6px; font-size:12px;">';
-
-        bodyLines.forEach((body, i) => {
-            const colors = tooltip.labelColors[i];
-            const span = `<span style="background:${colors.backgroundColor}; width:10px; height:10px; display:inline-block; border-radius:2px; margin-right:8px; margin-top: 2px; flex-shrink:0;"></span>`;
-            innerHtml += `<div style="display:flex; align-items:flex-start;">${span} <span style="line-height:1.2; word-break:break-word;">${body}</span></div>`;
-        });
-        innerHtml += '</div>';
-
-        if(footerLines.length > 0) {
-            innerHtml += '<div style="margin-top: 10px; border-top:1px solid rgba(255,255,255,0.2); padding-top:8px; font-weight:bold; font-size:13px; color:var(--brand-accent); line-height: 1.2;">';
-            footerLines.forEach(f => innerHtml += f);
-            innerHtml += '</div>';
-        }
-
-        tooltipEl.innerHTML = innerHtml;
-    }
-
-    const position = context.chart.canvas.getBoundingClientRect();
-    tooltipEl.style.opacity = 1;
-    
-    let left = position.left + window.pageXOffset + tooltip.caretX;
-    let top = position.top + window.pageYOffset + tooltip.caretY;
-    
-    tooltipEl.style.left = left + 'px';
-    tooltipEl.style.top = top + 'px';
-    
-    let transformX = '-50%';
-    let transformY = 'calc(-100% - 15px)'; 
-
-    if (tooltip.caretX > position.width - 190) transformX = '-100%';
-    else if (tooltip.caretX < 190) transformX = '0%';
-
-    if (position.top + tooltip.caretY - tooltipEl.offsetHeight < 0) {
-        transformY = '15px';
-    }
-
-    tooltipEl.style.transform = `translate(${transformX}, ${transformY})`;
-};
-
 window.setWizChartMetric = function(mode) {
     wizChartMode = mode;
     generateWizSummary(false); 
@@ -2523,9 +2457,21 @@ function renderWizWorkloadChart(data) {
                         font: { size: 11, family: "'Microsoft JhengHei UI', 'Quicksand', sans-serif", weight: 'bold' }
                     }
                 }, 
+                /* V8.59 BUG FIX: Native Chart.js Tooltip restored to prevent iframe cutoffs */
                 tooltip: {
-                    enabled: false, 
-                    external: externalTooltipHandler, 
+                    enabled: true, 
+                    backgroundColor: 'rgba(15, 23, 42, 0.95)',
+                    titleColor: '#FFFFFF',
+                    bodyColor: '#FFFFFF',
+                    footerColor: '#E6AC5B', // Amber Accent for totals
+                    borderColor: '#8036c9',
+                    borderWidth: 1,
+                    titleFont: { family: "'Microsoft JhengHei UI', Quicksand, sans-serif", size: 13, weight: 'bold' },
+                    bodyFont: { family: "'Microsoft JhengHei UI', Quicksand, sans-serif", size: 12 },
+                    footerFont: { family: "'Microsoft JhengHei UI', Quicksand, sans-serif", size: 13, weight: 'bold' },
+                    padding: 12,
+                    boxPadding: 6,
+                    cornerRadius: 8,
                     callbacks: {
                         label: (context) => {
                             return `${context.dataset.label}: ${context.parsed.y.toFixed(1)} MH/d`;
@@ -2567,9 +2513,6 @@ function generateWizSummary(autoScroll = false) {
         return true;
     });
 
-    const tip = document.getElementById('wiz-custom-tooltip');
-    if(tip) tip.style.opacity = 0;
-    
     destroyChart('cWizWorkload'); 
 
     if (wizRenderTimeout) clearTimeout(wizRenderTimeout);
@@ -3034,8 +2977,12 @@ function generateWizSummary(autoScroll = false) {
     }, 100);
 }
 
-// --- EVENT LISTENERS ---
-$('fileInput').onchange = (e) => { const file = e.target.files[0]; if(file) processFile(file); };
+$('fileInput').onchange = (e) => { 
+    const file = e.target.files[0]; 
+    if(file) processFile(file); 
+    e.target.value = ''; // Reset input
+};
+
 $('btnCat').onclick = () => { groupBy = 'Category'; $('btnCat').style.backgroundColor = 'var(--brand-main)'; $('btnCat').style.color='#fff'; $('btnClust').style.backgroundColor='transparent'; $('btnClust').style.color='var(--text-sub)'; updateCharts(); };
 $('btnClust').onclick = () => { groupBy = 'Cluster'; $('btnClust').style.backgroundColor = 'var(--brand-main)'; $('btnClust').style.color='#fff'; $('btnCat').style.backgroundColor='transparent'; $('btnCat').style.color='var(--text-sub)'; updateCharts(); };
 
@@ -3053,7 +3000,6 @@ window.toggleEvidenceList = function() {
     }
 };
 
-// --- INIT ---
 applyTheme('slightGray');
 applyLanguage();
 if($('gSheetUrl').value) loadGoogleSheet();
